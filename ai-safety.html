@@ -11,13 +11,13 @@
 
 <div class="wrap">
   <nav class="site-nav">
-    <a class="brand" href="/">James Kelly</a>
+    <a class="brand" href="index.html">James Kelly</a>
     <div class="links">
-      <a href="/about.html">About</a>
-      <a href="/work.html">Work</a>
-      <a href="/ai-safety.html" class="active">AI safety</a>
-      <a href="/writing.html">Writing</a>
-      <a href="/contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="work.html">Work</a>
+      <a href="ai-safety.html" class="active">AI safety</a>
+      <a href="writing.html">Writing</a>
+      <a href="contact.html">Contact</a>
     </div>
   </nav>
 
@@ -29,17 +29,26 @@
   <section class="block">
     <p class="section-label">Coursework</p>
     <div class="row-stack">
-      <div class="list-row">
-        <i class="ti ti-circle-check icon" style="color:var(--tag-financial-text);" aria-hidden="true"></i>
-        <span>BlueDot Impact — AGI Safety Fundamentals</span>
+      <div class="list-row" style="justify-content: space-between;">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="ti ti-circle-check icon" style="color:var(--tag-financial-text);" aria-hidden="true"></i>
+          <span>BlueDot Impact — AGI Safety Fundamentals</span>
+        </span>
+        <img src="img/bluedotbadge.png" alt="BlueDot Impact badge" style="width: 28px; height: 28px; object-fit: contain; flex-shrink: 0;">
       </div>
-      <div class="list-row">
-        <i class="ti ti-circle-check icon" style="color:var(--tag-financial-text);" aria-hidden="true"></i>
-        <span>BlueDot Impact — AGI Strategy</span>
+      <div class="list-row" style="justify-content: space-between;">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="ti ti-circle-check icon" style="color:var(--tag-financial-text);" aria-hidden="true"></i>
+          <span>BlueDot Impact — AGI Strategy</span>
+        </span>
+        <img src="img/bluedotbadge.png" alt="BlueDot Impact badge" style="width: 28px; height: 28px; object-fit: contain; flex-shrink: 0;">
       </div>
-      <div class="list-row muted">
-        <i class="ti ti-clock icon" aria-hidden="true"></i>
-        <span>BlueDot Impact — Frontier AI Governance <span class="muted-note">(in progress)</span></span>
+      <div class="list-row" style="justify-content: space-between;">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="ti ti-circle-check icon" style="color:var(--tag-financial-text);" aria-hidden="true"></i>
+          <span>BlueDot Impact — Frontier AI Governance</span>
+        </span>
+        <img src="img/bluedotbadge.png" alt="BlueDot Impact badge" style="width: 28px; height: 28px; object-fit: contain; flex-shrink: 0;">
       </div>
     </div>
   </section>
@@ -72,11 +81,11 @@
 
   <section class="block">
     <p class="section-label">The governance landscape</p>
-    <!-- Replace with the real ecosystem map image once exported: /images/governance-ecosystem-map.png -->
+    <!-- Ecosystem map PDF: img/AIGoveEcosystemMap.pdf -->
     <div class="feature-card">
       <i class="ti ti-affiliate icon" aria-hidden="true"></i>
       <div>
-        <p class="title">Mapping the AI governance ecosystem</p>
+        <p class="title"><a href="img/AIGoveEcosystemMap.pdf" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Mapping the AI Governance Ecosystem</a></p>
         <p class="desc">How policy, oversight, and power intersect across labs, safety researchers, evaluators, capital, and watchdogs.</p>
       </div>
     </div>
@@ -85,13 +94,16 @@
   <section class="block">
     <p class="section-label">Writing on this</p>
     <div class="row-stack">
-      <div class="writing-item">
+      <a class="writing-item" href="https://howtoreachjkelly.substack.com/p/claude-is-ai-and-can-make-mistakes" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; display: block;">
         <span class="pill-published">Published</span>
-        <!-- Fill in: real title + link to the Substack post -->
-        <p class="title">On AI incentives — Nvidia, IPOs, and who actually captures the value</p>
-        <p class="note">Substack — confirm exact title and link before publishing</p>
-      </div>
-      <div class="draft-placeholder center">Draft placeholder</div>
+        <p class="title">Claude is AI and can make mistakes. Please double-check responses.</p>
+        <p class="note">Substack — June 2026</p>
+      </a>
+      <a class="writing-item" href="https://howtoreachjkelly.substack.com/p/recursive-enshittification" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; display: block;">
+        <span class="pill-published">Published</span>
+        <p class="title">Recursive Enshittification</p>
+        <p class="note">Substack — June 2026</p>
+      </a>
       <div class="draft-placeholder center">Draft placeholder</div>
     </div>
   </section>
