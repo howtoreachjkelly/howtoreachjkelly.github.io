@@ -79,7 +79,7 @@ header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
 .hero { padding: 2.5rem 0 2rem; text-align: center; }
 .hero-kicker { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
 .hero-title {
-  font-family: var(--font-voice); font-size: 26px; line-height: 1.4;
+  font-family: var(--font-voice); font-size: 30px; line-height: 1.35;
   max-width: 520px; margin: 0 auto; color: var(--text-primary);
 }
 .hero-sub { font-size: 14px; color: var(--text-secondary); max-width: 520px; margin: 16px auto 0; line-height: 1.6; }
