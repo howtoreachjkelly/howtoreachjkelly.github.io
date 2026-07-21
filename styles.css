@@ -82,7 +82,7 @@ header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
   font-family: var(--font-voice); font-size: 26px; line-height: 1.4;
   max-width: 520px; margin: 0 auto; color: var(--text-primary);
 }
-.hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 460px; margin: 14px auto 0; }
+.hero-sub { font-size: 14px; color: var(--text-secondary); max-width: 520px; margin: 16px auto 0; line-height: 1.6; }
 
 /* ---------- filter chips ---------- */
 .chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 0 1.5rem; }
