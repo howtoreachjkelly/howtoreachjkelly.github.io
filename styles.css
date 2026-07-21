@@ -129,7 +129,7 @@ header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
 
 /* ---------- about page ---------- */
 .about-header { display: flex; gap: 24px; align-items: flex-start; padding: 2rem 0 1.5rem; }
-.about-header .intro-text .name-title { font-family: var(--font-voice); font-size: 20px; margin: 0 0 4px; color: var(--text-primary); }
+.about-header .intro-text .name-title { font-family: var(--font-voice); font-size: 26px; line-height: 1.3; margin: 0 0 4px; color: var(--text-primary); }
 .about-header .intro-text .location { font-size: 13px; color: var(--text-secondary); margin: 0; }
 
 .photo-placeholder {
@@ -137,6 +137,10 @@ header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
   border: 1px dashed var(--border-strong); display: flex; flex-direction: column;
   align-items: center; justify-content: center; flex-shrink: 0; gap: 6px;
   font-size: 11px; color: var(--text-muted);
+}
+.profile-photo {
+  width: 120px; height: 150px; border-radius: var(--radius); object-fit: cover;
+  flex-shrink: 0; border: 0.5px solid var(--border);
 }
 
 .section-label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin: 0 0 8px; }
