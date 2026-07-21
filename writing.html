@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — James Kelly</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="site-nav">
+    <a class="brand" href="/">James Kelly</a>
+    <div class="links">
+      <a href="/about.html">About</a>
+      <a href="/work.html">Work</a>
+      <a href="/ai-safety.html">AI safety</a>
+      <a href="/writing.html" class="active">Writing</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <h1>Writing</h1>
+    <p>Operations, AI, and the job market — as it looks from the inside.</p>
+  </header>
+
+  <div class="chips" id="wchips">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="aisafety">AI safety &amp; governance</button>
+    <button class="chip" data-filter="ops">Operations &amp; management</button>
+    <button class="chip" data-filter="jobs">Job search &amp; career</button>
+  </div>
+
+  <div class="row-stack" id="wlist" style="padding-bottom: 2rem;">
+
+    <div class="wpost writing-item" data-tags="aisafety">
+      <div class="writing-row">
+        <div>
+          <span class="pill-published">Published</span>
+          <!-- Fill in: real title + link to the Substack post -->
+          <p class="title">On AI incentives — Nvidia, IPOs, and who actually captures the value</p>
+        </div>
+        <span class="tag-label">AI safety &amp; governance</span>
+      </div>
+    </div>
+
+    <div class="wpost draft-placeholder row" data-tags="aisafety">
+      <span>Draft placeholder</span>
+      <span class="tag-label">AI safety &amp; governance</span>
+    </div>
+
+    <div class="wpost draft-placeholder row" data-tags="aisafety">
+      <span>Draft placeholder</span>
+      <span class="tag-label">AI safety &amp; governance</span>
+    </div>
+
+    <div class="wpost draft-placeholder row" data-tags="ops">
+      <span>Draft placeholder</span>
+      <span class="tag-label">Operations &amp; management</span>
+    </div>
+
+    <div class="wpost draft-placeholder row" data-tags="jobs">
+      <span>Draft placeholder</span>
+      <span class="tag-label">Job search &amp; career</span>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">James Kelly · Los Angeles, CA</div>
+</footer>
+
+<script>
+document.querySelectorAll('#wchips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#wchips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const f = chip.dataset.filter;
+    document.querySelectorAll('.wpost').forEach(post => {
+      const tags = post.dataset.tags.split(' ');
+      post.style.display = (f === 'all' || tags.includes(f)) ? '' : 'none';
+    });
+  });
+});
+</script>
+
+</body>
+</html>
