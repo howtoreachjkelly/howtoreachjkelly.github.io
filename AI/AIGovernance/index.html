@@ -1,190 +1,127 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>What AI Governance Needs to Survive the Intelligence Explosion — a governance ecosystem map</title>
-<script src="./ds-base.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What AI Governance Needs to Survive the Intelligence Explosion — James Kelly</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <style>
-:root {
-  --leading: 28px;
-  --half: 14px;
-  --edge: clamp(20px, 5vw, 72px);
-  --measure: 62ch;
-}
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body { margin: 0; text-wrap: pretty; }
-a { color: var(--color-accent-700); }
-a:hover { color: var(--color-accent-900); }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--edge); }
-.nav { padding-inline: max(var(--edge), calc((100% - 1180px) / 2 + var(--edge))); }
-.nav a { white-space: nowrap; }
-@media (max-width: 560px) { .nav a { display: none; } }
-.rule { height: 1px; border: 0; margin: 0; background: var(--color-divider); }
+  /* Page-specific components for this article. Reuses shared tokens from styles.css
+     (var(--surface-2), var(--text-accent), var(--font-voice), etc.) so colors and type
+     stay consistent with the rest of the site, even though this layout is unique to this page. */
 
-.kicker {
-  display: block; font-size: 13px; line-height: var(--half);
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--color-accent-700);
-  font-feature-settings: "tnum" 1;
-  margin: 0 0 calc(var(--leading) - var(--half));
-}
+  .article-hero { padding: 2rem 0 1.5rem; }
+  .article-hero .kicker { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
+  .article-hero h1 {
+    font-family: var(--font-voice); font-weight: 400; font-size: 32px; line-height: 1.3;
+    margin: 0 0 14px; max-width: 18ch; color: var(--text-primary);
+  }
+  .article-hero .sub { font-size: 15px; line-height: 1.7; color: var(--text-secondary); max-width: 62ch; margin: 0; }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+  .pill-outline {
+    font-size: 12px; padding: 5px 12px; border-radius: 999px;
+    border: 0.5px solid var(--border-strong); color: var(--text-secondary);
+  }
 
-/* hero */
-.hero { padding: calc(2.25 * var(--leading)) 0 calc(1.5 * var(--leading)); }
-.display {
-  font-family: var(--font-heading); font-weight: 400;
-  font-size: clamp(38px, 5.2vw, 68px);
-  line-height: clamp(41px, 5.6vw, 73px);
-  letter-spacing: -0.01em; margin: 0; margin-left: -0.042em;
-  text-box: trim-both cap alphabetic; max-width: 20ch;
-}
-.hero .sub { font-size: 17.5px; line-height: var(--leading); max-width: var(--measure);
-  margin: calc(1.5 * var(--leading) - 1cap) 0 0;
-  color: color-mix(in srgb, var(--color-text) 82%, transparent);
-  text-box: trim-both cap alphabetic; }
-.pill-row { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--leading); }
+  hr.rule { border: 0; height: 1px; background: var(--border); margin: 2rem 0; }
 
-/* section headers */
-.section { padding: calc(1.75 * var(--leading)) 0; }
-.section-head { max-width: 68ch; margin-bottom: calc(1.5 * var(--leading)); }
-.section-title { font-family: var(--font-heading); font-weight: 400;
-  font-size: clamp(26px, 2.6vw, 34px); line-height: calc(1.5 * var(--leading));
-  letter-spacing: -0.006em; margin: 0; text-box: trim-both cap alphabetic; }
-.section-note { font-size: 15.5px; line-height: var(--leading); margin: calc(var(--leading) - 1cap) 0 0;
-  color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width: 62ch;
-  text-box: trim-both cap alphabetic; }
+  .pillars-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+  @media (max-width: 760px) { .pillars-grid { grid-template-columns: 1fr; } }
+  .pillar-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .pillar-card .num { font-family: var(--font-voice); font-size: 14px; color: var(--text-accent); margin: 0 0 8px; }
+  .pillar-card h3 { font-size: 17px; font-weight: 600; margin: 0 0 6px; color: var(--text-primary); }
+  .pillar-card .desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 14px; }
+  .trait-head { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin: 0 0 6px; }
+  .trait-head.good { color: var(--tag-financial-text); }
+  .trait-head.bad { color: var(--text-muted); }
+  .trait-list { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .trait-list li { font-size: 13px; line-height: 1.5; color: var(--text-secondary); padding-left: 1.1em; position: relative; }
+  .trait-list.good li::before { content: "+"; position: absolute; left: 0; color: var(--tag-financial-text); font-weight: 700; }
+  .trait-list.bad li::before { content: "\2013"; position: absolute; left: 0; color: var(--text-muted); font-weight: 700; }
 
-/* three pillars */
-.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-.pillar-num { font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700);
-  font-feature-settings: "tnum" 1; margin: 0 0 var(--space-2); letter-spacing: 0.04em; }
-.pillar h3 { font-family: var(--font-heading); font-weight: 400; font-size: 22px;
-  line-height: var(--leading); margin: 0 0 var(--space-2); text-box: trim-both cap alphabetic; }
-.pillar .desc { font-size: 15px; line-height: var(--half); }
-.trait-head { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-  margin: var(--space-3) 0 var(--space-1); font-weight: 600; }
-.trait-head.good { color: var(--color-accent-700); }
-.trait-head.bad { color: color-mix(in srgb, var(--color-text) 60%, transparent); }
-.trait-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-1); }
-.trait-list li { font-size: 14.5px; line-height: 21px; padding-left: 1.1em; position: relative;
-  color: color-mix(in srgb, var(--color-text) 82%, transparent); }
-.trait-list.good li::before { content: "+"; position: absolute; left: 0; color: var(--color-accent-700); font-weight: 700; }
-.trait-list.bad li::before { content: "–"; position: absolute; left: 0; color: color-mix(in srgb, var(--color-text) 55%, transparent); font-weight: 700; }
+  .flow { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+  .flow-step { flex: 1 1 200px; }
+  .flow-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; height: 100%; }
+  .flow-tag { display: block; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .flow-card p { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0; }
+  .flow-arrow { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: 32px; color: var(--text-accent); }
+  @media (max-width: 760px) { .flow { flex-direction: column; } .flow-arrow { width: 100%; height: 24px; transform: rotate(90deg); } }
 
-@media (max-width: 900px) { .pillars { grid-template-columns: 1fr; } }
+  .breaks-outcome {
+    margin-top: 14px; border: 1px solid var(--text-accent); border-radius: var(--radius);
+    padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .breaks-outcome i { font-size: 18px; color: var(--text-accent); flex-shrink: 0; }
+  .breaks-outcome p { margin: 0; font-size: 13.5px; font-family: var(--font-voice); color: var(--text-primary); }
 
-/* flow diagram: where it breaks */
-.flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
-.flow-step { flex: 1 1 200px; display: flex; flex-direction: column; }
-.flow-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md);
-  padding: var(--space-4); height: 100%; background: var(--color-bg); }
-.flow-tag { display: inline-block; font-size: 11.5px; letter-spacing: 0.07em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-text) 55%, transparent); margin-bottom: var(--space-2); }
-.flow-card p { font-size: 14.5px; line-height: 20px; margin: 0;
-  color: color-mix(in srgb, var(--color-text) 85%, transparent); }
-.flow-arrow { flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
-  width: 40px; color: var(--color-accent-700); }
-.flow-arrow svg { width: 22px; height: 22px; }
-@media (max-width: 900px) {
-  .flow { flex-direction: column; }
-  .flow-arrow { width: 100%; height: 28px; }
-  .flow-arrow svg { transform: rotate(90deg); }
-}
-.breaks-outcome { margin-top: var(--space-4); border: 1px solid var(--color-accent-700); border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4); display: flex; align-items: center; gap: var(--space-3); }
-.breaks-outcome svg { flex: 0 0 auto; width: 20px; height: 20px; color: var(--color-accent-700); }
-.breaks-outcome p { margin: 0; font-size: 15px; font-family: var(--font-heading); color: var(--color-text); }
+  .fixes-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+  @media (max-width: 760px) { .fixes-grid { grid-template-columns: 1fr; } }
+  .fix-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .fix-badge {
+    display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px;
+    border: 1px solid var(--text-accent); border-radius: 50%; font-family: var(--font-voice);
+    color: var(--text-accent); font-size: 14px; margin-bottom: 10px;
+  }
+  .fix-card h3 { font-size: 15px; font-weight: 600; margin: 0 0 6px; color: var(--text-primary); }
+  .fix-card p { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0; }
+  .fix-target { display: block; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
 
-/* the fix */
-.fixes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-.fix-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: var(--space-4); }
-.fix-badge { display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border: 1px solid var(--color-accent-700); border-radius: 50%;
-  font-family: var(--font-heading); color: var(--color-accent-700); font-size: 15px; margin-bottom: var(--space-3); }
-.fix-card h3 { font-family: var(--font-heading); font-weight: 400; font-size: 19px; margin: 0 0 var(--space-2);
-  line-height: 24px; }
-.fix-card p { font-size: 14.5px; line-height: 21px; margin: 0;
-  color: color-mix(in srgb, var(--color-text) 82%, transparent); }
-.fix-target { display: block; margin-top: var(--space-3); font-size: 12px; letter-spacing: 0.03em;
-  color: color-mix(in srgb, var(--color-text) 55%, transparent); font-style: normal; }
-@media (max-width: 900px) { .fixes { grid-template-columns: 1fr; } }
+  /* Tension spectrum: rebuilt with flexbox instead of hardcoded pixel/percent positions
+     from the original, so it holds up at any screen width without manual tuning. */
+  .spectrum-track { position: relative; height: 3px; background: var(--border-strong); border-radius: 2px; margin: 0 0 1.5rem; }
+  .spectrum-fill { position: absolute; inset: 0; border-radius: 2px; background: linear-gradient(to right, var(--border-strong), var(--text-accent)); }
+  .spectrum-nodes { display: flex; justify-content: space-between; gap: 16px; }
+  @media (max-width: 700px) { .spectrum-nodes { flex-direction: column; gap: 24px; } }
+  .node { flex: 1; text-align: center; }
+  @media (max-width: 700px) { .node { text-align: left; } }
+  .node .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--surface-1); border: 2px solid var(--text-accent); margin: 0 auto 8px; }
+  @media (max-width: 700px) { .node .dot { margin: 0 0 8px; } }
+  .node .cap { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 4px; }
+  .node .label { font-family: var(--font-voice); font-size: 15px; margin: 0 0 4px; color: var(--text-primary); }
+  .node .note { font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin: 0; }
 
-/* spectrum */
-.spectrum { padding-top: var(--space-2); }
-.spectrum-track { position: relative; height: 4px; background: var(--color-divider); border-radius: 2px;
-  margin: calc(2 * var(--leading)) var(--space-4) 0; }
-.spectrum-fill { position: absolute; inset: 0; border-radius: 2px;
-  background: linear-gradient(to right, var(--color-neutral-300), var(--color-accent-700)); }
-.node { position: absolute; top: 50%; transform: translate(-50%, -50%); text-align: center; width: 210px; }
-.node .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--color-bg);
-  border: 2px solid var(--color-accent-700); margin: 0 auto var(--space-2); }
-.node .label { font-family: var(--font-heading); font-size: 16px; line-height: 21px; margin: 0; }
-.node .cap { font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-text) 60%, transparent); margin: 0 0 var(--space-1); }
-.node .note { font-size: 13.5px; line-height: 19px; margin: var(--space-1) 0 0;
-  color: color-mix(in srgb, var(--color-text) 78%, transparent); }
-.node.above { top: 0; transform: translate(-50%, calc(-100% - 18px)); }
-.node.below { top: 100%; transform: translate(-50%, 18px); }
-.spectrum-wrap { position: relative; padding-bottom: calc(6 * var(--leading)); padding-top: calc(1.75 * var(--leading)); }
-@media (max-width: 760px) {
-  .spectrum-wrap { padding-top: 0; }
-  .spectrum-track { display: none; }
-  .spectrum-nodes { display: flex; flex-direction: column; gap: var(--space-5); }
-  .node, .node.above, .node.below { position: static; transform: none; width: 100%; text-align: left; }
-  .node .dot { margin: 0 0 var(--space-2); }
-}
-
-/* quote / close */
-.quote { padding: calc(1.5 * var(--leading)) 0 calc(1.5 * var(--leading)); }
-.quote blockquote {
-  font-family: var(--font-heading); font-weight: 400;
-  font-size: clamp(22px, 2.3vw, 28px); line-height: calc(1.5 * var(--leading));
-  letter-spacing: -0.004em; max-width: 46ch; margin: 0;
-  text-indent: -0.34em; text-box: trim-both cap alphabetic;
-}
-.quote figcaption { font-size: 15px; line-height: var(--leading);
-  color: color-mix(in srgb, var(--color-text) 70%, transparent);
-  margin: calc(1.25 * var(--leading) - 1cap) 0 0; text-indent: -1.104em; text-box: trim-both cap alphabetic; }
-@media (max-width: 720px) { .quote blockquote, .quote figcaption { text-indent: 0; } }
-
-footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: var(--leading);
-  color: color-mix(in srgb, var(--color-text) 65%, transparent); }
+  .close-quote { padding: 2rem 0; }
+  .close-quote blockquote {
+    font-family: var(--font-voice); font-weight: 400; font-size: 22px; line-height: 1.5;
+    max-width: 42ch; margin: 0; color: var(--text-primary);
+  }
+  .close-quote figcaption { font-size: 13px; color: var(--text-muted); margin: 14px 0 0; }
 </style>
 </head>
 <body>
-<nav class="nav">
-  <span class="nav-brand">Governance Ecosystem Map</span>
-  <a href="#pillars">Three pillars</a>
-  <a href="#breaks">Where it breaks</a>
-  <a href="#fix">The fix</a>
-  <a href="#tension">The tension</a>
-</nav>
-<div class="wrap">
 
-  <section class="hero">
-    <span class="kicker">A thought experiment by James Kelly - mapped.</span>
-    <h1 class="display">What AI governance needs to survive the intelligence explosion</h1>
+<div class="wrap">
+  <nav class="site-nav">
+    <a class="brand" href="../index.html">James Kelly</a>
+    <div class="links">
+      <a href="../about.html">About</a>
+      <a href="../work.html">Work</a>
+      <a href="../ai-safety.html">AI safety</a>
+      <a href="../writing.html">Writing</a>
+      <a href="../contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <section class="article-hero">
+    <span class="kicker">A thought experiment by James Kelly — mapped</span>
+    <h1>What AI governance needs to survive the intelligence explosion</h1>
     <p class="sub">A single proposal combines three existing mechanisms — compute governance, a hybrid public/private certification market, and US domestic regulation — into one ecosystem. This map traces how the three pieces connect, where the combination quietly breaks, and what it takes to hold under a real emergency.</p>
     <div class="pill-row">
-      <span class="tag tag-outline">Compute governance</span>
-      <span class="tag tag-outline">Certification market</span>
-      <span class="tag tag-outline">Domestic regulation</span>
+      <span class="pill-outline">Compute governance</span>
+      <span class="pill-outline">Certification market</span>
+      <span class="pill-outline">Domestic regulation</span>
     </div>
   </section>
 
-  <hr class="rule" />
+  <hr class="rule">
 
-  <section class="section" id="pillars">
-    <div class="section-head">
-      <span class="kicker">The three pillars</span>
-      <h2 class="section-title">Three mechanisms, combined</h2>
-      <p class="section-note">Each piece is already in motion somewhere. The proposal's bet is that layered together, their gaps don't overlap — each pillar carries a matched cost.</p>
-    </div>
-    <div class="pillars">
-      <div class="pillar">
-        <p class="pillar-num">01</p>
+  <section class="block">
+    <p class="section-label">The three pillars</p>
+    <p class="section-body" style="margin-bottom: 1.25rem; max-width: 62ch;">Each piece is already in motion somewhere. The proposal's bet is that layered together, their gaps don't overlap — each pillar carries a matched cost.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <p class="num">01</p>
         <h3>Compute governance</h3>
         <p class="desc">Track and report frontier training runs at the hardware level.</p>
         <p class="trait-head good">Strengths</p>
@@ -198,8 +135,8 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
           <li>Compute is not a perfect stand-in for capability</li>
         </ul>
       </div>
-      <div class="pillar">
-        <p class="pillar-num">02</p>
+      <div class="pillar-card">
+        <p class="num">02</p>
         <h3>Public + private certification</h3>
         <p class="desc">A market for certification providers; courts and certifiers handle deployment harms.</p>
         <p class="trait-head good">Strengths</p>
@@ -213,8 +150,8 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
           <li>No company can pay enough to cover a true catastrophe — liability fails for the worst risks</li>
         </ul>
       </div>
-      <div class="pillar">
-        <p class="pillar-num">03</p>
+      <div class="pillar-card">
+        <p class="num">03</p>
         <h3>US domestic regulation</h3>
         <p class="desc">Agencies oversee; power stays spread across companies; export controls hold the China lead.</p>
         <p class="trait-head good">Strengths</p>
@@ -231,14 +168,11 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
     </div>
   </section>
 
-  <hr class="rule" />
+  <hr class="rule">
 
-  <section class="section" id="breaks">
-    <div class="section-head">
-      <span class="kicker">Where it breaks</span>
-      <h2 class="section-title">One missing resource, one failure chain</h2>
-      <p class="section-note">All three pillars lean on the same shortfall: government doesn't have the technical staff to verify anything itself. Follow what happens when that job gets handed off.</p>
-    </div>
+  <section class="block">
+    <p class="section-label">Where it breaks</p>
+    <p class="section-body" style="margin-bottom: 1.25rem; max-width: 62ch;">All three pillars lean on the same shortfall: government doesn't have the technical staff to verify anything itself. Follow what happens when that job gets handed off.</p>
     <div class="flow">
       <div class="flow-step">
         <div class="flow-card">
@@ -246,18 +180,14 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
           <p>The verification job gets handed to a certifier — chosen and paid by the company being checked.</p>
         </div>
       </div>
-      <div class="flow-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </div>
+      <div class="flow-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></div>
       <div class="flow-step">
         <div class="flow-card">
           <span class="flow-tag">Step 2</span>
           <p>Right as a company nears a dangerous capability threshold, its own hand-picked certifier signs off.</p>
         </div>
       </div>
-      <div class="flow-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </div>
+      <div class="flow-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></div>
       <div class="flow-step">
         <div class="flow-card">
           <span class="flow-tag">Step 3</span>
@@ -266,20 +196,17 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
       </div>
     </div>
     <div class="breaks-outcome">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+      <i class="ti ti-alert-triangle" aria-hidden="true"></i>
       <p>Net result: paperwork that looks like oversight, but isn't.</p>
     </div>
   </section>
 
-  <hr class="rule" />
+  <hr class="rule">
 
-  <section class="section" id="fix">
-    <div class="section-head">
-      <span class="kicker">The fix</span>
-      <h2 class="section-title">Three repairs, matched to the break</h2>
-      <p class="section-note">Each fix targets a specific point in the failure chain above — replacing trust in paperwork with structural checks.</p>
-    </div>
-    <div class="fixes">
+  <section class="block">
+    <p class="section-label">The fix</p>
+    <p class="section-body" style="margin-bottom: 1.25rem; max-width: 62ch;">Each fix targets a specific point in the failure chain above — replacing trust in paperwork with structural checks.</p>
+    <div class="fixes-grid">
       <div class="fix-card">
         <div class="fix-badge">1</div>
         <h3>Check the hardware, not the paperwork</h3>
@@ -301,52 +228,48 @@ footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: v
     </div>
   </section>
 
-  <hr class="rule" />
+  <hr class="rule">
 
-  <section class="section" id="tension">
-    <div class="section-head">
-      <span class="kicker">Big problem: who watches the watchers?</span>
-      <h2 class="section-title">Calibrating power to the size of the risk</h2>
-      <p class="section-note">The plan concentrates the reporting system and the halt authority in one place. A fully distributed system would resist abuse but move too slowly for a real emergency — so different risks get different structures.<br /><br /></p>
-    </div>
-    <div class="spectrum-wrap">
-      <div class="spectrum-track">
-        <div class="spectrum-fill"></div>
-        <div class="spectrum-nodes">
-          <div class="node below" style="left: 410px; top: -2px; position: absolute">
-            <div class="dot"></div>
-            <p class="label">AISI-style agency</p>
-            <p class="cap" style="margin-top: var(--space-1)">Sole halt authority</p>
-            <p class="note">Power kept narrow and time-limited; members are non-political joint appointees approved by both labs and Congress.</p>
-          </div>
-          <div class="node above" style="left: 12%">
-            <p class="cap">Distributed &amp; slow</p>
-            <div class="dot"></div>
-            <p class="label">Courts &amp; certifiers</p>
-            <p class="note">Handle everyday harms — the rotation-assigned, double-blind certification market.</p>
-          </div>
-          <div class="node above" style="left: 94%">
-            <p class="cap">Centralized &amp; fast</p>
-            <div class="dot"></div>
-            <p class="label">Catastrophic thresholds</p>
-            <p class="note">Triggered automatically if a certifier is later caught missing something.</p>
-          </div>
-        </div>
+  <section class="block">
+    <p class="section-label">Big problem: who watches the watchers?</p>
+    <p class="section-body" style="margin-bottom: 1.5rem; max-width: 62ch;">The plan concentrates the reporting system and the halt authority in one place. A fully distributed system would resist abuse but move too slowly for a real emergency — so different risks get different structures.</p>
+    <div class="spectrum-track"><div class="spectrum-fill"></div></div>
+    <div class="spectrum-nodes">
+      <div class="node">
+        <p class="cap">Distributed &amp; slow</p>
+        <div class="dot"></div>
+        <p class="label">Courts &amp; certifiers</p>
+        <p class="note">Handle everyday harms — the rotation-assigned, double-blind certification market.</p>
+      </div>
+      <div class="node">
+        <div class="dot"></div>
+        <p class="label">AISI-style agency</p>
+        <p class="cap" style="margin-top: 4px;">Sole halt authority</p>
+        <p class="note">Power kept narrow and time-limited; members are non-political joint appointees approved by both labs and Congress.</p>
+      </div>
+      <div class="node">
+        <p class="cap">Centralized &amp; fast</p>
+        <div class="dot"></div>
+        <p class="label">Catastrophic thresholds</p>
+        <p class="note">Triggered automatically if a certifier is later caught missing something.</p>
       </div>
     </div>
-    <p class="section-note" style="max-width: 68ch"><br />Courts and Congress back up the halt authority — knowingly slower than the agency itself, slow enough to act as a commercial deterrent to release. The highest cost: responding fast to a catastrophe means trusting one body's judgment before anyone can double-check it.</p>
+    <p class="section-body" style="margin-top: 1.5rem; max-width: 62ch;">Courts and Congress back up the halt authority — knowingly slower than the agency itself, slow enough to act as a commercial deterrent to release. The highest cost: responding fast to a catastrophe means trusting one body's judgment before anyone can double-check it.</p>
   </section>
 
-  <hr class="rule" />
+  <hr class="rule">
 
-  <section class="quote">
-    <figure>
-      <blockquote>“Different risks need different structures: slow and spread out for everyday problems, fast and centralized for the worst-case ones.”</blockquote>
-      <figcaption><br />As always, James is human and can make mistakes</figcaption>
+  <section class="close-quote">
+    <figure style="margin: 0;">
+      <blockquote>"Different risks need different structures: slow and spread out for everyday problems, fast and centralized for the worst-case ones."</blockquote>
+      <figcaption>As always, James is human and can make mistakes.</figcaption>
     </figure>
   </section>
-
-  <footer>Mapped from J. Kelly's governance proposal, "What AI Governance Needs to Survive the Intelligence Explosion."</footer>
 </div>
+
+<footer class="site-footer">
+  <div class="wrap">Mapped from J. Kelly's governance proposal, "What AI Governance Needs to Survive the Intelligence Explosion." · James Kelly · Los Angeles, CA</div>
+</footer>
+
 </body>
 </html>
