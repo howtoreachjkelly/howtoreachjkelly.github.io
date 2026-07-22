@@ -244,6 +244,10 @@ section.block { padding: 0 0 1.5rem; }
   background: var(--tag-financial-bg); color: var(--tag-financial-text);
   font-size: 10px; padding: 2px 7px; border-radius: var(--radius); display: inline-block;
 }
+.pill-progress {
+  background: var(--tag-legal-bg); color: var(--tag-legal-text);
+  font-size: 10px; padding: 2px 7px; border-radius: var(--radius); display: inline-block;
+}
 .writing-item { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 0.9rem; }
 .writing-item p.title { font-size: 13px; font-weight: 600; margin: 8px 0 0; }
 .writing-item p.note { font-size: 11px; color: var(--text-secondary); margin: 4px 0 0; }
