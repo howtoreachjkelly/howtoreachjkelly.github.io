@@ -196,6 +196,20 @@ section.block { padding: 0 0 1.5rem; }
 .modal .media img { width: 100%; height: 100%; object-fit: cover; }
 .modal p.body { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; }
 
+.under-construction {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--tag-legal-bg); color: var(--tag-legal-text);
+  border-radius: var(--radius); padding: 8px 12px; font-size: 12.5px; margin: 0 0 14px;
+}
+.under-construction i { font-size: 15px; flex-shrink: 0; }
+
+.scs-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--text-muted); margin: 14px 0 4px;
+}
+.scs-label:first-child { margin-top: 0; }
+.scs-text { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; }
+
 /* ---------- list rows (coursework, links) ---------- */
 .list-row {
   display: flex; align-items: center; gap: 10px; background: var(--surface-2);

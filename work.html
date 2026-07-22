@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Work — James Kelly</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <style>
   /* Work-page-specific: grid needs extra bottom padding here that other pages using .grid don't need */
   #grid { padding-bottom: 3rem; }
@@ -14,13 +15,13 @@
 
 <div class="wrap">
   <nav class="site-nav">
-    <a class="brand" href="/">James Kelly</a>
+    <a class="brand" href="index.html">James Kelly</a>
     <div class="links">
-      <a href="/about.html">About</a>
-      <a href="/work.html" class="active">Work</a>
-      <a href="/ai-safety.html">AI safety</a>
-      <a href="/writing.html">Writing</a>
-      <a href="/contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="work.html" class="active">Work</a>
+      <a href="ai-safety.html">AI safety</a>
+      <a href="writing.html">Writing</a>
+      <a href="contact.html">Contact</a>
     </div>
   </nav>
 
@@ -47,15 +48,25 @@
     <button class="close-btn" id="closeBtn" aria-label="Close">&#10005;</button>
     <div class="tags" id="modalTags"></div>
     <h2 id="modal-title"></h2>
+    <div class="under-construction">
+      <i class="ti ti-tools" aria-hidden="true"></i>
+      <span>Under construction — full write-up and supporting media coming soon.</span>
+    </div>
     <div class="media" id="modalMedia"></div>
-    <p class="body" id="modalBody"></p>
+    <p class="scs-label">Situation</p>
+    <p class="scs-text" id="modalSituation"></p>
+    <p class="scs-label">Challenge</p>
+    <p class="scs-text" id="modalChallenge"></p>
+    <p class="scs-label">Solution</p>
+    <p class="scs-text" id="modalSolution"></p>
   </div>
 </div>
 
 <script>
 // ---- Case study data ----
 // "media" is a placeholder. Replace with: { type: "image", src: "/images/your-photo.jpg", alt: "..." }
-// once real photos or diagrams are ready.
+// once real photos or diagrams are ready. Remove the under-construction banner in the HTML above
+// once a case study's write-up and media are actually finalized.
 const TAG_LABELS = {
   org: "Organizational", operational: "Operational", tech: "Technical",
   legal: "Legal", financial: "Financial", founder: "Founder-built"
@@ -67,7 +78,9 @@ const CASE_STUDIES = [
     title: "AOL/Yahoo consolidation \u2192 RYOT integration",
     tags: ["org", "financial"],
     summary: "Two-stage consolidation delivering $10M in annual savings, then absorbing RYOT as a semi-autonomous innovation studio.",
-    body: "Not a single three-way merger. Stage one: AOL and Yahoo studio operations were combined into one consolidated org, under my leadership. Stage two: RYOT was integrated afterward as a semi-autonomous innovation studio, absorbed into the structure already built in stage one, with its creative autonomy preserved. Result: $10M in annual savings, roughly 35%.",
+    situation: "AOL and Yahoo's studio operations existed as separate organizations after the corporate merger, each with its own leadership, tools, and processes. RYOT joined later as an independent innovation studio.",
+    challenge: "Duplicate infrastructure and reporting lines were driving unnecessary cost, and there was no consolidated leadership to run the combined organization \u2014 while RYOT's creative autonomy needed to survive whatever structure came next.",
+    solution: "Consolidated AOL and Yahoo studio operations into one organization first, then integrated RYOT afterward as a semi-autonomous unit within that structure. Result: $10M in annual savings, roughly 35%.",
     media: null
   },
   {
@@ -75,7 +88,9 @@ const CASE_STUDIES = [
     title: "RYOT greenlight process",
     tags: ["operational"],
     summary: "The governance system for moving projects from concept through production approval.",
-    body: "Designed and ran the process that decided which RYOT projects moved from pitch to production \u2014 the review structure, the decision rights, and the escalation path when priorities conflicted.",
+    situation: "RYOT needed a way to move projects from pitch to production without every decision becoming an ad hoc negotiation.",
+    challenge: "No formal governance existed for how projects got approved, who had decision rights, or how conflicting priorities got resolved.",
+    solution: "Designed and ran the greenlight process \u2014 the review structure, the decision rights, and the escalation path \u2014 that took projects from concept to approved production.",
     media: null
   },
   {
@@ -83,7 +98,9 @@ const CASE_STUDIES = [
     title: "Studio builds \u2014 RYOT & Yahoo Playa Vista",
     tags: ["tech", "operational"],
     summary: "Facility design and buildout for two flagship physical production spaces.",
-    body: "Led design and buildout for RYOT's motion capture and innovation lab, and for the Yahoo/Verizon 5G Lab studio in Playa Vista \u2014 from technical infrastructure planning through vendor management to operational launch.",
+    situation: "RYOT needed a motion capture and innovation lab, and Yahoo/Verizon needed a flagship 5G lab studio in Playa Vista \u2014 both from the ground up.",
+    challenge: "Each build required technical infrastructure planning and vendor coordination under real timeline pressure, with no existing template to work from.",
+    solution: "Led design, buildout, and vendor management for both facilities through to operational launch.",
     media: null
   },
   {
@@ -91,7 +108,9 @@ const CASE_STUDIES = [
     title: "Real-time motion capture previsualization pipeline",
     tags: ["tech"],
     summary: "The technical pipeline connecting live motion capture, real-time previsualization, and production review for RYOT immersive shoots.",
-    body: "Built the pipeline connecting live motion capture data, real-time previsualization output, and the production review process \u2014 letting directors and producers evaluate shots during the shoot rather than waiting for post.",
+    situation: "Motion capture data and previsualization output existed as disconnected steps in the production process.",
+    challenge: "Directors and producers couldn't evaluate shots until well after the shoot, since live capture, previs, and review weren't linked.",
+    solution: "Built the technical pipeline connecting live motion capture, real-time previsualization, and production review \u2014 letting creative decisions happen during the shoot instead of in post.",
     media: null
   },
   {
@@ -99,7 +118,9 @@ const CASE_STUDIES = [
     title: "Yahoo Media Group hiring pipeline",
     tags: ["operational", "org"],
     summary: "Pipeline and process design supporting a 300+ person hybrid workforce build-out.",
-    body: "Designed and ran the hiring pipeline in Monday.com supporting the build-out of a 300+ person hybrid workforce across Los Angeles, Silicon Valley, New York, and London \u2014 sourcing, panel structure, and onboarding.",
+    situation: "Yahoo Media Group needed to build a 300+ person hybrid workforce across four locations.",
+    challenge: "No consistent process existed for sourcing, panel structure, or onboarding at that scale across Los Angeles, Silicon Valley, New York, and London.",
+    solution: "Designed and ran the hiring pipeline in Monday.com that standardized sourcing, panels, and onboarding across all four locations.",
     media: null
   },
   {
@@ -107,7 +128,9 @@ const CASE_STUDIES = [
     title: "DAM / systems integration",
     tags: ["tech"],
     summary: "Distributed asset management deployment across multi-site studio operations.",
-    body: "Deployed a distributed digital asset management system, migrating media assets from local storage to off-premises, multi-site infrastructure across the studio organization.",
+    situation: "Media assets were stored locally, scattered across multiple studio sites with no shared system.",
+    challenge: "The organization had no scalable way to manage, access, or protect assets across sites as production volume grew.",
+    solution: "Deployed a distributed digital asset management system, migrating assets to off-premises, multi-site infrastructure.",
     media: null
   },
   {
@@ -115,7 +138,9 @@ const CASE_STUDIES = [
     title: "Cassette Systems \u2014 housing PM plan",
     tags: ["operational", "legal", "founder"],
     summary: "Dual-track management across HCD-regulated and general contracting workstreams.",
-    body: "Built the project management structure for Cassette Systems' modular housing projects: two parallel, interacting workstreams \u2014 CA HCD-regulated contracts and general contracting contracts \u2014 with their own timelines that had to stay in sync.",
+    situation: "Cassette Systems' modular housing projects require two parallel workstreams: CA HCD-regulated manufacturing contracts and traditional general contracting.",
+    challenge: "The two workstreams run on different rules and timelines, and letting them drift out of sync risks delays or compliance failures.",
+    solution: "Built a dual-track project management structure that runs both workstreams in parallel with interacting timelines, keeping them synchronized.",
     media: null
   },
   {
@@ -123,7 +148,9 @@ const CASE_STUDIES = [
     title: "Hatch Escapes \u2014 concept to execution",
     tags: ["founder", "operational"],
     summary: "Full arc from concept to physical build for an internationally ranked escape room, bootstrapped and fully owned.",
-    body: "Co-founded, designed, and built Lab Rat, an escape room ranked in the top ten globally in its category \u2014 from initial concept through physical construction to day-to-day operation, entirely bootstrapped.",
+    situation: "Wanted to build an escape room business with no existing playbook to follow, fully bootstrapped.",
+    challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
+    solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
     media: null
   }
 ];
@@ -162,7 +189,9 @@ const overlay = document.getElementById("overlay");
 const modalTitle = document.getElementById("modal-title");
 const modalTags = document.getElementById("modalTags");
 const modalMedia = document.getElementById("modalMedia");
-const modalBody = document.getElementById("modalBody");
+const modalSituation = document.getElementById("modalSituation");
+const modalChallenge = document.getElementById("modalChallenge");
+const modalSolution = document.getElementById("modalSolution");
 const closeBtn = document.getElementById("closeBtn");
 
 function openCase(slug, pushHash) {
@@ -170,7 +199,9 @@ function openCase(slug, pushHash) {
   if (!cs) return;
   modalTitle.textContent = cs.title;
   modalTags.innerHTML = cs.tags.map(t => `<span class="tag" style="background:var(--tag-${t}-bg);color:var(--tag-${t}-text)">${TAG_LABELS[t]}</span>`).join("");
-  modalBody.textContent = cs.body;
+  modalSituation.textContent = cs.situation;
+  modalChallenge.textContent = cs.challenge;
+  modalSolution.textContent = cs.solution;
 
   if (cs.media && cs.media.type === "image") {
     modalMedia.innerHTML = `<img src="${cs.media.src}" alt="${cs.media.alt || ""}">`;
