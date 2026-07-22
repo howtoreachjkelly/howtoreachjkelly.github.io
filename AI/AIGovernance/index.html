@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>What AI Governance Needs to Survive the Intelligence Explosion — a governance ecosystem map</title>
+<script src="./ds-base.js"></script>
+<style>
+:root {
+  --leading: 28px;
+  --half: 14px;
+  --edge: clamp(20px, 5vw, 72px);
+  --measure: 62ch;
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; text-wrap: pretty; }
+a { color: var(--color-accent-700); }
+a:hover { color: var(--color-accent-900); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--edge); }
+.nav { padding-inline: max(var(--edge), calc((100% - 1180px) / 2 + var(--edge))); }
+.nav a { white-space: nowrap; }
+@media (max-width: 560px) { .nav a { display: none; } }
+.rule { height: 1px; border: 0; margin: 0; background: var(--color-divider); }
+
+.kicker {
+  display: block; font-size: 13px; line-height: var(--half);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-accent-700);
+  font-feature-settings: "tnum" 1;
+  margin: 0 0 calc(var(--leading) - var(--half));
+}
+
+/* hero */
+.hero { padding: calc(2.25 * var(--leading)) 0 calc(1.5 * var(--leading)); }
+.display {
+  font-family: var(--font-heading); font-weight: 400;
+  font-size: clamp(38px, 5.2vw, 68px);
+  line-height: clamp(41px, 5.6vw, 73px);
+  letter-spacing: -0.01em; margin: 0; margin-left: -0.042em;
+  text-box: trim-both cap alphabetic; max-width: 20ch;
+}
+.hero .sub { font-size: 17.5px; line-height: var(--leading); max-width: var(--measure);
+  margin: calc(1.5 * var(--leading) - 1cap) 0 0;
+  color: color-mix(in srgb, var(--color-text) 82%, transparent);
+  text-box: trim-both cap alphabetic; }
+.pill-row { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--leading); }
+
+/* section headers */
+.section { padding: calc(1.75 * var(--leading)) 0; }
+.section-head { max-width: 68ch; margin-bottom: calc(1.5 * var(--leading)); }
+.section-title { font-family: var(--font-heading); font-weight: 400;
+  font-size: clamp(26px, 2.6vw, 34px); line-height: calc(1.5 * var(--leading));
+  letter-spacing: -0.006em; margin: 0; text-box: trim-both cap alphabetic; }
+.section-note { font-size: 15.5px; line-height: var(--leading); margin: calc(var(--leading) - 1cap) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width: 62ch;
+  text-box: trim-both cap alphabetic; }
+
+/* three pillars */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.pillar-num { font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700);
+  font-feature-settings: "tnum" 1; margin: 0 0 var(--space-2); letter-spacing: 0.04em; }
+.pillar h3 { font-family: var(--font-heading); font-weight: 400; font-size: 22px;
+  line-height: var(--leading); margin: 0 0 var(--space-2); text-box: trim-both cap alphabetic; }
+.pillar .desc { font-size: 15px; line-height: var(--half); }
+.trait-head { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  margin: var(--space-3) 0 var(--space-1); font-weight: 600; }
+.trait-head.good { color: var(--color-accent-700); }
+.trait-head.bad { color: color-mix(in srgb, var(--color-text) 60%, transparent); }
+.trait-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-1); }
+.trait-list li { font-size: 14.5px; line-height: 21px; padding-left: 1.1em; position: relative;
+  color: color-mix(in srgb, var(--color-text) 82%, transparent); }
+.trait-list.good li::before { content: "+"; position: absolute; left: 0; color: var(--color-accent-700); font-weight: 700; }
+.trait-list.bad li::before { content: "–"; position: absolute; left: 0; color: color-mix(in srgb, var(--color-text) 55%, transparent); font-weight: 700; }
+
+@media (max-width: 900px) { .pillars { grid-template-columns: 1fr; } }
+
+/* flow diagram: where it breaks */
+.flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+.flow-step { flex: 1 1 200px; display: flex; flex-direction: column; }
+.flow-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  padding: var(--space-4); height: 100%; background: var(--color-bg); }
+.flow-tag { display: inline-block; font-size: 11.5px; letter-spacing: 0.07em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); margin-bottom: var(--space-2); }
+.flow-card p { font-size: 14.5px; line-height: 20px; margin: 0;
+  color: color-mix(in srgb, var(--color-text) 85%, transparent); }
+.flow-arrow { flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+  width: 40px; color: var(--color-accent-700); }
+.flow-arrow svg { width: 22px; height: 22px; }
+@media (max-width: 900px) {
+  .flow { flex-direction: column; }
+  .flow-arrow { width: 100%; height: 28px; }
+  .flow-arrow svg { transform: rotate(90deg); }
+}
+.breaks-outcome { margin-top: var(--space-4); border: 1px solid var(--color-accent-700); border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4); display: flex; align-items: center; gap: var(--space-3); }
+.breaks-outcome svg { flex: 0 0 auto; width: 20px; height: 20px; color: var(--color-accent-700); }
+.breaks-outcome p { margin: 0; font-size: 15px; font-family: var(--font-heading); color: var(--color-text); }
+
+/* the fix */
+.fixes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.fix-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: var(--space-4); }
+.fix-badge { display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: 1px solid var(--color-accent-700); border-radius: 50%;
+  font-family: var(--font-heading); color: var(--color-accent-700); font-size: 15px; margin-bottom: var(--space-3); }
+.fix-card h3 { font-family: var(--font-heading); font-weight: 400; font-size: 19px; margin: 0 0 var(--space-2);
+  line-height: 24px; }
+.fix-card p { font-size: 14.5px; line-height: 21px; margin: 0;
+  color: color-mix(in srgb, var(--color-text) 82%, transparent); }
+.fix-target { display: block; margin-top: var(--space-3); font-size: 12px; letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); font-style: normal; }
+@media (max-width: 900px) { .fixes { grid-template-columns: 1fr; } }
+
+/* spectrum */
+.spectrum { padding-top: var(--space-2); }
+.spectrum-track { position: relative; height: 4px; background: var(--color-divider); border-radius: 2px;
+  margin: calc(2 * var(--leading)) var(--space-4) 0; }
+.spectrum-fill { position: absolute; inset: 0; border-radius: 2px;
+  background: linear-gradient(to right, var(--color-neutral-300), var(--color-accent-700)); }
+.node { position: absolute; top: 50%; transform: translate(-50%, -50%); text-align: center; width: 210px; }
+.node .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--color-bg);
+  border: 2px solid var(--color-accent-700); margin: 0 auto var(--space-2); }
+.node .label { font-family: var(--font-heading); font-size: 16px; line-height: 21px; margin: 0; }
+.node .cap { font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent); margin: 0 0 var(--space-1); }
+.node .note { font-size: 13.5px; line-height: 19px; margin: var(--space-1) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent); }
+.node.above { top: 0; transform: translate(-50%, calc(-100% - 18px)); }
+.node.below { top: 100%; transform: translate(-50%, 18px); }
+.spectrum-wrap { position: relative; padding-bottom: calc(6 * var(--leading)); padding-top: calc(1.75 * var(--leading)); }
+@media (max-width: 760px) {
+  .spectrum-wrap { padding-top: 0; }
+  .spectrum-track { display: none; }
+  .spectrum-nodes { display: flex; flex-direction: column; gap: var(--space-5); }
+  .node, .node.above, .node.below { position: static; transform: none; width: 100%; text-align: left; }
+  .node .dot { margin: 0 0 var(--space-2); }
+}
+
+/* quote / close */
+.quote { padding: calc(1.5 * var(--leading)) 0 calc(1.5 * var(--leading)); }
+.quote blockquote {
+  font-family: var(--font-heading); font-weight: 400;
+  font-size: clamp(22px, 2.3vw, 28px); line-height: calc(1.5 * var(--leading));
+  letter-spacing: -0.004em; max-width: 46ch; margin: 0;
+  text-indent: -0.34em; text-box: trim-both cap alphabetic;
+}
+.quote figcaption { font-size: 15px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  margin: calc(1.25 * var(--leading) - 1cap) 0 0; text-indent: -1.104em; text-box: trim-both cap alphabetic; }
+@media (max-width: 720px) { .quote blockquote, .quote figcaption { text-indent: 0; } }
+
+footer { padding: calc(1.25 * var(--leading)) 0; font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 65%, transparent); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="nav-brand">Governance Ecosystem Map</span>
+  <a href="#pillars">Three pillars</a>
+  <a href="#breaks">Where it breaks</a>
+  <a href="#fix">The fix</a>
+  <a href="#tension">The tension</a>
+</nav>
+<div class="wrap">
+
+  <section class="hero">
+    <span class="kicker">A thought experiment by James Kelly - mapped.</span>
+    <h1 class="display">What AI governance needs to survive the intelligence explosion</h1>
+    <p class="sub">A single proposal combines three existing mechanisms — compute governance, a hybrid public/private certification market, and US domestic regulation — into one ecosystem. This map traces how the three pieces connect, where the combination quietly breaks, and what it takes to hold under a real emergency.</p>
+    <div class="pill-row">
+      <span class="tag tag-outline">Compute governance</span>
+      <span class="tag tag-outline">Certification market</span>
+      <span class="tag tag-outline">Domestic regulation</span>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section" id="pillars">
+    <div class="section-head">
+      <span class="kicker">The three pillars</span>
+      <h2 class="section-title">Three mechanisms, combined</h2>
+      <p class="section-note">Each piece is already in motion somewhere. The proposal's bet is that layered together, their gaps don't overlap — each pillar carries a matched cost.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <p class="pillar-num">01</p>
+        <h3>Compute governance</h3>
+        <p class="desc">Track and report frontier training runs at the hardware level.</p>
+        <p class="trait-head good">Strengths</p>
+        <ul class="trait-list good">
+          <li>Easy to monitor — a handful of chip fabs and data centers, not millions of users</li>
+          <li>Already happening: export controls, the CHIPS Act</li>
+        </ul>
+        <p class="trait-head bad">Weaknesses</p>
+        <ul class="trait-list bad">
+          <li>Can't reach a model once it's released or leaked</li>
+          <li>Compute is not a perfect stand-in for capability</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <p class="pillar-num">02</p>
+        <h3>Public + private certification</h3>
+        <p class="desc">A market for certification providers; courts and certifiers handle deployment harms.</p>
+        <p class="trait-head good">Strengths</p>
+        <ul class="trait-list good">
+          <li>Uses courts that already exist</li>
+          <li>Creates a paper trail and a marketplace for certification</li>
+        </ul>
+        <p class="trait-head bad">Weaknesses</p>
+        <ul class="trait-list bad">
+          <li>Risks the conflict of interest that broke credit ratings in 2008</li>
+          <li>No company can pay enough to cover a true catastrophe — liability fails for the worst risks</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <p class="pillar-num">03</p>
+        <h3>US domestic regulation</h3>
+        <p class="desc">Agencies oversee; power stays spread across companies; export controls hold the China lead.</p>
+        <p class="trait-head good">Strengths</p>
+        <ul class="trait-list good">
+          <li>Not nationalized, but builds on what's already in motion</li>
+          <li>Includes public participation</li>
+        </ul>
+        <p class="trait-head bad">Weaknesses</p>
+        <ul class="trait-list bad">
+          <li>Agencies lack technical staff to actually check anyone's work</li>
+          <li>Without a crisis, enforcement stays weak</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section" id="breaks">
+    <div class="section-head">
+      <span class="kicker">Where it breaks</span>
+      <h2 class="section-title">One missing resource, one failure chain</h2>
+      <p class="section-note">All three pillars lean on the same shortfall: government doesn't have the technical staff to verify anything itself. Follow what happens when that job gets handed off.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-card">
+          <span class="flow-tag">Step 1</span>
+          <p>The verification job gets handed to a certifier — chosen and paid by the company being checked.</p>
+        </div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step">
+        <div class="flow-card">
+          <span class="flow-tag">Step 2</span>
+          <p>Right as a company nears a dangerous capability threshold, its own hand-picked certifier signs off.</p>
+        </div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step">
+        <div class="flow-card">
+          <span class="flow-tag">Step 3</span>
+          <p>Nobody independent is watching, and liability can't backstop it — no company can pay for a true catastrophe.</p>
+        </div>
+      </div>
+    </div>
+    <div class="breaks-outcome">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+      <p>Net result: paperwork that looks like oversight, but isn't.</p>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section" id="fix">
+    <div class="section-head">
+      <span class="kicker">The fix</span>
+      <h2 class="section-title">Three repairs, matched to the break</h2>
+      <p class="section-note">Each fix targets a specific point in the failure chain above — replacing trust in paperwork with structural checks.</p>
+    </div>
+    <div class="fixes">
+      <div class="fix-card">
+        <div class="fix-badge">1</div>
+        <h3>Check the hardware, not the paperwork</h3>
+        <p>Build reporting into the chips themselves, so oversight doesn't depend on hiring more government auditors.</p>
+        <span class="fix-target">Short term · fixes Step 1</span>
+      </div>
+      <div class="fix-card">
+        <div class="fix-badge">2</div>
+        <h3>Take away the conflict of interest</h3>
+        <p>Companies contribute talent to design certifications across every frontier lab, double-blind. They pay into a shared fund; certifiers are assigned by rotation, not chosen by the company they're checking.</p>
+        <span class="fix-target">Fixes Step 2</span>
+      </div>
+      <div class="fix-card">
+        <div class="fix-badge">3</div>
+        <h3>Split the job by severity</h3>
+        <p>Courts and certifiers handle everyday harms. A small, focused agency — like an AISI — gets the sole power to halt a training run, but only for defined catastrophic thresholds, reauthorized by Congress on a set schedule.</p>
+        <span class="fix-target">Fixes Step 3</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section" id="tension">
+    <div class="section-head">
+      <span class="kicker">Big problem: who watches the watchers?</span>
+      <h2 class="section-title">Calibrating power to the size of the risk</h2>
+      <p class="section-note">The plan concentrates the reporting system and the halt authority in one place. A fully distributed system would resist abuse but move too slowly for a real emergency — so different risks get different structures.<br /><br /></p>
+    </div>
+    <div class="spectrum-wrap">
+      <div class="spectrum-track">
+        <div class="spectrum-fill"></div>
+        <div class="spectrum-nodes">
+          <div class="node below" style="left: 410px; top: -2px; position: absolute">
+            <div class="dot"></div>
+            <p class="label">AISI-style agency</p>
+            <p class="cap" style="margin-top: var(--space-1)">Sole halt authority</p>
+            <p class="note">Power kept narrow and time-limited; members are non-political joint appointees approved by both labs and Congress.</p>
+          </div>
+          <div class="node above" style="left: 12%">
+            <p class="cap">Distributed &amp; slow</p>
+            <div class="dot"></div>
+            <p class="label">Courts &amp; certifiers</p>
+            <p class="note">Handle everyday harms — the rotation-assigned, double-blind certification market.</p>
+          </div>
+          <div class="node above" style="left: 94%">
+            <p class="cap">Centralized &amp; fast</p>
+            <div class="dot"></div>
+            <p class="label">Catastrophic thresholds</p>
+            <p class="note">Triggered automatically if a certifier is later caught missing something.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="section-note" style="max-width: 68ch"><br />Courts and Congress back up the halt authority — knowingly slower than the agency itself, slow enough to act as a commercial deterrent to release. The highest cost: responding fast to a catastrophe means trusting one body's judgment before anyone can double-check it.</p>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="quote">
+    <figure>
+      <blockquote>“Different risks need different structures: slow and spread out for everyday problems, fast and centralized for the worst-case ones.”</blockquote>
+      <figcaption><br />As always, James is human and can make mistakes</figcaption>
+    </figure>
+  </section>
+
+  <footer>Mapped from J. Kelly's governance proposal, "What AI Governance Needs to Survive the Intelligence Explosion."</footer>
+</div>
+</body>
+</html>
