@@ -204,10 +204,9 @@ section.block { padding: 0 0 1.5rem; }
 .under-construction i { font-size: 15px; flex-shrink: 0; }
 
 .scs-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
-  color: var(--text-muted); margin: 14px 0 4px;
+  font-size: 13px; font-weight: 600; color: var(--text-muted); margin: 14px 0 8px;
 }
-.scs-label:first-child { margin-top: 0; }
+.scs-label:first-of-type { margin-top: 0; }
 .scs-text { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; }
 
 /* ---------- list rows (coursework, links) ---------- */
