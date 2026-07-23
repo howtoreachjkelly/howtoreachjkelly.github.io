@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Video Production: 3-Day Working Course</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #f5f4f8;
+    --surface: #ffffff;
+    --border: #e0dde8;
+    --accent: #5a47e8;
+    --accent2: #c47d0a;
+    --accent3: #0a9e72;
+    --text: #1a1830;
+    --muted: #6b6880;
+    --warn: #d63a3a;
+    --tag-bg: #eeedf8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* Layout */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sidebar-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .day-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 16px;
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+
+  .nav-item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--muted);
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover { background: var(--border); color: var(--text); }
+  .nav-item.active { background: #eeedf8; border-color: var(--accent); color: var(--text); }
+
+  /* Main */
+  .main {
+    padding: 48px 56px;
+    max-width: 860px;
+  }
+
+  /* Header */
+  .course-header {
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .course-title {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .course-title span { color: var(--accent); }
+
+  .course-subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .meta-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* Sections */
+  .section {
+    display: none;
+  }
+  .section.active {
+    display: block;
+  }
+
+  /* Section headers */
+  .section-head {
+    margin-bottom: 36px;
+  }
+
+  .section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 620px;
+  }
+
+  /* Content blocks */
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 40px 0 14px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 28px 0 10px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  p {
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* Tool cards grid */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0 32px;
+  }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: border-color 0.15s;
+  }
+
+  .tool-card:hover { border-color: var(--accent); }
+
+  .tool-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .tool-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .tool-tier {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .tier-pro { background: #eeecfc; color: var(--accent); border: 1px solid var(--accent); }
+  .tier-mid { background: #e8f7f2; color: var(--accent3); border: 1px solid var(--accent3); }
+  .tier-entry { background: #fdf4e3; color: var(--accent2); border: 1px solid var(--accent2); }
+  .tier-open { background: #fde8e8; color: var(--warn); border: 1px solid var(--warn); }
+
+  .tool-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .tool-best {
+    font-size: 12px;
+    color: var(--accent3);
+    font-style: italic;
+  }
+
+  /* Callout boxes */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.gold { border-left-color: var(--accent2); }
+  .callout.green { border-left-color: var(--accent3); }
+
+  .callout-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .callout.warn .callout-label { color: var(--warn); }
+  .callout.gold .callout-label { color: var(--accent2); }
+  .callout.green .callout-label { color: var(--accent3); }
+
+  .callout p { margin: 0; font-size: 14px; }
+
+  /* Exercise blocks */
+  .exercise {
+    background: #f0effe;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 28px 0;
+  }
+
+  .exercise-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .exercise-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .exercise-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .exercise-duration {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .exercise ol, .exercise ul {
+    padding-left: 20px;
+    margin: 10px 0;
+  }
+
+  .exercise li {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+
+  .exercise li strong { color: var(--text); }
+
+  /* Comparison table */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 32px;
+    font-size: 13px;
+  }
+
+  .comp-table th {
+    background: var(--surface);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comp-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.5;
+    vertical-align: top;
+  }
+
+  .comp-table tr:hover td { background: var(--surface); }
+  .comp-table .tool-col { color: var(--text); font-weight: 500; }
+
+  /* Reading list */
+  .reading-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .reading-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 24px;
+  }
+
+  .reading-content {}
+  .reading-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .reading-note { font-size: 13px; color: var(--muted); }
+
+  /* Workflow diagram */
+  .workflow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .wf-step {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .wf-step .wf-label {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .wf-step .wf-tool {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .wf-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    margin: 2px 3px 2px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Day overview cards */
+  .day-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .day-card:hover { border-color: var(--accent); background: #13132a; }
+
+  .day-card-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .day-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .day-card-topics {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Progress checkboxes */
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+  }
+
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .check-list li input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .check-list li.checked { text-decoration: line-through; color: #555; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Prompt lab */
+  .prompt-box {
+    background: #f0effe;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #3d2fa8;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .prompt-box::before {
+    content: '▸ PROMPT';
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    margin: 20px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    padding-bottom: 24px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .tl-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .tl-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Links */
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.12s;
+  }
+  a:hover { border-bottom-color: var(--accent); }
+  .tool-name a { color: inherit; font-weight: 600; }
+  .tool-name a:hover { color: var(--accent); }
+  .reading-title a { color: var(--text); }
+  .reading-title a:hover { color: var(--accent); }
+  .comp-table a { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { height: auto; position: relative; }
+    .main { padding: 32px 24px; }
+    .tool-grid { grid-template-columns: 1fr; }
+    .day-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">AI Video Course</div>
+
+    <div class="nav-item active" onclick="show('overview')">Course Overview</div>
+
+    <div class="day-label">Day 1 — Landscape</div>
+    <div class="nav-item" onclick="show('d1-landscape')">The Product Map</div>
+    <div class="nav-item" onclick="show('d1-generation')">Video Generation Models</div>
+    <div class="nav-item" onclick="show('d1-voice')">Voice & Avatar Tools</div>
+    <div class="nav-item" onclick="show('d1-exercises')">Day 1 Exercises</div>
+
+    <div class="day-label">Day 2 — Workflow</div>
+    <div class="nav-item" onclick="show('d2-script')">Script & Pre-Production</div>
+    <div class="nav-item" onclick="show('d2-editing')">Editing & Post</div>
+    <div class="nav-item" onclick="show('d2-motion')">Motion Graphics</div>
+    <div class="nav-item" onclick="show('d2-exercises')">Day 2 Exercises</div>
+
+    <div class="day-label">Day 3 — Applied</div>
+    <div class="nav-item" onclick="show('d3-selection')">Tool Selection Logic</div>
+    <div class="nav-item" onclick="show('d3-pipelines')">Production Pipelines</div>
+    <div class="nav-item" onclick="show('d3-exercises')">Day 3 Exercises</div>
+    <div class="nav-item" onclick="show('d3-reference')">Quick Reference</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div id="overview" class="section active">
+      <div class="course-header">
+        <div class="eyebrow">3-Day Working Course</div>
+        <h1 class="course-title">AI Video<br><span>Production</span></h1>
+        <p class="course-subtitle">A working knowledge course: product landscape, individual tools, selection logic, and hands-on practice. Built for someone who needs to speak and act with authority in this space.</p>
+        <div class="meta-row">
+          <div class="meta-pill"><span class="dot"></span>~12 hours total</div>
+          <div class="meta-pill"><span class="dot"></span>Updated June 2026</div>
+          <div class="meta-pill"><span class="dot"></span>Free-tier practicable</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-eyebrow">What This Course Does</div>
+        <h2 class="section-title">From zero to opinionated</h2>
+        <p class="section-desc">This isn't a tool review list. It's a structured three-day program designed to build both conversational fluency and hands-on capability. By the end you'll know how to evaluate a tool's fit for a specific production need and use the major platforms.</p>
+      </div>
+
+      <div class="day-cards">
+        <div class="day-card" onclick="show('d1-landscape')">
+          <div class="day-card-num">Day 1 · ~4 hrs</div>
+          <div class="day-card-title">The Landscape</div>
+          <div class="day-card-topics">Generative models · Voice synthesis · Avatar tools · Open-source vs. API · Market structure</div>
+        </div>
+        <div class="day-card" onclick="show('d2-script')">
+          <div class="day-card-num">Day 2 · ~4 hrs</div>
+          <div class="day-card-title">Workflow & Craft</div>
+          <div class="day-card-topics">Script AI · Editing platforms · Motion graphics · Adobe AI · NLE integration</div>
+        </div>
+        <div class="day-card" onclick="show('d3-selection')">
+          <div class="day-card-num">Day 3 · ~4 hrs</div>
+          <div class="day-card-title">Applied Practice</div>
+          <div class="day-card-topics">Tool selection frameworks · Full pipeline runs · Prompt engineering · Deliverable builds</div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-label">One Thing To Know Before Starting</div>
+        <p>The AI video space is moving fast enough that specific benchmark rankings flip month to month. This course prioritizes <strong>stable structural knowledge</strong> — what each category of tool does, what distinguishes them, and what questions to ask — over memorizing which model scored highest last week.</p>
+      </div>
+
+      <h3>What You'll Be Able To Do</h3>
+      <ul class="check-list" id="overview-goals">
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Describe the full AI video production stack without prompting</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Compare Runway, Kling, Veo, Pika, and Seedance on specific use-case dimensions</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Explain the difference between text-to-video, image-to-video, and video-to-video workflows</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Choose the right voice synthesis tool for a given output format</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Generate a usable AI video clip from a text prompt</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Write a production-quality prompt for generative video</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Build a basic production pipeline from script to assembled edit</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> Speak intelligently about where each tool category sits commercially</li>
+      </ul>
+    </div>
+
+    <!-- DAY 1: LANDSCAPE -->
+    <div id="d1-landscape" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 1, Part 1</div>
+        <h2 class="section-title">The Product Map</h2>
+        <p class="section-desc">Before diving into specific tools, understand how the space is organized. There are distinct categories that serve different parts of production. Conflating them is the main reason people buy the wrong thing.</p>
+      </div>
+
+      <h3>How The Stack Is Organized</h3>
+      <p>AI video production tools fall into five functional categories. Each solves a different problem, and the best pipelines combine tools from multiple categories rather than trying to find one that does everything.</p>
+
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Script</div><div class="wf-tool">Claude / ChatGPT</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Generate</div><div class="wf-tool">Runway / Veo / Kling</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Voice</div><div class="wf-tool">ElevenLabs / HeyGen</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Edit</div><div class="wf-tool">Premiere / DaVinci</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Motion</div><div class="wf-tool">After Effects</div></div>
+      </div>
+
+      <h4>Category 1: Generative Video Models</h4>
+      <p>These are the core of the space. They take text prompts, reference images, or existing video and generate new footage. The main distinction is <strong>text-to-video</strong> (generate from a prompt alone) vs. <strong>image-to-video</strong> (animate a still) vs. <strong>video-to-video</strong> (restyle or extend existing footage). Most professional use is image-to-video because it gives more control over the result.</p>
+
+      <h4>Category 2: Voice Synthesis & Cloning</h4>
+      <p>Tools that generate narration, dialogue, or fully dubbed audio tracks. Ranges from simple text-to-speech (Murf) to professional voice cloning with emotional range (ElevenLabs) to full avatar-synchronized lip-sync (HeyGen, Synthesia).</p>
+
+      <h4>Category 3: Avatar & Talking Head Tools</h4>
+      <p>Generate photorealistic or stylized human presenters from a script. Primarily used for corporate training, marketing videos, and multilingual content at scale. Synthesia and HeyGen dominate here.</p>
+
+      <h4>Category 4: NLE + AI Editing</h4>
+      <p>Traditional non-linear editing tools (Premiere Pro, DaVinci Resolve, Final Cut Pro) that have added significant AI features — auto-captioning, generative fill, object removal, reframing. These are post-production tools enhanced by AI, not AI-native tools.</p>
+
+      <h4>Category 5: Motion Graphics & Compositing</h4>
+      <p>After Effects (dominant), Cavalry (data-driven), Blender (3D/open source). These are for titles, animated graphics, VFX, and branded motion. AI has accelerated these workflows but hasn't replaced the underlying skill requirement.</p>
+
+      <h4>Category 6: Orchestration Platforms</h4>
+      <p>Tools like ComfyUI, Martini, and Krea Nodes that let you chain multiple models together in a workflow. Think of them as DAWs for AI generation — you route prompts through multiple models, compare outputs, and connect generation to editing. More relevant as your sophistication grows.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Market Note — June 2026</div>
+        <p><strong>Sora is being discontinued.</strong> OpenAI shut down the Sora web app and announced API deprecation later in 2026. If you encounter it in conversations or RFPs, it's relevant to know it existed and why — but it's not a current planning tool. Its successors for photorealism are Veo 3.1 and Runway Gen-4.</p>
+      </div>
+
+      <h3>Reading List — Day 1 Part 1</h3>
+      <div class="reading-item"><div class="reading-num">01</div><div class="reading-content"><div class="reading-title"><a href="https://chatcut.io/blog/best-ai-video-generator-2026" target="_blank">ChatCut: "The 6 AI Video Models That Actually Matter in 2026"</a></div><div class="reading-note">chatcut.io — Practical comparison with testing methodology explained. Start here for an honest current-state overview.</div></div></div>
+      <div class="reading-item"><div class="reading-num">02</div><div class="reading-content"><div class="reading-title"><a href="https://rctv.com/posts/ai-video-stack-2026/" target="_blank">RCTV AI Video Stack — June 2026</a></div><div class="reading-note">rctv.com — Living document updated weekly. Treats routing decisions (which model for which use case) rather than just rankings. Bookmark this.</div></div></div>
+      <div class="reading-item"><div class="reading-num">03</div><div class="reading-content"><div class="reading-title"><a href="https://blog.adobe.com/en/publish/2026/01/20/new-ai-powered-video-editing-tools-premiere-major-motion-design-upgrades-after-effects" target="_blank">Adobe Blog: January 2026 Premiere + After Effects AI Update</a></div><div class="reading-note">blog.adobe.com — Direct from Adobe. Covers Generative Extend, Firefly integration, After Effects vector workflows. Shows how traditional tools are absorbing AI.</div></div></div>
+    </div>
+
+    <!-- DAY 1: GENERATION MODELS -->
+    <div id="d1-generation" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 1, Part 2</div>
+        <h2 class="section-title">Video Generation Models</h2>
+        <p class="section-desc">The core technology layer. These six models represent the current production-relevant range. Know them by their distinct strengths, not just their names.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://runwayml.com" target="_blank">Runway Gen-4 / 4.5</a></div>
+            <div class="tool-tier tier-pro">Pro</div>
+          </div>
+          <div class="tool-desc">The professional's workhorse. Strongest all-rounder for commercial production — reference image control, Motion Brush for directed movement, character consistency tools, and brand-safe output. Integrates into Premiere workflows. Image-to-video is a particular strength.</div>
+          <div class="tool-best">Best for: Branded content, iterative production, ad campaigns</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://labs.google/vids" target="_blank">Google Veo 3.1</a></div>
+            <div class="tool-tier tier-pro">Pro</div>
+          </div>
+          <div class="tool-desc">Best photorealism and native audio generation in a single pass. Generates synchronized sound effects, dialogue, and ambient noise alongside footage — no separate audio step needed. Free tier gives 10 clips/month via Google Vids. 4K native output. Clip lengths over 1 minute are possible.</div>
+          <div class="tool-best">Best for: Cinematic realism, content requiring native audio, Google ecosystem</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://klingai.com" target="_blank">Kling 3.0 (Kuaishou)</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Strong on complex human motion, multi-image composition, and longer clips (up to 2 minutes). Start-and-end-frame control enables tight editorial continuity. Aggressive pricing versus Runway. Chinese origin — relevant for some enterprise compliance conversations.</div>
+          <div class="tool-best">Best for: Human motion, long clips, multi-shot storyboards, budget production</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://seedance.ai" target="_blank">Seedance 2.0 (ByteDance)</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Strong image-to-video with "Universal Reference" for consistent characters across shots. Native audio support. Tops some audio-included benchmarks. Clips cap at 15 seconds. ByteDance origin has the same enterprise compliance flag as Kling.</div>
+          <div class="tool-best">Best for: Character consistency, audio-integrated clips, high-volume pipelines</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://pika.art" target="_blank">Pika 2.0 / Labs</a></div>
+            <div class="tool-tier tier-entry">Entry</div>
+          </div>
+          <div class="tool-desc">Social-first. Fastest generation times (20-45 seconds). Pikaffects, Pikaswaps, and Pikadditions are purpose-built for the "what if" creative loop that feeds Reels and TikTok. Pikaformance adds lip-sync for talking images. Not the quality leader but ideal for daily social posting volume.</div>
+          <div class="tool-best">Best for: Social creators, quick iteration, stylized effects</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://github.com/Wan-Video/Wan2.1" target="_blank">Wan 2.7 / HunyuanVideo</a></div>
+            <div class="tool-tier tier-open">Open Source</div>
+          </div>
+          <div class="tool-desc">The strongest open-source option. Run locally via ComfyUI on 16GB+ VRAM hardware — effectively free at volume. Wan 2.7 unifies five task types (T2V, I2V, continuation, reference-to-video, editing) in one model. HunyuanVideo 1.5 (Tencent) is the close competitor. Requires technical setup.</div>
+          <div class="tool-best">Best for: Local deployment, privacy requirements, high-volume pipelines, technical teams</div>
+        </div>
+      </div>
+
+      <h3>The Three Generation Modes — Know These Cold</h3>
+
+      <table class="comp-table">
+        <tr>
+          <th>Mode</th>
+          <th>What It Does</th>
+          <th>Typical Use</th>
+          <th>Control Level</th>
+        </tr>
+        <tr>
+          <td class="tool-col">Text-to-Video (T2V)</td>
+          <td>Generates footage from a written prompt alone</td>
+          <td>Concept exploration, B-roll, abstract content</td>
+          <td>Low — output is less predictable</td>
+        </tr>
+        <tr>
+          <td class="tool-col">Image-to-Video (I2V)</td>
+          <td>Animates a provided still image</td>
+          <td>Most professional production work</td>
+          <td>High — you control the visual starting point</td>
+        </tr>
+        <tr>
+          <td class="tool-col">Video-to-Video (V2V)</td>
+          <td>Retyles, extends, or edits existing footage</td>
+          <td>Style transfer, scene extension, object swap</td>
+          <td>Medium — least mature mode, patchy reliability</td>
+        </tr>
+      </table>
+
+      <div class="callout green">
+        <div class="callout-label">The Current Frontier (June 2026)</div>
+        <p>Native audio in a single generation pass — video + sound effects + ambient noise — is now table stakes for the leading models. <strong>Veo 3.1, Kling 3.0, Seedance 2.0, and Wan 2.7</strong> all do this. A year ago it required a separate step. Factor this into any workflow design conversation.</p>
+      </div>
+
+      <h3>Key Limitations That Haven't Been Solved</h3>
+      <p>Being fluent in what these tools <em>can't</em> do is just as important as knowing what they can. Current persistent weaknesses across all models:</p>
+      <ul class="check-list">
+        <li><input type="checkbox"> <strong>Physics consistency:</strong> Water, fabric, smoke behave plausibly but not accurately across longer clips</li>
+        <li><input type="checkbox"> <strong>Hand rendering:</strong> Fingers remain difficult in close-ups — improve prompt specificity or frame wide</li>
+        <li><input type="checkbox"> <strong>Character consistency across scenes:</strong> The same character may drift visually between shots. Mitigation: image-to-video with a locked reference, or models like Seedance with Universal Reference</li>
+        <li><input type="checkbox"> <strong>Clip length:</strong> Most models cap at 5-15 seconds. Veo 3.1 and Kling push longer but chaining clips is still the primary approach for longer-form content</li>
+        <li><input type="checkbox"> <strong>Narrative coherence:</strong> Generating a story arc across multiple shots still requires significant human sequencing and editorial work</li>
+      </ul>
+    </div>
+
+    <!-- DAY 1: VOICE & AVATAR -->
+    <div id="d1-voice" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 1, Part 3</div>
+        <h2 class="section-title">Voice Synthesis & Avatar Tools</h2>
+        <p class="section-desc">A distinct category from video generation. These tools convert text to natural-sounding speech, clone voices, and produce avatar-based video presenters. Know when to use each.</p>
+      </div>
+
+      <h3>Voice Synthesis</h3>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://elevenlabs.io" target="_blank">ElevenLabs</a></div>
+            <div class="tool-tier tier-pro">Pro</div>
+          </div>
+          <div class="tool-desc">The quality benchmark for AI voice. Most emotionally expressive and natural-sounding output available. Professional voice cloning requires a longer sample (minutes of audio) but produces strikingly realistic results. 29-language support. Audio only — no lip-sync or visual layer. From $5/month.</div>
+          <div class="tool-best">Best for: Voiceovers, narration, audiobooks, marketing with personality</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://murf.ai" target="_blank">Murf.ai</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Professional and formal in character. Precise controls for pitch, pacing, and pronunciation. Very consistent output but less expressive range than ElevenLabs. Well-suited for structured e-learning and corporate content where neutrality and clarity matter more than personality. $19/month.</div>
+          <div class="tool-best">Best for: Training modules, e-learning, corporate narration</div>
+        </div>
+      </div>
+
+      <h3>Avatar & Talking Head Platforms</h3>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://heygen.com" target="_blank">HeyGen</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Most flexible avatar platform for creative use cases. 175+ language support, 300+ AI voices, full lip-sync. Strong for talking photo generation (animate a real person's photo with synchronized speech). API access enables automated workflows. Basic voice cloning requires only 30 seconds of audio. From $29/month.</div>
+          <div class="tool-best">Best for: Marketing presenters, talking photos, multilingual content at scale</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://synthesia.io" target="_blank">Synthesia</a></div>
+            <div class="tool-tier tier-pro">Enterprise</div>
+          </div>
+          <div class="tool-desc">The enterprise standard. Strongest avatar realism including micro-expressions and natural head movement. GDPR-compliant (European company), strict consent protocols for voice cloning. 120+ languages. Built-in team collaboration, brand kits, and LMS/SCORM export. More corporate-aesthetic than HeyGen. From $18/month basic.</div>
+          <div class="tool-best">Best for: Enterprise training, compliance-sensitive environments, multilingual L&D</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">Decision Logic: HeyGen vs Synthesia</div>
+        <p>If you're <strong>creating new content</strong> with AI avatars for marketing or creative use: HeyGen. If you're producing <strong>enterprise training at scale</strong> and need compliance, LMS integration, and corporate-grade avatar realism: Synthesia. If you're <strong>localizing existing footage</strong> (real people, real video): neither — use Dubly.AI or Rask AI, which are built for real-footage dubbing.</p>
+      </div>
+
+      <h3>Dubbing & Localization (Distinct Sub-Category)</h3>
+      <p>When you need to translate existing video (not generate new avatar content), the tools above are the wrong choice. The specialized localization stack:</p>
+
+      <table class="comp-table">
+        <tr><th>Tool</th><th>Best For</th><th>Weakness</th></tr>
+        <tr><td class="tool-col"><a href="https://dubly.ai" target="_blank">Dubly.AI</a></td><td>Real-footage dubbing with lip-sync; German hosting for GDPR</td><td>Narrower language count vs HeyGen</td></tr>
+        <tr><td class="tool-col"><a href="https://rask.ai" target="_blank">Rask AI</a></td><td>Affordable multilingual distribution of real footage</td><td>Lip-sync less accurate than Dubly on real people</td></tr>
+        <tr><td class="tool-col"><a href="https://elevenlabs.io" target="_blank">ElevenLabs</a></td><td>Highest voice quality for audio-only translation (no lip-sync)</td><td>No visual/lip-sync layer at all</td></tr>
+        <tr><td class="tool-col"><a href="https://camb.ai" target="_blank">CAMB.AI</a></td><td>Live broadcast dubbing</td><td>Niche — only choice for live</td></tr>
+      </table>
+    </div>
+
+    <!-- DAY 1: EXERCISES -->
+    <div id="d1-exercises" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 1 Exercises</div>
+        <h2 class="section-title">Landscape Practice</h2>
+        <p class="section-desc">Three exercises to convert reading into working knowledge. Estimated time: 90 minutes total.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 1.1</span>
+          <span class="exercise-title">The Category Map (No Tools Needed)</span>
+          <span class="exercise-duration">20 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Without looking at any notes, draw or write out the five categories of the AI video stack and name two tools per category. Then check your answers. This forces initial encoding.</p>
+        <ol>
+          <li>Set a timer for 8 minutes. Write/draw the full stack from memory: categories, tools, and one distinguishing characteristic per tool.</li>
+          <li>Open these notes and check. Mark what you got right, what you missed, and what you got wrong.</li>
+          <li>Write one sentence in your own words explaining why each category is distinct from the others. No copying.</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 1.2</span>
+          <span class="exercise-title">Free Tier Comparison Run</span>
+          <span class="exercise-duration">45 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Generate the same prompt across three platforms using free tiers. Free accounts: Runway (limited credits), Veo 3.1 (10 clips/month via Google Vids at labs.google/vids), Pika (free tier). Goal: direct quality comparison.</p>
+        <ol>
+          <li><strong>Create accounts</strong> on Google Vids (Veo 3.1), Runway, and Pika. All have free tiers sufficient for this exercise.</li>
+          <li><strong>Use this prompt on all three:</strong></li>
+        </ol>
+        <div class="prompt-box">A single white coffee cup on a dark marble surface. Steam rises slowly. Natural side lighting from the left. Camera slowly pushes in. Cinematic, shallow depth of field.</div>
+        <ol start="3">
+          <li>Download all three clips and watch them back-to-back.</li>
+          <li>Write a three-sentence honest assessment of each: motion quality, how it handled the steam, camera movement, and overall production readiness.</li>
+          <li>Which would you use in a client-facing context? Which wouldn't you? Why?</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 1.3</span>
+          <span class="exercise-title">Voice Quality A/B (ElevenLabs vs Murf)</span>
+          <span class="exercise-duration">25 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Generate the same script passage through ElevenLabs and Murf.ai. Both have free tiers.</p>
+        <ol>
+          <li><strong>Script to use</strong> (paste this into both tools, choose default voices):</li>
+        </ol>
+        <div class="prompt-box">"The thing most people get wrong about AI-generated video is that they treat it like a magic button. It isn't. The tools are genuinely impressive, but they reward preparation — a strong reference image, a well-structured prompt, and a clear sense of what you actually need the footage to do."</div>
+        <ol start="2">
+          <li>Try at least two different voices in each platform.</li>
+          <li>Answer: For a marketing video targeting creative professionals, which would you choose and why? For an internal compliance training module, which would you choose and why? Do those differ? Should they?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- DAY 2: SCRIPT -->
+    <div id="d2-script" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 2, Part 1</div>
+        <h2 class="section-title">Script & Pre-Production AI</h2>
+        <p class="section-desc">The most underrated part of the AI video stack. What happens before you touch a generation tool directly determines output quality. AI tools for scripting and pre-production have a higher ROI per hour than most generation tools.</p>
+      </div>
+
+      <h3>Script AI: What's Actually Useful</h3>
+      <p>General-purpose LLMs (Claude, ChatGPT, Gemini) are the dominant scriptwriting tools — not specialized video-script apps. Specialized tools add structure and prompting guidance but aren't necessary once you know how to prompt. What matters is how you use them.</p>
+
+      <h4>How To Use LLMs For Video Scripts (The Working Method)</h4>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">Step 1</div>
+          <div class="tl-title">Brief the AI on format, audience, and constraint</div>
+          <div class="tl-body">Before asking for a script, give it: the target duration, the platform (social vs. long-form vs. training), the audience sophistication level, and one thing it must NOT do (e.g., "don't use the phrase 'dive deep'"). This shapes the register.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Step 2</div>
+          <div class="tl-title">Generate a shot list alongside the script</div>
+          <div class="tl-body">Ask for a two-column output: narration text on the left, visual description for each line on the right. The visual descriptions become your generation prompts. This also forces the AI to think about visual pacing.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Step 3</div>
+          <div class="tl-title">Convert visual descriptions into generation prompts</div>
+          <div class="tl-body">Each visual description from Step 2 gets converted into a structured generation prompt. Structure: [Subject + action] + [Environment + lighting] + [Camera movement] + [Mood/style]. The AI can do this for you — just ask.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Step 4</div>
+          <div class="tl-title">Storyboard with AI image generation</div>
+          <div class="tl-body">Before generating video (expensive, slow), generate static storyboard frames using Midjourney, Firefly, or DALL-E. Validate composition and style before spending generation credits. A 12-frame storyboard takes 10 minutes and saves hours.</div>
+        </div>
+      </div>
+
+      <h3>Prompt Engineering for Video Generation</h3>
+      <p>This is a distinct skill from general AI prompting. Video generation prompts have a specific structure that consistently outperforms freeform descriptions:</p>
+
+      <div class="prompt-box">
+[SUBJECT]: A middle-aged woman in a tailored navy jacket
+[ACTION]: looks up from a laptop and turns directly toward camera, slight smile
+[ENVIRONMENT]: glass-walled office, city skyline visible through windows, late afternoon golden light
+[CAMERA]: slow push-in from medium to close-up
+[STYLE]: cinematic, 24fps, shallow depth of field, desaturated shadows
+[EXCLUDE]: text overlays, other people, motion blur
+      </div>
+
+      <h4>Prompt Variables That Move The Needle</h4>
+      <table class="comp-table">
+        <tr><th>Variable</th><th>Effect</th><th>Examples</th></tr>
+        <tr><td class="tool-col">Camera language</td><td>High impact on motion feel</td><td>"slow push-in," "handheld tracking shot," "static wide angle," "aerial descent"</td></tr>
+        <tr><td class="tool-col">Lighting descriptor</td><td>Shapes mood dramatically</td><td>"golden hour," "clinical fluorescent," "candle-lit," "overcast diffuse," "neon-lit night"</td></tr>
+        <tr><td class="tool-col">Frame rate note</td><td>Affects motion aesthetics</td><td>"24fps cinematic," "60fps smooth," "slow motion"</td></tr>
+        <tr><td class="tool-col">Negative prompts</td><td>Removes common artifacts</td><td>"no text," "no watermarks," "no motion blur," "no extra limbs"</td></tr>
+        <tr><td class="tool-col">Reference style</td><td>Anchors visual language</td><td>"shot on Arri Alexa," "documentary style," "commercial product photography"</td></tr>
+      </table>
+
+      <div class="callout green">
+        <div class="callout-label">The Most Effective Single Technique</div>
+        <p>Use <strong>image-to-video</strong> rather than text-to-video whenever possible. Generate your exact reference image first (Midjourney, Firefly, DALL-E), then animate it. This gives you 80% control over the visual output before the video model even runs. T2V is exploration; I2V is production.</p>
+      </div>
+    </div>
+
+    <!-- DAY 2: EDITING -->
+    <div id="d2-editing" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 2, Part 2</div>
+        <h2 class="section-title">Editing & Post-Production</h2>
+        <p class="section-desc">AI has significantly changed NLE workflows, but hasn't replaced editor judgment. Understanding the AI layer within these tools is essential for speaking credibly with post teams.</p>
+      </div>
+
+      <h3>The NLE Landscape in 2026</h3>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://www.adobe.com/products/premiere.html" target="_blank">Adobe Premiere Pro</a></div>
+            <div class="tool-tier tier-pro">Pro</div>
+          </div>
+          <div class="tool-desc">Market-dominant for professional video editing. January 2026 update added: Generative Extend (fills timeline gaps when clips are too short), Content-Aware Fill (object removal), Auto Reframe (aspect ratio conversion for multi-platform), and accurate Speech-to-Text captioning. Adobe Stock integration with 52M+ clips. Used by 85% of 2026 Sundance filmmakers.</div>
+          <div class="tool-best">Best for: Professional long-form, broadcast, film, advertising production</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank">DaVinci Resolve</a></div>
+            <div class="tool-tier tier-mid">Free Tier Viable</div>
+          </div>
+          <div class="tool-desc">Free version is genuinely professional-grade. Strongest color grading in any NLE. AI Magic Mask for object selection, Speed Warp for motion smoothing, Voice Isolation. The free tier limitation is collaborative features and some GPU-dependent effects. Studio version is $295 one-time. Popular with indie and documentary filmmakers; output format accepted by all AI generation tools.</div>
+          <div class="tool-best">Best for: Color work, indie projects, teams wanting to avoid subscription costs</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Mac-only. Magnetic timeline is faster to rough-cut on than Premiere. Apple Silicon optimization makes it fast. AI scene detection, voice isolation. One-time purchase $300. Apple Intelligence integration in 2026 added more auto-tagging and search. Less dominant in professional post than it was — most agency and studio pipelines are Premiere.</div>
+          <div class="tool-best">Best for: Solo creators on Mac, fast turnaround social content</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://www.capcut.com" target="_blank">CapCut</a> / <a href="https://veed.io" target="_blank">VEED</a></div>
+            <div class="tool-tier tier-entry">Entry</div>
+          </div>
+          <div class="tool-desc">Browser-based or app-based. Built for social content at speed. Auto-subtitles, noise removal, basic AI edits. VEED adds team collaboration. CapCut (ByteDance) has privacy flag concerns for some enterprise contexts. These are not professional NLEs — they're social content production tools that happen to edit video.</div>
+          <div class="tool-best">Best for: Social content at volume, quick captions, fast turnarounds</div>
+        </div>
+      </div>
+
+      <h3>The AI Features That Actually Save Time</h3>
+      <p>Across all NLEs, these AI capabilities have the highest actual time savings in production:</p>
+
+      <table class="comp-table">
+        <tr><th>Feature</th><th>What It Does</th><th>Where It Lives</th><th>Time Saved</th></tr>
+        <tr><td class="tool-col">Speech-to-Text / Auto Captions</td><td>Transcribes audio to text with timestamps; enables text-based editing</td><td>Premiere, DaVinci, Descript</td><td>Hours on long-form</td></tr>
+        <tr><td class="tool-col">Generative Extend</td><td>Generates frames to extend a clip when it ends too soon</td><td>Premiere (2026), Runway</td><td>Eliminates pickup shots</td></tr>
+        <tr><td class="tool-col">Auto Reframe</td><td>Converts 16:9 to 9:16 with subject tracking</td><td>Premiere</td><td>Hours on multi-platform delivery</td></tr>
+        <tr><td class="tool-col">Content-Aware Object Removal</td><td>Removes logos, microphones, people from background</td><td>Premiere, After Effects</td><td>Eliminates rotoscoping</td></tr>
+        <tr><td class="tool-col">Scene Detection / Smart Bins</td><td>Organizes footage by scene type automatically</td><td>All major NLEs</td><td>Significant on raw-heavy shoots</td></tr>
+      </table>
+
+      <div class="callout">
+        <div class="callout-label">Descript — The Odd One Out</div>
+        <p><strong><a href="https://www.descript.com" target="_blank">Descript</a></strong> is worth knowing separately. It's not a traditional NLE — it's a text-based editor where you edit the transcript to edit the video. Extremely fast for interview, podcast, and talking-head content. AI overdub for fixing mispronounced words or adding lines in the speaker's cloned voice. It's not a Premiere replacement; it's a first-pass rough-cut tool for spoken content.</p>
+      </div>
+    </div>
+
+    <!-- DAY 2: MOTION -->
+    <div id="d2-motion" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 2, Part 3</div>
+        <h2 class="section-title">Motion Graphics & Compositing</h2>
+        <p class="section-desc">The specialized layer for titles, animated graphics, VFX, and brand motion. AI has sped up specific tasks here, but the fundamental tool skill still matters.</p>
+      </div>
+
+      <h3>The Core Stack</h3>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://www.adobe.com/products/aftereffects.html" target="_blank">Adobe After Effects</a></div>
+            <div class="tool-tier tier-pro">Industry Standard</div>
+          </div>
+          <div class="tool-desc">The professional standard for motion graphics and compositing. January 2026 update: SVG import as native shape layers (animate Illustrator graphics directly), variable font animation, Content-Aware Fill for video, and enhanced AI-assisted animation paths. Requires real skill investment — not a beginner tool. But it's what production companies expect.</div>
+          <div class="tool-best">Best for: Broadcast graphics, film VFX, brand motion, title design</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://cavalry.scenegroup.co" target="_blank">Cavalry</a></div>
+            <div class="tool-tier tier-mid">Specialist</div>
+          </div>
+          <div class="tool-desc">Data-driven motion graphics. Bind animation to data sources; generative and procedural motion logic without keyframing everything manually. Faster than After Effects for infographic-heavy, data-visualization, or generative motion work. ~$20/month. Not an AE replacement — a specialist tool for a specific type of work.</div>
+          <div class="tool-best">Best for: Animated data visualizations, generative motion, interactive web-based motion</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://blender.org" target="_blank">Blender (3D)</a></div>
+            <div class="tool-tier tier-open">Free/Open Source</div>
+          </div>
+          <div class="tool-desc">Open-source 3D creation suite. Used for 3D animation, product visualization, VFX integration. Steep learning curve but free. The go-to for teams that need 3D elements without Cinema 4D licensing costs. Increasingly used alongside AI generation for environments, props, and assets that need to be controllable and reusable.</div>
+          <div class="tool-best">Best for: 3D product animation, controllable environments, budget-conscious 3D work</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-card-top">
+            <div class="tool-name"><a href="https://firefly.adobe.com" target="_blank">Adobe Firefly</a></div>
+            <div class="tool-tier tier-mid">Mid</div>
+          </div>
+          <div class="tool-desc">Adobe's native generative AI layer, now embedded across Premiere, After Effects, and Photoshop. Commercially safe (trained on Adobe Stock and licensed content — important for brand work). Generates B-roll, background elements, and transitions directly in the editing timeline without leaving Creative Cloud. The licensing safety is its primary differentiator for commercial production.</div>
+          <div class="tool-best">Best for: Teams already in Adobe ecosystem; brand/commercial work needing IP safety</div>
+        </div>
+      </div>
+
+      <h3>The Adobe Ecosystem Integration in 2026</h3>
+      <p>The integration across Premiere → After Effects → Photoshop → Frame.io has become genuinely useful for production workflows. What this looks like in practice:</p>
+
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Generate</div><div class="wf-tool">Firefly / Runway</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Edit</div><div class="wf-tool">Premiere Pro</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Graphics</div><div class="wf-tool">After Effects</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Review</div><div class="wf-tool">Frame.io</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Deliver</div><div class="wf-tool">Media Encoder</div></div>
+      </div>
+
+      <div class="callout gold">
+        <div class="callout-label">For Conversations With Production Executives</div>
+        <p>The meaningful 2026 development in motion graphics is <strong>SVG-to-shape-layer import</strong> in After Effects and <strong>variable font animation</strong>. These aren't AI features per se, but they close a long-standing workflow gap: designers can now take Illustrator vector work directly into animation without reconstruction. Mentioning this signals real familiarity with the toolset.</p>
+      </div>
+    </div>
+
+    <!-- DAY 2: EXERCISES -->
+    <div id="d2-exercises" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 2 Exercises</div>
+        <h2 class="section-title">Workflow Practice</h2>
+        <p class="section-desc">More hands-on this time. Two exercises require free accounts. One is purely analytical. Total: ~90 minutes.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 2.1</span>
+          <span class="exercise-title">Script-to-Shot-List Pipeline</span>
+          <span class="exercise-duration">30 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Build a 60-second video script with a matched shot list using Claude or ChatGPT.</p>
+        <ol>
+          <li><strong>Use this brief:</strong> A 60-second marketing video for a premium LA-based architecture firm. Target audience: high-net-worth homeowners. Platform: website hero and Instagram. Tone: aspirational but grounded, not pretentious.</li>
+          <li>Prompt your chosen LLM: <em>"Write a 60-second marketing script for [brief]. Format it as a two-column table: left column is narration text, right column is a visual description for each line. After the script, convert each visual description into a structured video generation prompt using this format: [Subject + action] / [Environment + lighting] / [Camera movement] / [Mood/style]."</em></li>
+          <li>Review the output. Edit 3 of the generation prompts to be more specific or more accurate to the brief. Identify which prompts would need image-to-video (I2V) vs. text-to-video (T2V) and why.</li>
+          <li>Pick the strongest prompt and run it in Runway or Veo 3.1.</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 2.2</span>
+          <span class="exercise-title">The Image-to-Video Upgrade Test</span>
+          <span class="exercise-duration">30 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Demonstrate the quality difference between T2V and I2V using the same concept.</p>
+        <ol>
+          <li><strong>Choose any subject</strong> — a product, a location, a person.</li>
+          <li><strong>Run T2V:</strong> In Runway (or Pika), describe the subject in a text prompt and generate a clip.</li>
+          <li><strong>Generate a reference image:</strong> Go to Adobe Firefly (free tier), Ideogram, or DALL-E and generate the same subject as a still image. Download it.</li>
+          <li><strong>Run I2V:</strong> Upload your reference image to Runway and generate again using the same descriptive text as a motion prompt.</li>
+          <li><strong>Compare:</strong> Write down specifically what changed — visual consistency, quality, predictability. This is the foundational argument for I2V as a default workflow choice.</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 2.3</span>
+          <span class="exercise-title">Tool Selection Scenario (No Tools Needed)</span>
+          <span class="exercise-duration">30 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Four production briefs. For each, write: which tools you'd use at each stage, why, and one thing you'd need to watch for.</p>
+        <ol>
+          <li><strong>Brief A:</strong> A Fortune 500 HR team needs to produce 40 onboarding training videos in 12 languages within 90 days. No film crew. $50K budget.</li>
+          <li><strong>Brief B:</strong> An indie filmmaker needs 10 seconds of a photorealistic storm at sea for a feature film. Practical photography is not possible.</li>
+          <li><strong>Brief C:</strong> A DTC beauty brand needs 30 social video ads per month for Instagram and TikTok. Varied products, consistent brand look. $8K/month.</li>
+          <li><strong>Brief D:</strong> A tech startup needs a 90-second explainer video with a branded animated presenter, English and Spanish, for a product launch in 3 weeks. One designer on staff who knows Figma but not video.</li>
+        </ol>
+        <p style="font-size:14px;color:var(--muted);">There are no single correct answers. The goal is to practice the selection reasoning, not arrive at a perfect tool stack.</p>
+      </div>
+    </div>
+
+    <!-- DAY 3: SELECTION LOGIC -->
+    <div id="d3-selection" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 3, Part 1</div>
+        <h2 class="section-title">Tool Selection Logic</h2>
+        <p class="section-desc">The difference between knowing tools and selecting tools. A decision framework for matching capabilities to requirements.</p>
+      </div>
+
+      <h3>The Five Questions</h3>
+      <p>Any tool selection conversation in AI video should work through these five questions in order. They sequence from constraint (eliminates options) to preference (distinguishes among remaining options).</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">Q1</div>
+          <div class="tl-title">What is the output format and destination?</div>
+          <div class="tl-body">Social (9:16, short, high-churn) vs. broadcast/streaming (16:9, long, high-fidelity) vs. enterprise training (avatar-friendly, LMS-exportable) vs. film/VFX (composited into live footage). This immediately segments the tool landscape.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Q2</div>
+          <div class="tl-title">Is there a real-person presenter requirement?</div>
+          <div class="tl-body">If yes: avatar tools (HeyGen, Synthesia) or real production. If no: generative video models. This question eliminates an entire category quickly.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Q3</div>
+          <div class="tl-title">What is the volume and cadence?</div>
+          <div class="tl-body">One-off / low volume: best-quality tool, pay per clip. High-volume / recurring: API-accessible tools with pricing models that scale (Runway API, Kling API, open-source local deployment). At sufficient volume, open-source local deployment (Wan via ComfyUI) often beats per-clip pricing.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Q4</div>
+          <div class="tl-title">Are there licensing or data compliance constraints?</div>
+          <div class="tl-body">Commercial brand work: Adobe Firefly (commercially safe training data). Enterprise/GDPR: Synthesia (European, strict compliance). Privacy-sensitive data: local deployment only. Chinese-origin tools (Kling, Seedance, CapCut/ByteDance): some enterprise policies restrict these.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Q5</div>
+          <div class="tl-title">What existing tools and skills does the team have?</div>
+          <div class="tl-body">Adobe ecosystem teams: Firefly integration in Premiere reduces friction. DaVinci teams: outputs from all major generators work seamlessly. Technical teams with GPU infrastructure: open-source local deployment is viable. Non-technical teams: cloud-based platforms with good UX (Pika, HeyGen) over ComfyUI.</div>
+        </div>
+      </div>
+
+      <h3>The Decision Matrix</h3>
+
+      <table class="comp-table">
+        <tr>
+          <th>Requirement</th>
+          <th>Best Tool(s)</th>
+          <th>Avoid</th>
+        </tr>
+        <tr><td class="tool-col">Photorealism, cinematic quality</td><td>Veo 3.1, Runway Gen-4</td><td>Pika (not the strength)</td></tr>
+        <tr><td class="tool-col">Social speed and effects</td><td>Pika</td><td>Veo (overkill, slower)</td></tr>
+        <tr><td class="tool-col">Human motion complexity</td><td>Kling 3.0</td><td>T2V from any model</td></tr>
+        <tr><td class="tool-col">Native audio generation</td><td>Veo 3.1, Seedance 2.0</td><td>Runway (audio is separate)</td></tr>
+        <tr><td class="tool-col">Corporate training at scale</td><td>Synthesia</td><td>Runway (wrong category)</td></tr>
+        <tr><td class="tool-col">Marketing avatar video</td><td>HeyGen</td><td>Synthesia (too corporate)</td></tr>
+        <tr><td class="tool-col">Voice quality for narration</td><td>ElevenLabs</td><td>HeyGen voice (less expressive)</td></tr>
+        <tr><td class="tool-col">Real-footage dubbing</td><td>Dubly.AI, Rask AI</td><td>Synthesia, HeyGen (wrong tool)</td></tr>
+        <tr><td class="tool-col">High-volume, budget-sensitive</td><td>Wan/ComfyUI (local)</td><td>Runway at scale (expensive)</td></tr>
+        <tr><td class="tool-col">Commercial IP safety</td><td>Adobe Firefly</td><td>Models with unclear training data</td></tr>
+        <tr><td class="tool-col">Data-driven motion graphics</td><td>Cavalry</td><td>After Effects (wrong approach)</td></tr>
+      </table>
+    </div>
+
+    <!-- DAY 3: PIPELINES -->
+    <div id="d3-pipelines" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 3, Part 2</div>
+        <h2 class="section-title">Production Pipelines</h2>
+        <p class="section-desc">Four real pipeline configurations for common production types. Each is a usable template, not a concept.</p>
+      </div>
+
+      <h3>Pipeline A: Social Content at Volume (DTC / Brand)</h3>
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Brief</div><div class="wf-tool">Claude / ChatGPT</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Reference</div><div class="wf-tool">Midjourney</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Generate</div><div class="wf-tool">Pika / Kling</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">VO</div><div class="wf-tool">ElevenLabs</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Assemble</div><div class="wf-tool">CapCut / VEED</div></div>
+      </div>
+      <p>Optimizes for speed and output volume over cinematic quality. Suitable for 10-30 social ads per month. Per-ad cost in this stack runs $8-25 depending on generation credits.</p>
+
+      <h3>Pipeline B: Cinematic / Commercial Production</h3>
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Script</div><div class="wf-tool">LLM</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Storyboard</div><div class="wf-tool">Firefly</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Generate</div><div class="wf-tool">Runway Gen-4</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Edit</div><div class="wf-tool">Premiere Pro</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Graphics</div><div class="wf-tool">After Effects</div></div>
+      </div>
+      <p>The professional pipeline. Highest per-output cost but cleanest integration with client-facing deliverables and existing post teams. Runway's brand controls and reference image consistency make it the right choice at this tier.</p>
+
+      <h3>Pipeline C: Enterprise Training (Multilingual, Scale)</h3>
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Script</div><div class="wf-tool">LLM + SME</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Avatar Video</div><div class="wf-tool">Synthesia</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Localize</div><div class="wf-tool">Synthesia Dub</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Export</div><div class="wf-tool">SCORM/LMS</div></div>
+      </div>
+      <p>Fully contained in Synthesia for compliance and workflow simplicity. Eliminates production crew entirely. The 90% training completion rate case studies are real for structured onboarding content at multinational scale.</p>
+
+      <h3>Pipeline D: Open-Source / High-Volume Technical</h3>
+      <div class="workflow">
+        <div class="wf-step"><div class="wf-label">Prompt</div><div class="wf-tool">Martini / Krea</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Generate</div><div class="wf-tool">Wan via ComfyUI</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Select</div><div class="wf-tool">Human Review</div></div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-step"><div class="wf-label">Edit</div><div class="wf-tool">DaVinci Resolve</div></div>
+      </div>
+      <p>Near-zero variable cost at volume. Requires 16GB+ VRAM GPU and technical setup. For teams with that infrastructure, this is the only pipeline that makes economic sense above a few hundred clips per month.</p>
+
+      <div class="callout">
+        <div class="callout-label">Orchestration Layer Note</div>
+        <p><strong><a href="https://martini.film" target="_blank">Martini</a></strong> deserves attention as an emerging coordination layer. It lets you fan one prompt simultaneously across Veo 3.1, Runway Gen-4, Kling 3.0, Seedance, and others, then compare outputs and select winners — all in a shared project with XML export to Premiere or DaVinci. For teams testing multiple models, it removes the friction of managing separate accounts and formats.</p>
+      </div>
+    </div>
+
+    <!-- DAY 3: EXERCISES -->
+    <div id="d3-exercises" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Day 3 Exercises</div>
+        <h2 class="section-title">Applied Practice</h2>
+        <p class="section-desc">The capstone exercises. These produce real outputs you can show. Total: ~2 hours.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 3.1</span>
+          <span class="exercise-title">Build a Complete 30-Second Spot</span>
+          <span class="exercise-duration">60 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">A complete production run from brief to assembled output. Use free tiers only — no cost required.</p>
+        <ol>
+          <li><strong>Choose your subject:</strong> Pick something you know — a business, a product, a place. Real subjects are easier than invented ones because you know what's true about them.</li>
+          <li><strong>Script it:</strong> Use an LLM to write a 30-second (≈75 words) script with a two-column shot list. Edit until you'd actually say the words aloud.</li>
+          <li><strong>Generate 3 clips:</strong> Use Veo 3.1 (Google Vids), Runway, or Pika. Pick the 3 shots from your shot list that would benefit most from AI generation. Run them. You don't need all 8-10 shots — just 3.</li>
+          <li><strong>Record voiceover:</strong> Either use ElevenLabs (free tier) to generate it or record it yourself. Your voice on a phone mic is fine.</li>
+          <li><strong>Assemble:</strong> Use CapCut (free) or DaVinci Resolve (free). Put clips in order, lay VO track under it, add titles if you want. Export at 1080p.</li>
+          <li><strong>Critique your output:</strong> Watch it back. What broke? What worked? What would a second pass fix first?</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 3.2</span>
+          <span class="exercise-title">Prompt Iteration Log</span>
+          <span class="exercise-duration">30 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">The fastest way to learn prompt engineering: systematic variation tracking.</p>
+        <ol>
+          <li>Choose a single subject and platform (e.g., Runway Gen-4).</li>
+          <li>Generate version 1 with a basic prompt. Save it.</li>
+          <li>Change <strong>one variable</strong>: add a specific camera movement. Generate version 2.</li>
+          <li>Change <strong>one variable</strong>: change the lighting descriptor. Generate version 3.</li>
+          <li>Change <strong>one variable</strong>: add a negative prompt. Generate version 4.</li>
+          <li>Compare all four. Write one sentence on what each change actually did to the output. This exercise teaches you to isolate variables — the core skill in prompt engineering.</li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-num">EX 3.3</span>
+          <span class="exercise-title">The Stakeholder Brief</span>
+          <span class="exercise-duration">30 min</span>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Write a one-page brief recommending an AI video tool stack to a fictional stakeholder. This tests whether you can synthesize and communicate the landscape.</p>
+        <ol>
+          <li><strong>Pick one scenario:</strong><br>
+            A: A VP at a media company asking whether to invest in AI video tools for their content production team (30 people, mixed editorial and marketing output)<br>
+            B: A startup founder building a content marketing engine with 2 people and $3K/month<br>
+            C: A university considering AI tools for online course video production across 40 departments</li>
+          <li>Write a one-page (300-400 word) recommendation covering: recommended tool stack, rationale for each choice, one tool you explicitly excluded and why, and one risk they should plan for.</li>
+          <li>Do not hedge every statement. Make a call and justify it.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- QUICK REFERENCE -->
+    <div id="d3-reference" class="section">
+      <div class="section-head">
+        <div class="section-eyebrow">Quick Reference</div>
+        <h2 class="section-title">Cheat Sheet</h2>
+        <p class="section-desc">One-page summary of everything in this course. Use this before any conversation where you need to speak to the landscape.</p>
+      </div>
+
+      <h3>The Full Stack At a Glance</h3>
+
+      <table class="comp-table">
+        <tr>
+          <th>Category</th>
+          <th>Leader(s)</th>
+          <th>Free Entry Point</th>
+          <th>Paid From</th>
+        </tr>
+        <tr><td class="tool-col">Generative Video (Pro)</td><td><a href="https://runwayml.com" target="_blank">Runway Gen-4</a>, <a href="https://labs.google/vids" target="_blank">Veo 3.1</a></td><td>Veo via Google Vids (10/mo)</td><td>$12-15/mo</td></tr>
+        <tr><td class="tool-col">Generative Video (Social)</td><td><a href="https://pika.art" target="_blank">Pika 2.0</a>, <a href="https://klingai.com" target="_blank">Kling 3.0</a></td><td>Pika free tier</td><td>$8-28/mo</td></tr>
+        <tr><td class="tool-col">Generative Video (Open)</td><td><a href="https://github.com/Wan-Video/Wan2.1" target="_blank">Wan 2.7</a> / <a href="https://github.com/Tencent/HunyuanVideo" target="_blank">HunyuanVideo</a></td><td><a href="https://www.comfy.org" target="_blank">ComfyUI</a> (local GPU)</td><td>Free (hardware cost)</td></tr>
+        <tr><td class="tool-col">Voice Synthesis</td><td><a href="https://elevenlabs.io" target="_blank">ElevenLabs</a></td><td>ElevenLabs free tier</td><td>$5/mo</td></tr>
+        <tr><td class="tool-col">Corporate VO</td><td><a href="https://murf.ai" target="_blank">Murf.ai</a></td><td>Murf free tier</td><td>$19/mo</td></tr>
+        <tr><td class="tool-col">Avatar / Presenter</td><td><a href="https://heygen.com" target="_blank">HeyGen</a> (creative), <a href="https://synthesia.io" target="_blank">Synthesia</a> (enterprise)</td><td>HeyGen free trial</td><td>$24-29/mo</td></tr>
+        <tr><td class="tool-col">Real-Footage Dubbing</td><td><a href="https://dubly.ai" target="_blank">Dubly.AI</a>, <a href="https://rask.ai" target="_blank">Rask AI</a></td><td>Rask AI free tier</td><td>$60-120/mo</td></tr>
+        <tr><td class="tool-col">NLE (Professional)</td><td><a href="https://www.adobe.com/products/premiere.html" target="_blank">Premiere Pro</a>, <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank">DaVinci Resolve</a></td><td>DaVinci free</td><td>$55/mo (Adobe)</td></tr>
+        <tr><td class="tool-col">NLE (Social)</td><td><a href="https://www.capcut.com" target="_blank">CapCut</a>, <a href="https://veed.io" target="_blank">VEED</a></td><td>Both have free tiers</td><td>$9-20/mo</td></tr>
+        <tr><td class="tool-col">Motion Graphics</td><td><a href="https://www.adobe.com/products/aftereffects.html" target="_blank">After Effects</a></td><td>7-day trial</td><td>Included in Creative Cloud</td></tr>
+        <tr><td class="tool-col">Data-Driven Motion</td><td><a href="https://cavalry.scenegroup.co" target="_blank">Cavalry</a></td><td>No</td><td>~$20/mo</td></tr>
+        <tr><td class="tool-col">3D</td><td><a href="https://blender.org" target="_blank">Blender</a></td><td>Free</td><td>Free</td></tr>
+        <tr><td class="tool-col">Multi-Model Orchestration</td><td><a href="https://martini.film" target="_blank">Martini</a>, <a href="https://www.comfy.org" target="_blank">ComfyUI</a></td><td>Martini free plan</td><td>$30+/mo</td></tr>
+        <tr><td class="tool-col">AI-Embedded Generation</td><td><a href="https://firefly.adobe.com" target="_blank">Adobe Firefly</a></td><td>No</td><td>Included in Creative Cloud</td></tr>
+      </table>
+
+      <h3>Things That Sound Informed In Conversation</h3>
+      <ul class="check-list">
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "Sora's been discontinued — the migration options are Veo 3.1 for photorealism or Runway for production workflow"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "Native audio in a single generation pass is now standard in the leading models — that changes the pipeline design"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "Image-to-video is the production default — T2V is for exploration, not delivery"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "The Chinese-origin tools (Kling, Seedance, CapCut) raise compliance flags for some enterprise contexts"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "At sufficient volume, local open-source deployment (Wan via ComfyUI) beats per-clip API pricing"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "Firefly's differentiator is commercially safe training data — not raw quality"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "The 2026 AE update brought SVG-as-shape-layers — finally closes the Illustrator-to-animation gap"</li>
+        <li><input type="checkbox" onchange="toggleCheck(this)"> "Descript is for interview/talking-head rough cuts, not an NLE replacement"</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="callout-label">What To Say When Rankings Come Up</div>
+        <p>Benchmark rankings (Elo scores, leaderboards) update weekly and flip regularly. The right framing is: <em>"The rankings move fast enough that I focus on which model category wins a use case rather than which scored highest last month."</em> This is more accurate and more credible than citing a specific number.</p>
+      </div>
+
+      <hr class="divider">
+      <p style="font-size:13px;color:var(--muted);text-align:center;">Course built June 2026 · Product landscape reflects current state as of this date · Revisit quarterly</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const map = {
+    'overview': 0,
+    'd1-landscape': 1, 'd1-generation': 2, 'd1-voice': 3, 'd1-exercises': 4,
+    'd2-script': 5, 'd2-editing': 6, 'd2-motion': 7, 'd2-exercises': 8,
+    'd3-selection': 9, 'd3-pipelines': 10, 'd3-exercises': 11, 'd3-reference': 12
+  };
+  const items = document.querySelectorAll('.nav-item');
+  if (map[id] !== undefined) items[map[id]].classList.add('active');
+
+  window.scrollTo(0, 0);
+}
+
+function toggleCheck(el) {
+  const li = el.closest('li');
+  if (el.checked) li.classList.add('checked');
+  else li.classList.remove('checked');
+}
+</script>
+
+</body>
+</html>
