@@ -23,6 +23,7 @@
   --tag-legal-bg: #FAEEDA;     --tag-legal-text: #633806;
   --tag-founder-bg: #FCEBEB;   --tag-founder-text: #791F1F;
   --tag-operational-bg: #E5E3DC; --tag-operational-text: #4A4945;
+  --tag-media-bg: #E1F5EE;     --tag-media-text: #085041;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +44,7 @@
     --tag-legal-bg: #633806;     --tag-legal-text: #FAC775;
     --tag-founder-bg: #791F1F;   --tag-founder-text: #F7C1C1;
     --tag-operational-bg: #4A4945; --tag-operational-text: #D8D6D0;
+    --tag-media-bg: #085041;     --tag-media-text: #9FE1CB;
   }
 }
 

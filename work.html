@@ -38,9 +38,15 @@
     <button class="chip" data-filter="legal">Legal</button>
     <button class="chip" data-filter="financial">Financial</button>
     <button class="chip" data-filter="founder">Founder-built</button>
+    <button class="chip" data-filter="media">Media</button>
   </div>
 
   <div class="grid" id="grid"></div>
+
+  <header class="page-head" style="padding-top: 0.5rem;">
+    <h1>Projects &amp; passions</h1>
+  </header>
+  <div class="grid" id="projectsGrid"></div>
 </div>
 
 <div class="overlay" id="overlay" role="presentation">
@@ -59,6 +65,7 @@
     <p class="scs-text" id="modalChallenge"></p>
     <p class="scs-label">Solution</p>
     <p class="scs-text" id="modalSolution"></p>
+    <p id="modalLink" style="margin: 14px 0 0;"></p>
   </div>
 </div>
 
@@ -69,7 +76,7 @@
 // once a case study's write-up and media are actually finalized.
 const TAG_LABELS = {
   org: "Organizational", operational: "Operational", tech: "Technical",
-  legal: "Legal", financial: "Financial", founder: "Founder-built"
+  legal: "Legal", financial: "Financial", founder: "Founder-built", media: "Media"
 };
 
 const CASE_STUDIES = [
@@ -152,11 +159,35 @@ const CASE_STUDIES = [
     challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
     solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
     media: null
+  },
+  {
+    slug: "ai-video-production-upskilling",
+    title: "AI video production upskilling",
+    section: "projects",
+    tags: ["media"],
+    summary: "A self-directed course built to figure out which AI-enabled video production tools are actually worth learning.",
+    situation: "Need to learn the most AI-enabled, commonly used tools in video production to keep up with current practitioner knowledge.",
+    challenge: "There are dozens of tools on the market, and no clear way to tell which are genuinely relevant versus a waste of time.",
+    solution: "Worked with Claude to create a guided three-day course.",
+    link: { url: "ai_video_course.html", label: "View the course" },
+    media: null
+  },
+  {
+    slug: "media-library",
+    title: "Media library",
+    section: "projects",
+    tags: ["media"],
+    summary: "Finding a cost-effective, user-friendly way to host years of music and video from produced and engineered performances.",
+    situation: "Need somewhere to host all the music and video from every performance I've produced and engineered.",
+    challenge: "A wide range of hosting options exist, but not all of them are cost-effective or user-friendly.",
+    solution: "TBD.",
+    media: null
   }
 ];
 
 // ---- Render cards ----
 const grid = document.getElementById("grid");
+const projectsGrid = document.getElementById("projectsGrid");
 CASE_STUDIES.forEach(cs => {
   const card = document.createElement("button");
   card.className = "card";
@@ -168,7 +199,8 @@ CASE_STUDIES.forEach(cs => {
     <p>${cs.summary}</p>
   `;
   card.addEventListener("click", () => openCase(cs.slug, true));
-  grid.appendChild(card);
+  const target = cs.section === "projects" ? projectsGrid : grid;
+  target.appendChild(card);
 });
 
 // ---- Filtering ----
@@ -192,6 +224,7 @@ const modalMedia = document.getElementById("modalMedia");
 const modalSituation = document.getElementById("modalSituation");
 const modalChallenge = document.getElementById("modalChallenge");
 const modalSolution = document.getElementById("modalSolution");
+const modalLink = document.getElementById("modalLink");
 const closeBtn = document.getElementById("closeBtn");
 
 function openCase(slug, pushHash) {
@@ -202,6 +235,12 @@ function openCase(slug, pushHash) {
   modalSituation.textContent = cs.situation;
   modalChallenge.textContent = cs.challenge;
   modalSolution.textContent = cs.solution;
+
+  if (cs.link && cs.link.url) {
+    modalLink.innerHTML = `<a href="${cs.link.url}" target="_blank" rel="noopener" style="font-size:13px; color:var(--text-accent); text-decoration:underline;">${cs.link.label}</a>`;
+  } else {
+    modalLink.innerHTML = "";
+  }
 
   if (cs.media && cs.media.type === "image") {
     modalMedia.innerHTML = `<img src="${cs.media.src}" alt="${cs.media.alt || ""}">`;
