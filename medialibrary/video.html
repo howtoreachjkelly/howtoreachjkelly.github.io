@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Y Music Sessions</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-mode="video" data-media-base="https://media.zentropic.co">
+<nav class="top-nav">
+  <a href="index.html">All</a>
+  <a href="audio.html">Audio</a>
+  <a href="video.html" class="active">Video</a>
+</nav>
+<header>
+  <h1>Y Music Sessions</h1>
+  <div class="header-controls">
+    <div class="view-toggle">
+      <button id="tile-view-btn" class="active" type="button">Tiles</button>
+      <button id="index-view-btn" type="button">Index</button>
+    </div>
+    <input id="search" type="text" placeholder="Search artists, albums, songs&hellip;">
+  </div>
+</header>
+<div id="status-line" class="mono"></div>
+<div id="grid"></div>
+<div id="index-view" class="hidden"></div>
+
+<div id="overlay" class="hidden">
+  <div id="modal">
+    <div id="modal-header"></div>
+    <div id="track-list"></div>
+  </div>
+</div>
+
+<div id="queue-bar" class="hidden">
+  <div class="queue-bar-inner">
+    <div class="queue-media-wrap" id="queue-media-wrap"></div>
+    <div class="queue-now-playing">
+      <div class="qnp-title" id="qnp-title"></div>
+      <div class="qnp-artist" id="qnp-artist"></div>
+    </div>
+    <div class="queue-controls">
+      <button id="queue-prev-btn" type="button" title="Previous">&#9664;</button>
+      <button id="queue-next-btn" type="button" title="Next">&#9654;</button>
+    </div>
+    <button class="queue-toggle-btn" id="queue-toggle-btn" type="button">Queue (0)</button>
+  </div>
+  <div id="queue-panel" class="hidden"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
