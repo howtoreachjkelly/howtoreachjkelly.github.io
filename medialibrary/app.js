@@ -51,6 +51,28 @@ function mediaUrl(path){
   return mediaBaseUrl ? mediaBaseUrl.replace(/\/+$/, '') + '/' + encoded : encoded;
 }
 
+async function downloadTrack(path, filename){
+  const url = mediaUrl(path);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed: ' + res.status);
+    const blob = await res.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objectUrl);
+  } catch (err) {
+    // Fallback if the fetch is blocked (e.g. CORS not configured on the
+    // media host): open it directly. The browser may play/display it
+    // instead of forcing a save dialog, but the file is still reachable.
+    window.open(url, '_blank');
+  }
+}
+
 function trackMatches(track, q){
   return (track.display && track.display.toLowerCase().includes(q))
       || (track.song && track.song.toLowerCase().includes(q))
@@ -386,9 +408,20 @@ function openArtist(a){
       addToQueue(a.name, entry);
     });
 
+    const downloadBtn = document.createElement('button');
+    downloadBtn.className = 'add-queue-btn';
+    downloadBtn.type = 'button';
+    downloadBtn.title = 'Download';
+    downloadBtn.textContent = '\u2193';
+    downloadBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      downloadTrack(entry.path, entry.name);
+    });
+
     top.appendChild(num);
     top.appendChild(nameEl);
     top.appendChild(kindEl);
+    top.appendChild(downloadBtn);
     top.appendChild(addBtn);
     top.appendChild(playBtn);
     row.appendChild(top);
