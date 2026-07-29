@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building a Self-Hosted Media Library</title>
+<style>
+  :root{
+    --paper:#f5f2ea;
+    --paper-2:#ece6d6;
+    --ink:#1c2430;
+    --ink-soft:#55606c;
+    --line:#ddd4bf;
+    --teal:#1f6f78;
+    --teal-dim:#c9d9d6;
+    --amber:#c98a35;
+    --warn:#b8562f;
+    --warn-bg:#f5e6dd;
+    --tip-bg:#e8f0ef;
+    --term-bg:#14181d;
+    --term-line:#2a3138;
+    --term-text:#f0d9a8;
+    --term-muted:#7a8390;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    line-height:1.6;
+  }
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+
+  /* ---------- Header ---------- */
+  header{
+    max-width:760px;
+    margin:0 auto;
+    padding:64px 24px 32px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:14px;
+  }
+  header h1{
+    margin:0 0 16px;
+    font-size:38px;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  header p.dek{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:58ch;
+    margin:0;
+  }
+
+  /* ---------- Architecture diagram ---------- */
+  .diagram-wrap{
+    max-width:760px;
+    margin:36px auto 0;
+    padding:0 24px;
+  }
+  .diagram-caption{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-top:10px;
+  }
+
+  /* ---------- Layout / spine ---------- */
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:20px 24px 100px;
+    position:relative;
+  }
+  .rail{
+    position:absolute;
+    left:2px;
+    top:8px;
+    bottom:60px;
+    width:2px;
+    background:var(--line);
+  }
+  section.step{
+    position:relative;
+    padding:44px 0 0 40px;
+  }
+  .step-marker{
+    position:absolute;
+    left:-9px;
+    top:44px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--teal);
+    color:var(--teal);
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  section.step h2{
+    margin:0 0 6px;
+    font-size:25px;
+    letter-spacing:-0.01em;
+  }
+  section.step .step-sub{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+  }
+  section.step p{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:16px;
+    color:var(--ink);
+  }
+  section.step ul, section.step ol{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:16px;
+  }
+  section.step li{ margin-bottom:6px; }
+  section.step code.inline{
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    background:var(--paper-2);
+    padding:1px 6px;
+    border-radius:3px;
+    font-size:0.9em;
+  }
+  h3.sub{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--teal);
+    margin:26px 0 10px;
+  }
+
+  /* ---------- Terminal blocks ---------- */
+  .term{
+    background:var(--term-bg);
+    border:1px solid var(--term-line);
+    border-radius:6px;
+    margin:16px 0;
+    overflow:hidden;
+  }
+  .term-bar{
+    display:flex;
+    gap:6px;
+    padding:9px 12px;
+    border-bottom:1px solid var(--term-line);
+  }
+  .term-bar span{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--term-line);
+  }
+  .term pre{
+    margin:0;
+    padding:14px 16px 16px;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:13.5px;
+    line-height:1.65;
+    color:var(--term-text);
+    overflow-x:auto;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .term pre .comment{ color:var(--term-muted); }
+
+  /* ---------- Callouts ---------- */
+  .callout{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:14.5px;
+    padding:14px 18px;
+    border-radius:4px;
+    margin:16px 0;
+    border-left:3px solid var(--teal);
+    background:var(--tip-bg);
+  }
+  .callout.warn{
+    border-left-color:var(--warn);
+    background:var(--warn-bg);
+  }
+  .callout .label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+    color:var(--teal);
+  }
+  .callout.warn .label{ color:var(--warn); }
+
+  /* ---------- Table ---------- */
+  table.flags{
+    width:100%;
+    border-collapse:collapse;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:14px;
+    margin:16px 0;
+  }
+  table.flags th, table.flags td{
+    text-align:left;
+    padding:9px 12px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.flags th{
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  table.flags code{
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:13px;
+    color:var(--teal);
+  }
+
+  /* ---------- Cheat sheet ---------- */
+  .cheatsheet{
+    margin-top:52px;
+    padding-top:24px;
+    border-top:2px solid var(--ink);
+  }
+  .cheatsheet h2{ font-size:22px; margin-bottom:4px; }
+  .cheatsheet .step-sub{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+
+  footer{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px 60px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:600px){
+    header{padding:44px 18px 24px;}
+    header h1{font-size:29px;}
+    main{padding:16px 18px 80px;}
+    section.step{padding-left:30px;}
+    .rail{left:0;}
+    .step-marker{left:-8px;width:20px;height:20px;font-size:10px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Build log &middot; personal infrastructure</div>
+  <h1>Building a Self-Hosted Media Library</h1>
+  <p class="dek">
+    How a folder of custom-recorded covers &mdash; audio and video, organized by
+    artist &mdash; became a searchable, publicly hosted site: a Python
+    generator script, a static front end on GitHub Pages, and 20&nbsp;GB
+    of media served free-of-egress from Cloudflare R2.
+  </p>
+</header>
+
+<div class="diagram-wrap">
+  <svg viewBox="0 0 712 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#55606c"/>
+      </marker>
+    </defs>
+    <!-- visitor -->
+    <circle cx="60" cy="95" r="30" fill="none" stroke="#1c2430" stroke-width="1.5"/>
+    <text x="60" y="91" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#1c2430">visitor's</text>
+    <text x="60" y="105" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#1c2430">browser</text>
+
+    <!-- arrow to github -->
+    <line x1="92" y1="80" x2="230" y2="55" stroke="#55606c" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="160" y="58" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#55606c">zentropic.co</text>
+
+    <!-- github box -->
+    <rect x="235" y="18" width="220" height="72" rx="6" fill="#f5f2ea" stroke="#1f6f78" stroke-width="1.5"/>
+    <text x="345" y="42" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="14" fill="#1f6f78">GitHub Pages</text>
+    <text x="345" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1c2430">library.html &middot; audio.html</text>
+    <text x="345" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1c2430">styles.css &middot; app.js &middot; data.json</text>
+
+    <!-- arrow to r2 -->
+    <line x1="92" y1="112" x2="230" y2="145" stroke="#55606c" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="160" y="148" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#55606c">media.zentropic.co</text>
+
+    <!-- r2 box -->
+    <rect x="235" y="108" width="220" height="72" rx="6" fill="#f5f2ea" stroke="#c98a35" stroke-width="1.5"/>
+    <text x="345" y="132" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="14" fill="#c98a35">Cloudflare R2</text>
+    <text x="345" y="150" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1c2430">Artist/song.mp3</text>
+    <text x="345" y="164" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1c2430">Artist/video.mp4 &middot; artist.jpg</text>
+
+    <!-- dotted line between the two backends -->
+    <line x1="455" y1="54" x2="455" y2="144" stroke="#ddd4bf" stroke-width="1.5" stroke-dasharray="3,4"/>
+    <text x="470" y="103" font-family="ui-monospace,monospace" font-size="9.5" fill="#55606c">data.json</text>
+    <text x="470" y="115" font-family="ui-monospace,monospace" font-size="9.5" fill="#55606c">points here</text>
+  </svg>
+  <div class="diagram-caption">
+    Two Cloudflare DNS records, one Cloudflare account, two completely
+    separate jobs: GitHub serves the lightweight app, R2 serves the heavy files.
+  </div>
+</div>
+
+<main>
+  <div class="rail"></div>
+
+  <section class="step">
+    <div class="step-marker">01</div>
+    <h2>Why split the site from the media</h2>
+    <div class="step-sub">the core architectural decision</div>
+    <p>
+      GitHub Pages is free and simple, but it isn't built for tens of
+      gigabytes of audio and video &mdash; individual files over 100&nbsp;MB
+      get rejected outright, and <span class="mono">Git LFS</span> (the
+      obvious-looking workaround) explicitly
+      <strong>cannot be used with GitHub Pages</strong>. Pages has no
+      mechanism to resolve an LFS pointer file back into the real binary;
+      it just serves the 130-byte pointer text instead of your video.
+    </p>
+    <p>
+      The fix is to stop treating "the site" and "the media" as one
+      thing. The site &mdash; a handful of HTML/CSS/JS files under a few
+      hundred KB total &mdash; stays on GitHub Pages, exactly where it
+      already was. The media moves to <strong>Cloudflare R2</strong>,
+      object storage built for this, with zero egress fees no matter how
+      much gets streamed.
+    </p>
+    <div class="callout">
+      <span class="label">Why R2 specifically</span>
+      For ~20&nbsp;GB, R2's free tier covers the first 10&nbsp;GB of storage;
+      the rest runs about $0.015/GB/month &mdash; roughly 15&nbsp;cents a
+      month. Bandwidth to visitors is <strong>always free</strong>, which is
+      the number that actually matters for a media site: every play of
+      every song is bandwidth.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">02</div>
+    <h2>The generator script</h2>
+    <div class="step-sub"><code class="inline mono">build_library.py</code></div>
+    <p>
+      One Python script does the actual work: point it at a folder of
+      artist subfolders, and it writes a complete static site &mdash;
+      no manual page-building, ever. Re-run it any time the library
+      changes.
+    </p>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre><span class="comment"># from wherever build_library.py lives</span>
+python3 build_library.py "/path/to/library" \
+  --title "Zentropic Sessions" \
+  --media-base-url "https://media.zentropic.co" \
+  --debug</pre>
+    </div>
+    <p>It scans recursively for recognized file types and writes six files into the library root:</p>
+    <ul>
+      <li><code class="inline mono">library.html</code> &mdash; combined view, all media</li>
+      <li><code class="inline mono">index.html</code> &mdash; a redirect stub to <code class="inline mono">library.html</code>, since GitHub Pages only auto-serves a file with that exact name at a bare folder URL</li>
+      <li><code class="inline mono">audio.html</code> / <code class="inline mono">video.html</code> &mdash; filtered views, same search/tile/index UI</li>
+      <li><code class="inline mono">styles.css</code>, <code class="inline mono">app.js</code>, <code class="inline mono">data.json</code> &mdash; shared by all three pages</li>
+    </ul>
+    <p>
+      Every artist gets a Tiles view (large artwork grid) and an
+      alphabetical text Index &mdash; both search the same underlying
+      data, and both ignore a leading "The" when alphabetizing (The
+      Beatles files under B, not T).
+    </p>
+    <h3 class="sub">Key flags</h3>
+    <table class="flags">
+      <tr><th>Flag</th><th>What it does</th></tr>
+      <tr><td><code>--title</code></td><td>Display name shown in the page header and browser tab &mdash; cosmetic only.</td></tr>
+      <tr><td><code>--media-base-url</code></td><td>Prefixes every track/artwork reference with this URL instead of a relative path. This is what makes the GitHub&nbsp;+&nbsp;R2 split work.</td></tr>
+      <tr><td><code>--no-artwork</code></td><td>Skips online artwork lookups entirely &mdash; fast rebuilds while testing structure.</td></tr>
+      <tr><td><code>--debug</code></td><td>Prints per-artist audio/video counts, artwork match sources, and any naming mismatches it finds.</td></tr>
+    </table>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">03</div>
+    <h2>The video naming convention</h2>
+    <div class="step-sub">Artist_Album Name_Song</div>
+    <p>
+      Audio files are grouped by whatever folder they physically sit
+      in &mdash; simple, and matches how the library was already organized.
+      Video is different: files often get dumped together rather than
+      sorted per artist, so video artist grouping comes from the
+      <strong>filename itself</strong>, parsed on the first two
+      underscores: <code class="inline mono">Artist_Album Name_Song.mp4</code>.
+    </p>
+    <p>
+      This means a folder called <code class="inline mono">Videos/</code>
+      containing files named
+      <code class="inline mono">Radiohead_OK Computer_Karma Police.mov</code>
+      correctly splits into a "Radiohead" entry &mdash; merged with the
+      existing Radiohead audio folder if the names match &mdash; rather
+      than everything lumping under one artist named "Videos".
+    </p>
+    <p>
+      Parsed videos get their song title shown instead of the raw
+      filename, and tracks are grouped under an album section heading
+      in the track list &mdash; a real Artist &rarr; Album &rarr; Song
+      catalog, not a flat file dump.
+    </p>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">04</div>
+    <h2>Controlling artwork manually</h2>
+    <div class="step-sub">for the artists the internet gets wrong</div>
+    <p>
+      Artwork resolves in priority order: an overrides file, a local
+      cover image, then an online lookup (Deezer, then iTunes), then a
+      generated monogram tile as a last resort.
+    </p>
+    <h3 class="sub">Option A &mdash; drop a file in the folder</h3>
+    <p>
+      Name it exactly <code class="inline mono">artist.jpg</code> (or
+      <code class="inline mono">.png</code>/<code class="inline mono">.webp</code>,
+      or <code class="inline mono">cover.*</code>) and place it directly
+      inside that artist's own folder. Same filename every time &mdash;
+      the folder is what identifies the artist, not the image name.
+      Square, 500&ndash;800px per side is the sweet spot for a tile
+      shown at 112&times;112 on a retina screen without bloating page weight.
+    </p>
+    <h3 class="sub">Option B &mdash; artwork-overrides.json</h3>
+    <p>
+      For artists that don't map to one folder &mdash; like video-only
+      artists identified purely by filename &mdash; a JSON file at the
+      library root maps artist name to either a local path or a full URL:
+    </p>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre>{
+  "The Beatles": "The Beatles/artist.jpg",
+  "Fleetwood Mac": "https://example.com/some-photo.jpg"
+}</pre>
+    </div>
+    <div class="callout warn">
+      <span class="label">Real bug, caught in testing</span>
+      An early version of the artwork lookup silently hit iTunes far
+      faster than Apple's documented ~20 requests/minute limit, which
+      doesn't error &mdash; it just quietly returns empty results. That
+      looked identical to "no artwork exists" for whichever well-known
+      artists happened to get scanned after the limit kicked in. The fix
+      was a real rate limiter, not a workaround.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">05</div>
+    <h2>Connect your domain to GitHub Pages</h2>
+    <div class="step-sub">so the site itself has a home</div>
+    <p>
+      Do this before touching R2 &mdash; it's the piece that actually
+      needs to exist first. Three parts:
+    </p>
+    <ol>
+      <li>
+        <strong>Verify domain ownership with GitHub</strong> &mdash;
+        profile/org Settings &rarr; Pages &rarr; Custom domain
+        verification. GitHub gives you a TXT record; add it in
+        Cloudflare's DNS tab (Type: TXT, paste the name and value
+        exactly, case-sensitive).
+      </li>
+      <li>
+        <strong>Add the domain in your repo</strong> &mdash; repo
+        Settings &rarr; Pages &rarr; Custom domain &rarr; enter the
+        domain &rarr; Save.
+      </li>
+      <li>
+        <strong>Set the real DNS records</strong> in Cloudflare &mdash;
+        four A records for the apex domain, one CNAME for
+        <code class="inline mono">www</code>:
+      </li>
+    </ol>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre><span class="comment"># apex (zentropic.co) &mdash; four A records:</span>
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+
+<span class="comment"># www.zentropic.co &mdash; one CNAME:</span>
+yourusername.github.io</pre>
+    </div>
+    <div class="callout warn">
+      <span class="label">Cloudflare-specific gotcha</span>
+      Set these to <strong>DNS only</strong> (gray cloud, not the orange
+      "proxied" one) while GitHub issues its HTTPS certificate. Proxying
+      too early can interfere with Let's&nbsp;Encrypt validation. Once
+      HTTPS is confirmed working, "Enforce HTTPS" becomes available in
+      repo Settings &rarr; Pages.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">06</div>
+    <h2>Set up the Cloudflare R2 bucket</h2>
+    <div class="step-sub">object storage for the heavy files</div>
+    <ol>
+      <li>Cloudflare dashboard &rarr; <strong>R2</strong> &rarr; Create bucket. Lowercase, hyphens only &mdash; ours is <code class="inline mono">medialibrary</code>.</li>
+      <li>Open the bucket &rarr; Settings &rarr; <strong>Public Access &rarr; Custom Domains</strong> &rarr; Connect Domain &rarr; enter a subdomain (<code class="inline mono">media.zentropic.co</code>) that isn't already used by the main site.</li>
+      <li>Cloudflare auto-creates the DNS record for this one &mdash; no manual record needed, unlike the GitHub TXT record.</li>
+    </ol>
+    <div class="callout">
+      <span class="label">Skip the *.r2.dev URL</span>
+      Cloudflare's own docs call the quick <code class="inline mono">*.r2.dev</code>
+      subdomain rate-limited and meant for testing, not production. A
+      real custom domain avoids that ceiling entirely.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">07</div>
+    <h2>Create an API token</h2>
+    <div class="step-sub">R2 &rarr; Overview &mdash; not inside the bucket</div>
+    <p>
+      This one moves around in Cloudflare's UI, so the reliable path:
+      <strong>R2 &rarr; Overview</strong> page &rarr; "Account Details"
+      section &rarr; <strong>Manage</strong> next to API Tokens.
+    </p>
+    <ol>
+      <li>Create Account API token.</li>
+      <li>Permission: <strong>Object Read &amp; Write</strong>.</li>
+      <li>Scope it to the <code class="inline mono">medialibrary</code> bucket specifically &mdash; not "all buckets."</li>
+      <li>Copy the Access Key ID and Secret Access Key immediately &mdash; the secret is shown exactly once.</li>
+      <li>Grab the Account ID from the same page for the endpoint URL.</li>
+    </ol>
+    <div class="callout warn">
+      <span class="label">Account ID &ne; Member ID</span>
+      Cloudflare shows more than one long hex string in its UI. Using
+      the wrong one produces a connection that hangs indefinitely with
+      no error &mdash; not a fast failure, a silent stall. If
+      <code class="inline mono">rclone lsd</code> never returns and never
+      errors, this is the first thing to check.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">08</div>
+    <h2>Upload with rclone</h2>
+    <div class="step-sub">20&nbsp;GB is not a dashboard drag-and-drop job</div>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre><span class="comment"># ~/.config/rclone/rclone.conf</span>
+[r2]
+type = s3
+provider = Cloudflare
+access_key_id = &lt;your access key&gt;
+secret_access_key = &lt;your secret key&gt;
+endpoint = https://&lt;your account id&gt;.r2.cloudflarestorage.com
+acl = private
+no_check_bucket = true</pre>
+    </div>
+    <p>
+      <code class="inline mono">no_check_bucket = true</code> matters
+      whenever the token is scoped to one bucket rather than the whole
+      account &mdash; without it, rclone's default existence check fails
+      with a permissions error before it even tries to upload anything.
+    </p>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre><span class="comment"># confirm the connection first</span>
+rclone lsd r2:medialibrary
+
+<span class="comment"># then the actual upload &mdash; preserves Artist/song.ext structure as-is</span>
+rclone copy "/path/to/library" r2:medialibrary --progress</pre>
+    </div>
+    <p>
+      <code class="inline mono">copy</code>, not <code class="inline mono">sync</code>
+      &mdash; it adds and updates files without deleting anything from the
+      bucket if the local folder and the bucket ever diverge. If the
+      transfer gets interrupted, re-running the exact same command
+      resumes rather than starting over.
+    </p>
+    <div class="callout">
+      <span class="label">A false alarm worth knowing about</span>
+      Testing the R2 endpoint with macOS's built-in <code class="inline mono">curl</code>
+      can throw an SSL handshake error that looks alarming &mdash; that's
+      a known incompatibility between old system LibreSSL and modern
+      TLS negotiation, not a real problem with R2 or your credentials.
+      <code class="inline mono">rclone</code> uses its own TLS stack and isn't affected.
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">09</div>
+    <h2>Wire it together and go live</h2>
+    <div class="step-sub">the last mile</div>
+    <ol>
+      <li>Regenerate with <code class="inline mono">--media-base-url</code> pointed at the R2 custom domain, so every track and locally-hosted artwork reference resolves against it instead of a relative path. Anything already an absolute URL &mdash; an online artwork match, or an override pointing at an external photo &mdash; is left untouched.</li>
+      <li>Move the generated files &mdash; <code class="inline mono">library.html index.html audio.html video.html styles.css app.js data.json</code> &mdash; into the GitHub Pages repo. Everything else (artist folders, audio, video, cover images) stays in R2.</li>
+      <li>If the whole thing lives in a subfolder of the repo (e.g. <code class="inline mono">medialibrary/</code>), nothing in the files themselves needs to change &mdash; every internal reference is relative to itself, and the media links are already absolute URLs. Only the visiting URL changes, to <code class="inline mono">zentropic.co/medialibrary/</code>.</li>
+      <li>Confirm in a browser's Network tab that a real media request actually resolves to <code class="inline mono">media.zentropic.co</code> with a 200 &mdash; not just that the page loads.</li>
+    </ol>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">10</div>
+    <h2>library.html, and downloading tracks</h2>
+    <div class="step-sub">two late additions</div>
+    <p>
+      The combined page is named <code class="inline mono">library.html</code>,
+      not <code class="inline mono">index.html</code> &mdash; a deliberate
+      rename. Since GitHub Pages only auto-serves a file named exactly
+      <code class="inline mono">index.html</code> at a bare folder URL, the
+      generator now also writes a tiny <code class="inline mono">index.html</code>
+      redirect stub alongside it, so visiting the bare folder still lands
+      on the real page instead of 404ing.
+    </p>
+    <p>
+      Each track row also has a &darr; download button. It works by
+      fetching the file and forcing a save dialog via a blob download,
+      rather than just linking to it &mdash; a plain link's
+      <code class="inline mono">download</code> attribute is unreliable
+      once the file lives on a different domain than the site itself,
+      which is exactly the split this whole setup created.
+    </p>
+    <div class="callout warn">
+      <span class="label">Requires one R2 setting</span>
+      Cross-origin fetches are blocked by the browser unless the R2
+      bucket explicitly allows them. Bucket &rarr; Settings &rarr; CORS
+      Policy &rarr; Edit CORS policy:
+    </div>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre>[
+  {
+    "AllowedOrigins": ["https://zentropic.co", "https://www.zentropic.co"],
+    "AllowedMethods": ["GET"],
+    "AllowedHeaders": ["*"]
+  }
+]</pre>
+    </div>
+    <p>
+      Without this, the download button degrades gracefully &mdash; it
+      opens the file in a new tab instead of forcing a save dialog,
+      which still works, just requires an extra right-click &rarr; Save As.
+    </p>
+  </section>
+
+  <section class="step">
+    <div class="step-marker">11</div>
+    <h2>What the site actually does</h2>
+    <div class="step-sub">for reference</div>
+    <ul>
+      <li><strong>Search</strong> matches artist name, song title, and album &mdash; not just the artist.</li>
+      <li><strong>Tiles / Index toggle</strong> &mdash; visual grid or a text-only alphabetical list, same data either way, "The" ignored when alphabetizing.</li>
+      <li><strong>All / Audio / Video nav</strong> &mdash; three pages, one shared dataset, filtered client-side.</li>
+      <li><strong>Session queue</strong> &mdash; a "+" per track and a "Queue all" per artist build a play-through queue with a persistent bottom player bar, Previous/Next, and auto-advance. Resets on tab close by design &mdash; nothing persists, nothing is shared between visitors.</li>
+      <li><strong>Download</strong> &mdash; a &darr; per track, forced save dialog once R2's CORS policy allows it.</li>
+    </ul>
+  </section>
+
+  <div class="cheatsheet">
+    <h2>Quick reference</h2>
+    <div class="step-sub">the commands that actually get run, in order</div>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre><span class="comment"># 1. regenerate the site</span>
+python3 build_library.py "/path/to/library" \
+  --title "Zentropic Sessions" \
+  --media-base-url "https://media.zentropic.co" \
+  --debug
+
+<span class="comment"># 2. confirm R2 connection</span>
+rclone lsd r2:medialibrary
+
+<span class="comment"># 3. upload media (re-run any time the library changes)</span>
+rclone copy "/path/to/library" r2:medialibrary --progress
+
+<span class="comment"># 4. push the generated files to the GitHub Pages repo</span>
+<span class="comment">#    library.html index.html audio.html video.html styles.css app.js data.json</span></pre>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Written up as a build log after getting the whole pipeline working end to end.
+</footer>
+
+</body>
+</html>
