@@ -19,6 +19,7 @@
     <div class="links">
       <a href="about.html">About</a>
       <a href="work.html" class="active">Work</a>
+      <a href="projects.html">Projects</a>
       <a href="ai-safety.html">AI safety</a>
       <a href="writing.html">Writing</a>
       <a href="contact.html">Contact</a>
@@ -38,15 +39,9 @@
     <button class="chip" data-filter="legal">Legal</button>
     <button class="chip" data-filter="financial">Financial</button>
     <button class="chip" data-filter="founder">Founder-built</button>
-    <button class="chip" data-filter="media">Media</button>
   </div>
 
   <div class="grid" id="grid"></div>
-
-  <header class="page-head" style="padding-top: 0.5rem;">
-    <h1>Projects &amp; passions</h1>
-  </header>
-  <div class="grid" id="projectsGrid"></div>
 </div>
 
 <div class="overlay" id="overlay" role="presentation">
@@ -159,51 +154,11 @@ const CASE_STUDIES = [
     challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
     solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
     media: null
-  },
-  {
-    slug: "ai-video-production-upskilling",
-    title: "AI video production upskilling",
-    section: "projects",
-    tags: ["media"],
-    summary: "A self-directed course built to figure out which AI-enabled video production tools are actually worth learning.",
-    situation: "Need to learn the most AI-enabled, commonly used tools in video production to keep up with current practitioner knowledge.",
-    challenge: "There are dozens of tools on the market, and no clear way to tell which are genuinely relevant versus a waste of time.",
-    solution: "Worked with Claude to create a guided three-day course.",
-    link: { url: "ai_video_course.html", label: "View the course" },
-    media: { type: "image", src: "img/videocourse.png", alt: "Media library" }
-  },
-  {
-    slug: "media-library",
-    title: "Media library",
-    section: "projects",
-    tags: ["media"],
-    summary: "Finding a cost-effective, user-friendly way to host years of music and video from produced and engineered performances.",
-    situation: "Need somewhere to host all the music and video from every performance I've produced and engineered.",
-    challenge: "A wide range of hosting options exist, but not all of them are cost-effective or user-friendly.",
-    solution: "TBD.",
-    links: [
-      { url: "media-library-tutorial.html", label: "View the tutorial" },
-      { url: "medialibrary/library.html", label: "View the live library" }
-    ],
-    media: { type: "image", src: "img/medialib.png", alt: "Media library" }
-  },
-  {
-    slug: "airtable-hiring-workflow-tutorial",
-    title: "Building an enterprise hiring workflow in Airtable",
-    section: "projects",
-    tags: ["org", "operational", "tech"],
-    summary: "A full build manual for a requisition-to-offer hiring pipeline in Airtable \u2014 tables, automations, and a real approval chain, built without code.",
-    situation: "Wanted to demonstrate building a real enterprise-grade hiring workflow using only no-code tools, not custom software.",
-    challenge: "Most Airtable guides stop at a single table \u2014 there wasn't a clear walkthrough of a full multi-table system with automations and a genuine sequential approval chain.",
-    solution: "Wrote a complete build manual covering all 8 tables, the automation logic, and the hardest part \u2014 a true multi-step approval chain \u2014 as a teaching artifact.",
-    links: [{ url: "airtable-hiring-workflow-tutorial.html", label: "View the tutorial" }],
-    media: { type: "image", src: "img/airtable_preview.png", alt: "Media library" }
   }
 ];
 
 // ---- Render cards ----
 const grid = document.getElementById("grid");
-const projectsGrid = document.getElementById("projectsGrid");
 CASE_STUDIES.forEach(cs => {
   const card = document.createElement("button");
   card.className = "card";
@@ -215,8 +170,7 @@ CASE_STUDIES.forEach(cs => {
     <p>${cs.summary}</p>
   `;
   card.addEventListener("click", () => openCase(cs.slug, true));
-  const target = cs.section === "projects" ? projectsGrid : grid;
-  target.appendChild(card);
+  grid.appendChild(card);
 });
 
 // ---- Filtering ----
