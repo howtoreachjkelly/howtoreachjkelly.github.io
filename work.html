@@ -49,10 +49,6 @@
     <button class="close-btn" id="closeBtn" aria-label="Close">&#10005;</button>
     <div class="tags" id="modalTags"></div>
     <h2 id="modal-title"></h2>
-    <div class="under-construction">
-      <i class="ti ti-tools" aria-hidden="true"></i>
-      <span>Under construction — full write-up and supporting media coming soon.</span>
-    </div>
     <div class="media" id="modalMedia"></div>
     <p class="scs-label">Situation</p>
     <p class="scs-text" id="modalSituation"></p>
@@ -61,14 +57,15 @@
     <p class="scs-label">Solution</p>
     <p class="scs-text" id="modalSolution"></p>
     <p id="modalLink" style="margin: 14px 0 0;"></p>
+    <p class="scs-text" id="modalFooterNote" style="margin-top: 14px;"></p>
   </div>
 </div>
 
 <script>
 // ---- Case study data ----
 // "media" is a placeholder. Replace with: { type: "image", src: "/images/your-photo.jpg", alt: "..." }
-// once real photos or diagrams are ready. Remove the under-construction banner in the HTML above
-// once a case study's write-up and media are actually finalized.
+// once real photos or diagrams are ready. Clear the "Supporting materials coming soon..." logic
+// below once a case study's write-up and media are actually finalized.
 const TAG_LABELS = {
   org: "Organizational", operational: "Operational", tech: "Technical",
   legal: "Legal", financial: "Financial", founder: "Founder-built", media: "Media"
@@ -195,6 +192,7 @@ const modalSituation = document.getElementById("modalSituation");
 const modalChallenge = document.getElementById("modalChallenge");
 const modalSolution = document.getElementById("modalSolution");
 const modalLink = document.getElementById("modalLink");
+const modalFooterNote = document.getElementById("modalFooterNote");
 const closeBtn = document.getElementById("closeBtn");
 
 function openCase(slug, pushHash) {
@@ -219,6 +217,8 @@ function openCase(slug, pushHash) {
   } else {
     modalMedia.innerHTML = `<i class="ti ti-photo" style="font-size:26px;" aria-hidden="true"></i><span>Photo or diagram placeholder</span>`;
   }
+
+  modalFooterNote.textContent = cs.slug === "ryot-greenlight-process" ? "" : "Supporting materials coming soon...";
 
   overlay.classList.add("open");
   if (pushHash) {
