@@ -98,7 +98,7 @@ const CASE_STUDIES = [
     situation: "RYOT needed a way to move projects from pitch to production without every decision becoming an ad hoc negotiation.",
     challenge: "No formal governance existed for how projects got approved, who had decision rights, or how conflicting priorities got resolved.",
     solution: "Designed and ran the greenlight process \u2014 the review structure, the decision rights, and the escalation path \u2014 that took projects from concept to approved production.",
-    media: { type: "image", src: "img/ryotflow.png", alt: "Description of the image" }
+    media: null
   },
   {
     slug: "studio-builds",
@@ -181,7 +181,11 @@ const CASE_STUDIES = [
     situation: "Need somewhere to host all the music and video from every performance I've produced and engineered.",
     challenge: "A wide range of hosting options exist, but not all of them are cost-effective or user-friendly.",
     solution: "TBD.",
-    media: null
+    links: [
+      { url: "media-library-tutorial.html", label: "View the tutorial" },
+      { url: "medialibrary/library.html", label: "View the live library" }
+    ],
+    media: { type: "image", src: "img/medialib.png", alt: "Media library" }
   },
   {
     slug: "airtable-hiring-workflow-tutorial",
@@ -192,7 +196,7 @@ const CASE_STUDIES = [
     situation: "Wanted to demonstrate building a real enterprise-grade hiring workflow using only no-code tools, not custom software.",
     challenge: "Most Airtable guides stop at a single table \u2014 there wasn't a clear walkthrough of a full multi-table system with automations and a genuine sequential approval chain.",
     solution: "Wrote a complete build manual covering all 8 tables, the automation logic, and the hardest part \u2014 a true multi-step approval chain \u2014 as a teaching artifact.",
-    link: { url: "airtable-hiring-workflow-tutorial.html", label: "View the tutorial" },
+    links: [{ url: "airtable-hiring-workflow-tutorial.html", label: "View the tutorial" }],
     media: null
   }
 ];
@@ -248,8 +252,10 @@ function openCase(slug, pushHash) {
   modalChallenge.textContent = cs.challenge;
   modalSolution.textContent = cs.solution;
 
-  if (cs.link && cs.link.url) {
-    modalLink.innerHTML = `<a href="${cs.link.url}" target="_blank" rel="noopener" style="font-size:13px; color:var(--text-accent); text-decoration:underline;">${cs.link.label}</a>`;
+  if (cs.links && cs.links.length) {
+    modalLink.innerHTML = cs.links.map(l =>
+      `<a href="${l.url}" target="_blank" rel="noopener" style="font-size:13px; color:var(--text-accent); text-decoration:underline; margin-right:16px;">${l.label}</a>`
+    ).join("");
   } else {
     modalLink.innerHTML = "";
   }
@@ -257,7 +263,7 @@ function openCase(slug, pushHash) {
   if (cs.media && cs.media.type === "image") {
     modalMedia.innerHTML = `<img src="${cs.media.src}" alt="${cs.media.alt || ""}">`;
   } else {
-    modalMedia.innerHTML = `Photo or diagram placeholder`;
+    modalMedia.innerHTML = `<i class="ti ti-photo" style="font-size:26px;" aria-hidden="true"></i><span>Photo or diagram placeholder</span>`;
   }
 
   overlay.classList.add("open");
