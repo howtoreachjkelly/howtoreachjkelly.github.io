@@ -74,8 +74,8 @@ nav.site-nav .links a.active {
 
 /* ---------- page header ---------- */
 header.page-head { padding: 2rem 0 1rem; }
-header.page-head h1 { font-family: var(--font-voice); font-weight: 400; font-size: 22px; margin: 0 0 4px; }
-header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
+header.page-head h1 { font-family: var(--font-voice); font-weight: 400; font-size: 32px; margin: 0 0 4px; }
+header.page-head p { font-size: 20px; color: var(--text-secondary); margin: 0; }
 
 /* ---------- hero (home page) ---------- */
 .hero { padding: 2.5rem 0 2rem; text-align: center; }
@@ -96,6 +96,9 @@ header.page-head p { font-size: 14px; color: var(--text-secondary); margin: 0; }
   color: var(--text-secondary); cursor: pointer; font-family: inherit;
 }
 .chip.active { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
+
+/* Work & Projects pages use id="chips" — bumped 25% larger per request; writing.html's #wchips is unaffected */
+#chips .chip { font-size: 15px; padding: 7.5px 17.5px; }
 
 /* ---------- card grid (used by Work, and Home's quick-links) ---------- */
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
@@ -178,8 +181,8 @@ section.block { padding: 0 0 1.5rem; }
 }
 .overlay.open { display: flex; }
 .modal {
-  background: var(--surface-2); border-radius: 12px; max-width: 560px; width: 100%;
-  max-height: 85vh; overflow-y: auto; padding: 1.75rem; position: relative;
+  background: var(--surface-2); border-radius: 12px; max-width: 700px; width: 100%;
+  max-height: 85vh; overflow-y: auto; padding: 2.1875rem; position: relative;
 }
 .modal .close-btn {
   position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
@@ -265,7 +268,7 @@ section.block { padding: 0 0 1.5rem; }
 
 /* ---------- contact page ---------- */
 .contact-wrap { max-width: 380px; margin: 0 auto; padding: 2.5rem 0 1.5rem; text-align: center; }
-.contact-wrap .name-title { font-family: var(--font-voice); font-size: 19px; margin: 0 0 6px; color: var(--text-primary); }
+.contact-wrap .name-title { font-family: var(--font-voice); font-size: 32px; margin: 0 0 6px; color: var(--text-primary); }
 .contact-wrap .location { font-size: 13px; color: var(--text-secondary); margin: 0 0 24px; }
 .contact-links { display: flex; flex-direction: column; gap: 8px; text-align: left; }
 .btn-primary {
