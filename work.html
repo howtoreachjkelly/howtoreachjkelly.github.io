@@ -57,6 +57,8 @@
     <button class="close-btn" id="closeBtn" aria-label="Close">&#10005;</button>
     <div class="tags" id="modalTags"></div>
     <h2 id="modal-title"></h2>
+    <p class="scs-label">Skills applied</p>
+    <div class="skill-list" id="modalSkills"></div>
     <div class="media" id="modalMedia"></div>
     <p class="scs-label">Situation</p>
     <p class="scs-text" id="modalSituation"></p>
@@ -89,7 +91,8 @@ const CASE_STUDIES = [
     situation: "Cassette Systems' modular housing projects require two parallel workstreams: CA HCD-regulated manufacturing contracts and traditional general contracting.",
     challenge: "The two workstreams run on different rules and timelines, and letting them drift out of sync risks delays or compliance failures.",
     solution: "Built a dual-track project management structure that runs both workstreams in parallel with interacting timelines, keeping them synchronized.",
-    media: { type: "image", src: "img/merlin.png", alt: "Media library" }
+    skills: ["Regulatory compliance (CA HCD)", "Dual-track project management", "Cross-workstream synchronization", "Contracting operations"],
+    media: null
   },
   {
     slug: "hatch-escapes",
@@ -100,18 +103,20 @@ const CASE_STUDIES = [
     situation: "Wanted to build an escape room business with no existing playbook to follow, fully bootstrapped.",
     challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
     solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
-    media: { type: "image", src: "img/hatch.png", alt: "Media library" }
+    skills: ["Bootstrapped venture building", "Concept-to-launch execution", "Physical space design & construction", "End-to-end operations management"],
+    media: null
   },
   {
     slug: "aol-yahoo-consolidation",
     title: "AOL/Yahoo consolidation \u2192 RYOT integration",
     group: "enterprise",
     tags: ["org", "financial"],
-    summary: "Three-stage M&A consolidation combining AOL, Yahoo, and RYOT Studios. Delivered $10M in annual savings, and set the stage for rapid technical growth and the launch of an industry leading innovation lab.",
+    summary: "Two-stage consolidation delivering $10M in annual savings, then absorbing RYOT as a semi-autonomous innovation studio.",
     situation: "AOL and Yahoo's studio operations existed as separate organizations after the corporate merger, each with its own leadership, tools, and processes. RYOT joined later as an independent innovation studio.",
     challenge: "Duplicate infrastructure and reporting lines were driving unnecessary cost, and there was no consolidated leadership to run the combined organization \u2014 while RYOT's creative autonomy needed to survive whatever structure came next.",
     solution: "Consolidated AOL and Yahoo studio operations into one organization first, then integrated RYOT afterward as a semi-autonomous unit within that structure. Result: $10M in annual savings, roughly 35%.",
-    media: { type: "image", src: "img/integration.png", alt: "Media library" }
+    skills: ["Post-acquisition integration", "Organizational consolidation", "Cost reduction & budget management", "Change management"],
+    media: null
   },
   {
     slug: "ryot-greenlight-process",
@@ -122,6 +127,7 @@ const CASE_STUDIES = [
     situation: "RYOT needed a way to move projects from pitch to production without every decision becoming an ad hoc negotiation.",
     challenge: "No formal governance existed for how projects got approved, who had decision rights, or how conflicting priorities got resolved.",
     solution: "Designed and ran the greenlight process \u2014 the review structure, the decision rights, and the escalation path \u2014 that took projects from concept to approved production.",
+    skills: ["Governance process design", "Decision-rights framework design", "Escalation path design", "Stakeholder alignment"],
      media: { type: "image", src: "img/ryotflow.png", alt: "Media library" }
   },
   {
@@ -133,7 +139,8 @@ const CASE_STUDIES = [
     situation: "RYOT needed a motion capture and innovation lab, and Yahoo/Verizon needed a flagship 5G lab studio in Playa Vista \u2014 both from the ground up.",
     challenge: "Each build required technical infrastructure planning and vendor coordination under real timeline pressure, with no existing template to work from.",
     solution: "Led design, buildout, and vendor management for both facilities through to operational launch.",
-    media: { type: "image", src: "img/studio3.png", alt: "Media library" }
+    skills: ["Facility design & buildout", "Vendor management", "Capital project delivery", "Technical infrastructure planning"],
+    media: null
   },
   {
     slug: "mocap-previs-pipeline",
@@ -144,7 +151,8 @@ const CASE_STUDIES = [
     situation: "Motion capture data and previsualization output existed as disconnected steps in the production process.",
     challenge: "Directors and producers couldn't evaluate shots until well after the shoot, since live capture, previs, and review weren't linked.",
     solution: "Managed the team, funding, and procurement behind building the pipeline connecting live motion capture, real-time previsualization, and production review \u2014 letting creative decisions happen during the shoot instead of in post.",
-    media: { type: "image", src: "img/mocap.png", alt: "Media library" }
+    skills: ["Cross-functional team management", "Budget & funding management", "Procurement management", "Technical pipeline oversight"],
+    media: null
   },
   {
     slug: "yahoo-hiring-pipeline",
@@ -155,7 +163,8 @@ const CASE_STUDIES = [
     situation: "Yahoo Media Group needed to build a 300+ person hybrid workforce across four locations.",
     challenge: "No consistent process existed for sourcing, panel structure, or onboarding at that scale across Los Angeles, Silicon Valley, New York, and London.",
     solution: "Designed and ran the hiring pipeline in Monday.com that standardized sourcing, panels, and onboarding across all four locations.",
-    media: { type: "image", src: "img/monday.png", alt: "Media library" }
+    skills: ["Hiring process design", "Workflow tooling (Monday.com)", "Multi-site coordination", "Recruiting operations"],
+    media: null
   },
   {
     slug: "dam-systems-integration",
@@ -166,7 +175,8 @@ const CASE_STUDIES = [
     situation: "Media assets were stored locally, scattered across multiple studio sites with no shared system.",
     challenge: "The organization had no scalable way to manage, access, or protect assets across sites as production volume grew.",
     solution: "Deployed a distributed digital asset management system, migrating assets to off-premises, multi-site infrastructure.",
-    media: { type: "image", src: "img/dam.png", alt: "Media library" }
+    skills: ["Digital asset management (DAM)", "Systems integration", "Data migration planning", "Multi-site infrastructure management"],
+    media: null
   }
 ];
 
@@ -205,6 +215,7 @@ document.querySelectorAll(".chip").forEach(chip => {
 const overlay = document.getElementById("overlay");
 const modalTitle = document.getElementById("modal-title");
 const modalTags = document.getElementById("modalTags");
+const modalSkills = document.getElementById("modalSkills");
 const modalMedia = document.getElementById("modalMedia");
 const modalSituation = document.getElementById("modalSituation");
 const modalChallenge = document.getElementById("modalChallenge");
@@ -218,6 +229,7 @@ function openCase(slug, pushHash) {
   if (!cs) return;
   modalTitle.textContent = cs.title;
   modalTags.innerHTML = cs.tags.map(t => `<span class="tag" style="background:var(--tag-${t}-bg);color:var(--tag-${t}-text)">${TAG_LABELS[t]}</span>`).join("");
+  modalSkills.innerHTML = (cs.skills || []).map(s => `<span class="skill-pill">${s}</span>`).join("");
   modalSituation.textContent = cs.situation;
   modalChallenge.textContent = cs.challenge;
   modalSolution.textContent = cs.solution;

@@ -192,6 +192,11 @@ section.block { padding: 0 0 1.5rem; }
 }
 .modal .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .modal h2 { font-family: var(--font-voice); font-weight: 400; font-size: 19px; margin: 0 0 14px; padding-right: 2rem; }
+.skill-list { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.skill-pill {
+  font-size: 12px; padding: 4px 10px; border-radius: var(--radius);
+  background: var(--surface-1); border: 0.5px solid var(--border-strong); color: var(--text-secondary);
+}
 .modal .media {
   width: 100%; min-height: 160px; border-radius: var(--radius); background: var(--surface-1);
   border: 1px dashed var(--border-strong); display: flex; flex-direction: column;
