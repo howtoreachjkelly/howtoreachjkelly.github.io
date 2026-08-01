@@ -75,7 +75,7 @@ nav.site-nav .links a.active {
 /* ---------- page header ---------- */
 header.page-head { padding: 2rem 0 1rem; }
 header.page-head h1 { font-family: var(--font-voice); font-weight: 400; font-size: 32px; margin: 0 0 4px; }
-header.page-head p { font-size: 20px; color: var(--text-secondary); margin: 0; }
+header.page-head p { font-size: 15px; color: var(--text-secondary); margin: 0; line-height: 1.5; }
 
 /* ---------- hero (home page) ---------- */
 .hero { padding: 2.5rem 0 2rem; text-align: center; }
@@ -154,7 +154,7 @@ header.page-head p { font-size: 20px; color: var(--text-secondary); margin: 0; }
   flex-shrink: 0; border: 0.5px solid var(--border);
 }
 
-.section-label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin: 0 0 8px; }
+.section-label { font-size: 16px; font-weight: 700; color: var(--text-muted); margin: 0 0 8px; }
 .section-body { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; }
 .section-body + .section-body { margin-top: 1em; }
 
