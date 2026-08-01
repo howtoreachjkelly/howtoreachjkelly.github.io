@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <style>
-  /* Work-page-specific: grid needs extra bottom padding here that other pages using .grid don't need */
-  #grid { padding-bottom: 3rem; }
+  /* Work-page-specific: grids need extra bottom padding here that other pages using .grid don't need */
+  #gridEnterprise { padding-bottom: 3rem; }
 </style>
 </head>
 <body>
@@ -27,8 +27,8 @@
   </nav>
 
   <header class="page-head">
-    <h1>Selected experience</h1>
-    <p>Organized by the kind of infrastructure built - not by employer.</p>
+    <h1>Selected work</h1>
+    <p>Organized by the kind of infrastructure built — not by employer.</p>
   </header>
 
   <div class="chips" id="chips">
@@ -41,7 +41,15 @@
     <button class="chip" data-filter="founder">Founder-built</button>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <section class="block">
+    <p class="section-label">Entrepreneurial</p>
+    <div class="grid" id="gridEntrepreneurial"></div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">Enterprise</p>
+    <div class="grid" id="gridEnterprise"></div>
+  </section>
 </div>
 
 <div class="overlay" id="overlay" role="presentation">
@@ -73,68 +81,9 @@ const TAG_LABELS = {
 
 const CASE_STUDIES = [
   {
-    slug: "aol-yahoo-consolidation",
-    title: "AOL/Yahoo consolidation \u2192 RYOT integration",
-    tags: ["org", "financial"],
-    summary: "Two-stage consolidation delivering $10M in annual savings, then absorbing RYOT as a semi-autonomous innovation studio.",
-    situation: "AOL and Yahoo's studio operations existed as separate organizations after the corporate merger, each with its own leadership, tools, and processes. RYOT joined later as an independent innovation studio.",
-    challenge: "Duplicate infrastructure and reporting lines were driving unnecessary cost, and there was no consolidated leadership to run the combined organization \u2014 while RYOT's creative autonomy needed to survive whatever structure came next.",
-    solution: "Consolidated AOL and Yahoo studio operations into one organization first, then integrated RYOT afterward as a semi-autonomous unit within that structure. Result: $10M in annual savings, roughly 35%.",
-    media: null
-  },
-  {
-    slug: "ryot-greenlight-process",
-    title: "RYOT greenlight process",
-    tags: ["operational"],
-    summary: "The governance system for moving projects from concept through production approval.",
-    situation: "RYOT needed a way to move projects from pitch to production without every decision becoming an ad hoc negotiation.",
-    challenge: "No formal governance existed for how projects got approved, who had decision rights, or how conflicting priorities got resolved.",
-    solution: "Designed and ran the greenlight process \u2014 the review structure, the decision rights, and the escalation path \u2014 that took projects from concept to approved production.",
-     media: { type: "image", src: "img/ryotflow.png", alt: "Media library" }
-  },
-  {
-    slug: "studio-builds",
-    title: "Studio builds \u2014 RYOT & Yahoo Playa Vista",
-    tags: ["tech", "operational"],
-    summary: "Facility design and buildout for two flagship physical production spaces.",
-    situation: "RYOT needed a motion capture and innovation lab, and Yahoo/Verizon needed a flagship 5G lab studio in Playa Vista \u2014 both from the ground up.",
-    challenge: "Each build required technical infrastructure planning and vendor coordination under real timeline pressure, with no existing template to work from.",
-    solution: "Led design, buildout, and vendor management for both facilities through to operational launch.",
-    media: null
-  },
-  {
-    slug: "mocap-previs-pipeline",
-    title: "Real-time motion capture previsualization pipeline",
-    tags: ["tech", "org", "operational"],
-    summary: "Managed the team, funding, and procurement behind the technical pipeline connecting live motion capture, real-time previsualization, and production review for RYOT immersive shoots.",
-    situation: "Motion capture data and previsualization output existed as disconnected steps in the production process.",
-    challenge: "Directors and producers couldn't evaluate shots until well after the shoot, since live capture, previs, and review weren't linked.",
-    solution: "Managed the team, funding, and procurement behind building the pipeline connecting live motion capture, real-time previsualization, and production review \u2014 letting creative decisions happen during the shoot instead of in post.",
-    media: null
-  },
-  {
-    slug: "yahoo-hiring-pipeline",
-    title: "Yahoo Media Group hiring pipeline",
-    tags: ["operational", "org"],
-    summary: "Pipeline and process design supporting a 300+ person hybrid workforce build-out.",
-    situation: "Yahoo Media Group needed to build a 300+ person hybrid workforce across four locations.",
-    challenge: "No consistent process existed for sourcing, panel structure, or onboarding at that scale across Los Angeles, Silicon Valley, New York, and London.",
-    solution: "Designed and ran the hiring pipeline in Monday.com that standardized sourcing, panels, and onboarding across all four locations.",
-    media: null
-  },
-  {
-    slug: "dam-systems-integration",
-    title: "DAM / systems integration",
-    tags: ["tech"],
-    summary: "Distributed asset management deployment across multi-site studio operations.",
-    situation: "Media assets were stored locally, scattered across multiple studio sites with no shared system.",
-    challenge: "The organization had no scalable way to manage, access, or protect assets across sites as production volume grew.",
-    solution: "Deployed a distributed digital asset management system, migrating assets to off-premises, multi-site infrastructure.",
-    media: null
-  },
-  {
     slug: "cassette-housing-pm",
     title: "Cassette Systems \u2014 housing PM plan",
+    group: "entrepreneurial",
     tags: ["operational", "legal", "founder"],
     summary: "Dual-track management across HCD-regulated and general contracting workstreams.",
     situation: "Cassette Systems' modular housing projects require two parallel workstreams: CA HCD-regulated manufacturing contracts and traditional general contracting.",
@@ -145,17 +94,85 @@ const CASE_STUDIES = [
   {
     slug: "hatch-escapes",
     title: "Hatch Escapes \u2014 concept to execution",
+    group: "entrepreneurial",
     tags: ["founder", "operational"],
     summary: "Full arc from concept to physical build for an internationally ranked escape room, bootstrapped and fully owned.",
     situation: "Wanted to build an escape room business with no existing playbook to follow, fully bootstrapped.",
     challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
     solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
     media: null
+  },
+  {
+    slug: "aol-yahoo-consolidation",
+    title: "AOL/Yahoo consolidation \u2192 RYOT integration",
+    group: "enterprise",
+    tags: ["org", "financial"],
+    summary: "Two-stage consolidation delivering $10M in annual savings, then absorbing RYOT as a semi-autonomous innovation studio.",
+    situation: "AOL and Yahoo's studio operations existed as separate organizations after the corporate merger, each with its own leadership, tools, and processes. RYOT joined later as an independent innovation studio.",
+    challenge: "Duplicate infrastructure and reporting lines were driving unnecessary cost, and there was no consolidated leadership to run the combined organization \u2014 while RYOT's creative autonomy needed to survive whatever structure came next.",
+    solution: "Consolidated AOL and Yahoo studio operations into one organization first, then integrated RYOT afterward as a semi-autonomous unit within that structure. Result: $10M in annual savings, roughly 35%.",
+    media: null
+  },
+  {
+    slug: "ryot-greenlight-process",
+    title: "RYOT greenlight process",
+    group: "enterprise",
+    tags: ["operational"],
+    summary: "The governance system for moving projects from concept through production approval.",
+    situation: "RYOT needed a way to move projects from pitch to production without every decision becoming an ad hoc negotiation.",
+    challenge: "No formal governance existed for how projects got approved, who had decision rights, or how conflicting priorities got resolved.",
+    solution: "Designed and ran the greenlight process \u2014 the review structure, the decision rights, and the escalation path \u2014 that took projects from concept to approved production.",
+     media: { type: "image", src: "img/ryotflow.png", alt: "Media library" }
+  },
+  {
+    slug: "studio-builds",
+    title: "Studio builds \u2014 RYOT & Yahoo Playa Vista",
+    group: "enterprise",
+    tags: ["tech", "operational"],
+    summary: "Facility design and buildout for two flagship physical production spaces.",
+    situation: "RYOT needed a motion capture and innovation lab, and Yahoo/Verizon needed a flagship 5G lab studio in Playa Vista \u2014 both from the ground up.",
+    challenge: "Each build required technical infrastructure planning and vendor coordination under real timeline pressure, with no existing template to work from.",
+    solution: "Led design, buildout, and vendor management for both facilities through to operational launch.",
+    media: null
+  },
+  {
+    slug: "mocap-previs-pipeline",
+    title: "Real-time motion capture previsualization pipeline",
+    group: "enterprise",
+    tags: ["tech", "org", "operational"],
+    summary: "Managed the team, funding, and procurement behind the technical pipeline connecting live motion capture, real-time previsualization, and production review for RYOT immersive shoots.",
+    situation: "Motion capture data and previsualization output existed as disconnected steps in the production process.",
+    challenge: "Directors and producers couldn't evaluate shots until well after the shoot, since live capture, previs, and review weren't linked.",
+    solution: "Managed the team, funding, and procurement behind building the pipeline connecting live motion capture, real-time previsualization, and production review \u2014 letting creative decisions happen during the shoot instead of in post.",
+    media: null
+  },
+  {
+    slug: "yahoo-hiring-pipeline",
+    title: "Yahoo Media Group hiring pipeline",
+    group: "enterprise",
+    tags: ["operational", "org"],
+    summary: "Pipeline and process design supporting a 300+ person hybrid workforce build-out.",
+    situation: "Yahoo Media Group needed to build a 300+ person hybrid workforce across four locations.",
+    challenge: "No consistent process existed for sourcing, panel structure, or onboarding at that scale across Los Angeles, Silicon Valley, New York, and London.",
+    solution: "Designed and ran the hiring pipeline in Monday.com that standardized sourcing, panels, and onboarding across all four locations.",
+    media: null
+  },
+  {
+    slug: "dam-systems-integration",
+    title: "DAM / systems integration",
+    group: "enterprise",
+    tags: ["tech"],
+    summary: "Distributed asset management deployment across multi-site studio operations.",
+    situation: "Media assets were stored locally, scattered across multiple studio sites with no shared system.",
+    challenge: "The organization had no scalable way to manage, access, or protect assets across sites as production volume grew.",
+    solution: "Deployed a distributed digital asset management system, migrating assets to off-premises, multi-site infrastructure.",
+    media: null
   }
 ];
 
 // ---- Render cards ----
-const grid = document.getElementById("grid");
+const gridEntrepreneurial = document.getElementById("gridEntrepreneurial");
+const gridEnterprise = document.getElementById("gridEnterprise");
 CASE_STUDIES.forEach(cs => {
   const card = document.createElement("button");
   card.className = "card";
@@ -167,7 +184,8 @@ CASE_STUDIES.forEach(cs => {
     <p>${cs.summary}</p>
   `;
   card.addEventListener("click", () => openCase(cs.slug, true));
-  grid.appendChild(card);
+  const target = cs.group === "entrepreneurial" ? gridEntrepreneurial : gridEnterprise;
+  target.appendChild(card);
 });
 
 // ---- Filtering ----
