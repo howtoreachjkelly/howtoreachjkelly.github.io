@@ -92,7 +92,7 @@ const CASE_STUDIES = [
     challenge: "The two workstreams run on different rules and timelines, and letting them drift out of sync risks delays or compliance failures.",
     solution: "Built a dual-track project management structure that runs both workstreams in parallel with interacting timelines, keeping them synchronized.",
     skills: ["Regulatory compliance (CA HCD)", "Dual-track project management", "Cross-workstream synchronization", "Contracting operations"],
-    media: null
+    media: { type: "image", src: "img/merlin.png", alt: "Cassette Systems housing project" }
   },
   {
     slug: "hatch-escapes",
@@ -104,7 +104,7 @@ const CASE_STUDIES = [
     challenge: "Every part of the business \u2014 concept, design, physical construction, and day-to-day operations \u2014 had to be built from zero, with no outside funding.",
     solution: "Co-founded, designed, and built Lab Rat end-to-end, from initial concept through construction to operation \u2014 now ranked in the top ten globally in its category.",
     skills: ["Bootstrapped venture building", "Concept-to-launch execution", "Physical space design & construction", "End-to-end operations management"],
-    media: null
+    media: { type: "image", src: "img/hatch.png", alt: "Hatch Escapes escape room" }
   },
   {
     slug: "aol-yahoo-consolidation",
@@ -248,7 +248,7 @@ function openCase(slug, pushHash) {
     modalMedia.innerHTML = `<i class="ti ti-photo" style="font-size:26px;" aria-hidden="true"></i><span>Photo or diagram placeholder</span>`;
   }
 
-  modalFooterNote.textContent = cs.slug === "ryot-greenlight-process" ? "" : "Supporting materials coming soon...";
+  modalFooterNote.textContent = cs.media ? "" : "Supporting materials coming soon...";
 
   overlay.classList.add("open");
   if (pushHash) {
