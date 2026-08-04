@@ -59,9 +59,9 @@ body {
 .wrap { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
 a { color: inherit; }
 
-/* ---------- site logo (left-aligned above nav) ---------- */
-.site-logo { display: flex; justify-content: flex-start; padding-top: 1rem; }
-.site-logo img { height: 36px; width: auto; display: block; }
+/* ---------- site logo (bottom, centered) ---------- */
+.logo-footer { display: flex; justify-content: center; padding: 1.5rem 0; }
+.logo-footer img { height: 36px; width: auto; display: block; }
 
 /* ---------- nav ---------- */
 nav.site-nav {
