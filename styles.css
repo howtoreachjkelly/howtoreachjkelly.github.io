@@ -65,7 +65,7 @@ nav.site-nav {
   padding: 1rem 0; border-bottom: 0.5px solid var(--border);
 }
 nav.site-nav .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; color: var(--text-primary); text-decoration: none; }
-nav.site-nav .brand-logo { height: 22px; width: auto; display: block; }
+nav.site-nav .brand-logo { width: 70px; height: auto; display: block; }
 nav.site-nav .links { display: flex; gap: 22px; font-size: 13px; }
 nav.site-nav .links a { color: var(--text-secondary); text-decoration: none; }
 nav.site-nav .links a.active {
