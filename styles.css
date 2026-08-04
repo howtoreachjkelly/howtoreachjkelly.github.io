@@ -64,7 +64,8 @@ nav.site-nav {
   display: flex; justify-content: space-between; align-items: center;
   padding: 1rem 0; border-bottom: 0.5px solid var(--border);
 }
-nav.site-nav .brand { font-weight: 600; font-size: 15px; color: var(--text-primary); text-decoration: none; }
+nav.site-nav .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; color: var(--text-primary); text-decoration: none; }
+nav.site-nav .brand-logo { height: 22px; width: auto; display: block; }
 nav.site-nav .links { display: flex; gap: 22px; font-size: 13px; }
 nav.site-nav .links a { color: var(--text-secondary); text-decoration: none; }
 nav.site-nav .links a.active {
@@ -79,6 +80,7 @@ header.page-head p { font-size: 15px; color: var(--text-secondary); margin: 0; l
 
 /* ---------- hero (home page) ---------- */
 .hero { padding: 2.5rem 0 2rem; text-align: center; }
+.hero-logo { height: 64px; width: auto; margin: 0 auto 20px; display: block; }
 .hero-kicker { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
 .hero-title {
   font-family: var(--font-voice); font-size: 34px; line-height: 1.3;
