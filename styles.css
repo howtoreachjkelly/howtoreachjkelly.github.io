@@ -46,6 +46,10 @@
     --tag-operational-bg: #4A4945; --tag-operational-text: #D8D6D0;
     --tag-media-bg: #085041;     --tag-media-text: #9FE1CB;
   }
+
+  /* AI Safety page: Positioning section paragraphs go white in dark mode only */
+  #positioning .section-body { color: #ffffff; }
+  #positioning .section-body strong { font-weight: 700; }
 }
 
 /* ---------- base ---------- */
