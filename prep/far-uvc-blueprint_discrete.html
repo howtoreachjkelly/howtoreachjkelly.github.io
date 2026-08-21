@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Far-UVC Blueprint — Reference Notes</title>
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --ink:#1C2230;
+    --ink-soft:#4B5266;
+    --line:#D8D2C2;
+    --uv:#3E2F7A;
+    --uv-bright:#6B54D6;
+    --uv-glow:#B7A6FF;
+    --amber:#B8863B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, sans-serif;
+    line-height:1.6;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  .spectrum{
+    position:relative;
+    height:10px;
+    border-radius:6px;
+    background:linear-gradient(90deg,
+      #150a33 0%, #2c1a6b 12%, var(--uv) 24%, var(--uv-bright) 38%,
+      #8f7de8 50%, #c9bdf5 62%, #eae4ff 74%, #fdf6e3 88%, #fff 100%);
+  }
+  .spectrum .mark{
+    position:absolute; top:-22px; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    color:var(--ink-soft); transform:translateX(-50%); white-space:nowrap;
+  }
+  .spectrum .mark::after{
+    content:""; position:absolute; left:50%; top:22px; width:1px; height:8px; background:var(--line);
+  }
+  .spectrum-wrap{margin:2.4rem 0 3rem 0; padding-top:22px;}
+
+  main{max-width:760px; margin:0 auto; padding:3.5rem 1.5rem 6rem 1.5rem;}
+
+  .kicker{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--uv-bright); margin-bottom:.6rem;
+  }
+  h1{
+    font-family:"Source Serif 4", serif; font-size:2.1rem; font-weight:700;
+    margin:0 0 1.2rem 0; line-height:1.15;
+  }
+  h3{
+    font-family:"Source Serif 4", serif; font-size:1.25rem; font-weight:600;
+    margin:2rem 0 .6rem 0;
+  }
+  h4{ margin:1.4rem 0 .4rem 0; }
+  p{margin:0 0 1rem 0;}
+  .lede{font-size:1.1rem; color:var(--ink-soft); font-style:italic; font-family:"Source Serif 4",serif; margin-bottom:2rem;}
+
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line); margin:1.6rem 0 2rem 0;
+  }
+  .stat{background:var(--paper); padding:1.1rem 1rem;}
+  .stat .n{font-family:"IBM Plex Mono",monospace; font-size:1.5rem; font-weight:500; color:var(--uv);}
+  .stat .l{font-size:.78rem; color:var(--ink-soft); margin-top:.2rem;}
+
+  .flag{
+    background:#FBF1E4; border:1px solid #E5C98A; border-left:3px solid var(--amber);
+    padding:1rem 1.2rem; margin:1.6rem 0; font-size:.92rem;
+  }
+  .flag .label{font-family:"IBM Plex Mono",monospace; font-size:.72rem; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--amber); margin-bottom:.4rem; font-weight:600;}
+
+  ul.rec{margin:.8rem 0 1.2rem 0; padding-left:0; list-style:none; counter-reset:rec;}
+  ul.rec li{
+    counter-increment:rec; padding:.7rem 0 .7rem 2.4rem; position:relative;
+    border-bottom:1px solid var(--line); font-size:.95rem;
+  }
+  ul.rec li::before{
+    content:counter(rec); position:absolute; left:0; top:.65rem;
+    font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--uv-bright);
+    width:1.8rem; text-align:right;
+  }
+
+  .source-tag{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+    color:var(--ink-soft); margin-top:.3rem;
+  }
+  .source-tag a{color:var(--uv); }
+
+  footer.doc-end{
+    max-width:760px; margin:2rem auto 0 auto; padding-top:2rem; border-top:1px solid var(--line);
+    font-size:.8rem; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;
+  }
+
+  @media (max-width:900px){
+    main{padding:2rem 1.2rem 4rem 1.2rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  @media print{
+    @page{ margin: 0.65in; }
+    *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body{ background:#fff; }
+    main{ padding:0; }
+    h1{ font-size:1.6rem; page-break-after:avoid; }
+    h3, h4{ page-break-after:avoid; }
+    .flag, .stat-grid{ page-break-inside:avoid; break-inside:avoid; }
+    .spectrum-wrap{ page-break-inside:avoid; }
+    a{ color:inherit; text-decoration:none; }
+    .source-tag a{ text-decoration:underline; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Reference notes · split from the Blueprint Biosecurity call-prep dossier</div>
+  <h1>The Far-UVC Blueprint</h1>
+  <p class="lede">Updated against the real executive summary and recommendations document — the earlier version of this section undersold both the risk case and the recommendation structure.</p>
+
+  <div class="spectrum-wrap">
+    <div class="spectrum">
+      <span class="mark" style="left:8%">Vacuum UV</span>
+      <span class="mark" style="left:24%">Far-UVC (200–230nm)</span>
+      <span class="mark" style="left:45%">Conventional GUV (254nm)</span>
+      <span class="mark" style="left:70%">UV-A</span>
+      <span class="mark" style="left:92%">Visible</span>
+    </div>
+  </div>
+
+  <p>Far-UVC is a shorter-wavelength form of germicidal ultraviolet light. Because it's absorbed almost entirely by the outer, non-living layer of skin and eyes, it doesn't penetrate to living tissue the way conventional germicidal UV does — which is why it can, in principle, run continuously in occupied rooms rather than only when spaces are empty. Nearly two years of literature synthesis plus over 100 expert interviews across photobiology, atmospheric chemistry, indoor air quality, building science, and public health went into the report. Lead author is Senior Fellow Richard Williamson.</p>
+
+  <h3>Why they're framing this as urgent</h3>
+  <p>The report opens with a fairly stark risk case, not just a technology pitch. COVID-19 is cited at roughly 27 million deaths; tuberculosis kills 1.6 million people a year; roughly a billion people are infected with influenza annually. On top of that baseline, the report names two categories of drivers pushing pandemic risk in the wrong direction: climate change, factory farming, and habitat encroachment more than doubling the odds of a pathogen jumping from animals to humans — and, stated directly and without hedging, <strong>rapid advances in AI and synthetic biology increasing vulnerability to malicious actors and engineered pandemics.</strong> The report cites expert estimates of roughly a 1-in-8 chance of a pandemic killing over 90 million people by 2050 — three times COVID's toll.</p>
+
+  <div class="flag">
+    <div class="label">Relevant to the positioning question</div>
+    This isn't a soft, secondary gesture toward AI risk — it's in the second paragraph of the executive summary, stated as one of two named drivers of rising pandemic risk. It's still not the organization's operating focus day to day (their actual work is photobiology and air chemistry, not AI), but it's a more direct and more central connection than the earlier version of this dossier gave it credit for. Worth recalibrating how you'd answer "why biosecurity, given your AI safety background" accordingly — you have more to point to here than a stretch.
+  </div>
+
+  <h3>Where far-UVC fits against existing tools</h3>
+  <p>The report is explicit that far-UVC isn't meant to replace vaccines, PPE, or ventilation — each has real limitations it's positioned to address. Vaccines take too long to develop and distribute for a fast-moving outbreak. PPE depends on individual compliance, which erodes over time. Ventilation and filtration are proven but often can't hit the clean-air targets the ASHRAE 241 standard calls for without disruptive noise, drafts, or energy cost — the report gives a concrete example: a restaurant would need roughly 60 additional cubic feet per minute of clean airflow per person to meet that standard, comparable to an operating theater. Conventional upper-room UV works but doesn't scale well, since it requires expert installation and keeping people out of the direct beam. Far-UVC's pitch is that it can hit those clean-air targets passively, without depending on anyone's behavior.</p>
+
+  <h3>The cost-effectiveness case (still preliminary, by their own admission)</h3>
+  <div class="stat-grid">
+    <div class="stat"><div class="n">10:1</div><div class="l">ROI estimate for ASHRAE 241-level air cleaning, seasonal illness only</div></div>
+    <div class="stat"><div class="n">30–290x</div><div class="l">Benefit-cost ratio, Swiss indoor public space analysis</div></div>
+    <div class="stat"><div class="n">~1,000%</div><div class="l">Annual ROI, conventional UVC in aircraft cabins</div></div>
+    <div class="stat"><div class="n">~$100M</div><div class="l">Public/philanthropic funding they estimate is needed over 5 years</div></div>
+  </div>
+  <p>The report is careful to flag that these are early, imperfect analyses — the aircraft cabin figure is for conventional UVC, not far-UVC specifically, and is offered as a proxy, not a direct estimate. They frame the $100M five-year ask as comparable to routine biomedical research funding, explicitly <em>not</em> Apollo-Program or Operation-Warp-Speed scale — a modest, credibility-conscious framing worth noting since it says something about how they think about their own fundraising positioning.</p>
+
+  <h3>The actual recommendation structure — 12 recommendations, three tiers</h3>
+  <p>The earlier version of this dossier only surfaced 4 recommendations. There are 12, organized in three tiers by urgency:</p>
+
+  <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright);">Tier 1 — Four urgent research priorities</h4>
+  <ul class="rec">
+    <li>Establish how installations need to be designed to actually suppress transmission (dose-response by pathogen, room geometry modeling, environmental variables like humidity).</li>
+    <li>Identify how far-UVC's biological effects differ mechanistically from solar UV and conventional GUV, to properly ground safe exposure limits.</li>
+    <li>Understand and mitigate unintended air quality effects — ozone generation is the central concern.</li>
+    <li>Obtain high-quality real-world effectiveness evidence — ideally cluster-randomized trials, though the report notes ventilation itself became standard practice without one.</li>
+  </ul>
+
+  <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright);">Tier 2 — Five recommendations for facilitating adoption at scale</h4>
+  <ul class="rec">
+    <li>Create simple, research-backed deployment guidance that public health agencies and trusted institutions can actually communicate.</li>
+    <li>Improve consensus standards (ASHRAE 241, several UL and IEC standards) — several are outdated or weren't written with far-UVC's properties in mind.</li>
+    <li>Ensure installations follow standards as part of a layered approach alongside ventilation and filtration, not as a replacement for them.</li>
+    <li>Improve performance and affordability of emitters — krypton chloride excimer lamps dominate today; cost per mW is the key metric, and scale alone should drive it down.</li>
+    <li>Create cost-benefit analysis frameworks decision-makers can actually use, starting with high-risk settings like healthcare and schools.</li>
+  </ul>
+
+  <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright);">Tier 3 — Three longer-term research agenda items</h4>
+  <ul class="rec">
+    <li>Long-term safety studies in diverse populations under chronic exposure.</li>
+    <li>Study far-UVC's effects on common building materials, cosmetics, clothing, and plants.</li>
+    <li>Build deeper mechanistic understanding of how far-UVC actually inactivates pathogens — useful groundwork for future biosensors.</li>
+  </ul>
+
+  <p>One nuance worth being able to speak to: the report's own scope note says it covers only <em>long-range</em> airborne transmission suppression — near-field protection, surface disinfection, and short-range transmission are flagged as promising but out of scope for this version, with a future update expected to cover them.</p>
+
+  <span class="source-tag">Source: Blueprint for Far-UVC — Executive Summary &amp; Recommendations, v1 (2025), DOI 10.64046/5j7b3nac. Full report: <a href="https://blueprintbiosecurity.org/works/blueprint-for-far-uvc/">blueprintbiosecurity.org/works/blueprint-for-far-uvc</a></span>
+
+  <footer class="doc-end">
+    Split from the main Blueprint Biosecurity call-prep dossier, August 2026. Cross-references — the positioning flag above, and the "built environment" fit argument — live in the main dossier's sections 07 and 08.
+  </footer>
+</main>
+</body>
+</html>

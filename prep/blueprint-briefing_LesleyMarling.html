@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blueprint Biosecurity — Briefing Dossier</title>
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --ink:#1C2230;
+    --ink-soft:#4B5266;
+    --line:#D8D2C2;
+    --uv:#3E2F7A;
+    --uv-bright:#6B54D6;
+    --uv-glow:#B7A6FF;
+    --amber:#B8863B;
+    --tab-w:280px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, sans-serif;
+    line-height:1.6;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  /* ---------- spectrum signature bar ---------- */
+  .spectrum{
+    position:relative;
+    height:10px;
+    border-radius:6px;
+    background:linear-gradient(90deg,
+      #150a33 0%, #2c1a6b 12%, var(--uv) 24%, var(--uv-bright) 38%,
+      #8f7de8 50%, #c9bdf5 62%, #eae4ff 74%, #fdf6e3 88%, #fff 100%);
+  }
+  .spectrum .mark{
+    position:absolute; top:-22px; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    color:var(--ink-soft); transform:translateX(-50%); white-space:nowrap;
+  }
+  .spectrum .mark::after{
+    content:""; position:absolute; left:50%; top:22px; width:1px; height:8px; background:var(--line);
+  }
+  .spectrum-wrap{margin:2.4rem 0 3rem 0; padding-top:22px;}
+
+  /* ---------- layout ---------- */
+  .shell{display:flex; max-width:1280px; margin:0 auto;}
+  nav.toc{
+    width:var(--tab-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:2.4rem 1.6rem 2rem 2.2rem;
+    border-right:1px solid var(--line);
+  }
+  nav.toc .kicker{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--uv-bright); margin-bottom:.4rem;
+  }
+  nav.toc h1{
+    font-family:"Source Serif 4", serif; font-size:1.5rem; font-weight:700;
+    margin:0 0 .3rem 0; line-height:1.15;
+  }
+  nav.toc .subtitle{color:var(--ink-soft); font-size:.85rem; margin-bottom:1.8rem;}
+  nav.toc ol{list-style:none; margin:0; padding:0; counter-reset:sec;}
+  nav.toc li{counter-increment:sec; margin-bottom:.15rem;}
+  nav.toc a{
+    display:flex; gap:.6rem; align-items:baseline; text-decoration:none; color:var(--ink);
+    padding:.5rem .5rem; border-radius:4px; font-size:.92rem;
+  }
+  nav.toc a::before{
+    content:counter(sec,decimal-leading-zero); font-family:"IBM Plex Mono",monospace;
+    font-size:.75rem; color:var(--uv-bright); flex-shrink:0;
+  }
+  nav.toc a:hover{background:rgba(107,84,214,.08);}
+  nav.toc a.active{background:rgba(107,84,214,.12); font-weight:500;}
+  nav.toc .meta{
+    margin-top:2rem; padding-top:1.2rem; border-top:1px solid var(--line);
+    font-size:.78rem; color:var(--ink-soft);
+  }
+
+  main{flex:1; min-width:0; padding:3rem 4rem 6rem 4rem;}
+  section{max-width:760px; margin:0 auto 5rem auto; scroll-margin-top:2rem;}
+  section:first-of-type{margin-top:0;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--uv-bright); margin-bottom:.6rem;
+  }
+  h2{
+    font-family:"Source Serif 4", serif; font-size:2rem; font-weight:700;
+    margin:0 0 1.2rem 0; line-height:1.15;
+  }
+  h3{
+    font-family:"Source Serif 4", serif; font-size:1.25rem; font-weight:600;
+    margin:2rem 0 .6rem 0;
+  }
+  p{margin:0 0 1rem 0;}
+  .lede{font-size:1.1rem; color:var(--ink-soft); font-style:italic; font-family:"Source Serif 4",serif;}
+
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line); margin:1.6rem 0 2rem 0;
+  }
+  .stat{background:var(--paper); padding:1.1rem 1rem;}
+  .stat .n{font-family:"IBM Plex Mono",monospace; font-size:1.5rem; font-weight:500; color:var(--uv);}
+  .stat .l{font-size:.78rem; color:var(--ink-soft); margin-top:.2rem;}
+
+  .card{
+    border:1px solid var(--line); border-left:3px solid var(--uv-bright);
+    padding:1.2rem 1.4rem; margin:1.2rem 0; background:rgba(255,255,255,.35);
+  }
+  .card h4{margin:0 0 .3rem 0; font-family:"Source Serif 4",serif; font-size:1.05rem;}
+  .card .role{
+    font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--uv-bright);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:.5rem;
+  }
+  .card p{font-size:.92rem; color:var(--ink-soft); margin:0;}
+
+  .people-note{
+    font-size:.85rem; background:rgba(107,84,214,.08); border:1px solid rgba(107,84,214,.25);
+    padding:.9rem 1.1rem; border-radius:4px; margin-bottom:1.6rem;
+  }
+
+  table{width:100%; border-collapse:collapse; margin:1.4rem 0; font-size:.92rem;}
+  th{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:.72rem; text-transform:uppercase;
+     letter-spacing:.06em; color:var(--ink-soft); padding:.5rem .6rem; border-bottom:2px solid var(--ink);}
+  td{padding:.6rem .6rem; border-bottom:1px solid var(--line); vertical-align:top;}
+
+  ul.rec{margin:.8rem 0 1.2rem 0; padding-left:0; list-style:none; counter-reset:rec;}
+  ul.rec li{
+    counter-increment:rec; padding:.7rem 0 .7rem 2.4rem; position:relative;
+    border-bottom:1px solid var(--line); font-size:.95rem;
+  }
+  ul.rec li::before{
+    content:counter(rec); position:absolute; left:0; top:.65rem;
+    font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--uv-bright);
+    width:1.8rem; text-align:right;
+  }
+
+  .source-tag{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+    color:var(--ink-soft); margin-top:.3rem;
+  }
+  .source-tag a{color:var(--uv); }
+
+  blockquote{
+    margin:1.2rem 0; padding:.2rem 0 .2rem 1.2rem; border-left:2px solid var(--uv-bright);
+    font-family:"Source Serif 4",serif; font-style:italic; color:var(--ink-soft); font-size:1rem;
+  }
+
+  .divider{border:none; border-top:1px solid var(--line); margin:2.4rem 0;}
+
+  .flag{
+    background:#FBF1E4; border:1px solid #E5C98A; border-left:3px solid var(--amber);
+    padding:1rem 1.2rem; margin:1.6rem 0; font-size:.92rem;
+  }
+  .flag .label{font-family:"IBM Plex Mono",monospace; font-size:.72rem; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--amber); margin-bottom:.4rem; font-weight:600;}
+
+  .q-list{margin:1rem 0; padding-left:0; list-style:none;}
+  .q-list li{padding:.6rem 0 .6rem 0; border-bottom:1px solid var(--line);}
+  .q-list li:last-child{border-bottom:none;}
+
+  footer.doc-end{
+    max-width:760px; margin:0 auto; padding-top:2rem; border-top:1px solid var(--line);
+    font-size:.8rem; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;
+  }
+
+  @media (max-width:900px){
+    .shell{flex-direction:column;}
+    nav.toc{width:100%; height:auto; position:relative; border-right:none; border-bottom:1px solid var(--line);}
+    main{padding:2rem 1.4rem 4rem 1.4rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  /* ---------- print ---------- */
+  @media print{
+    @page{ margin: 0.65in; }
+    *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body{ background:#fff; }
+    nav.toc{ display:none !important; }
+    .shell{ display:block; max-width:none; }
+    main{ padding:0; }
+    section{ max-width:none; margin:0 0 1.8rem 0; page-break-inside:avoid; break-inside:avoid; }
+    section:has(> .stat-grid), section:has(> table){ page-break-inside:auto; break-inside:auto; }
+    h2{ font-size:1.5rem; page-break-after:avoid; }
+    h3, h4{ page-break-after:avoid; }
+    .card, .flag, table, .stat-grid{ page-break-inside:avoid; break-inside:avoid; }
+    .spectrum-wrap{ page-break-inside:avoid; }
+    a{ color:inherit; text-decoration:none; }
+    .source-tag a{ text-decoration:underline; }
+    footer.doc-end{ page-break-before:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="toc" aria-label="Table of contents">
+    <div class="kicker">Call prep · Tuesday</div>
+    <h1>Blueprint Biosecurity</h1>
+    <div class="subtitle">Managing Director role — briefing dossier</div>
+    <ol>
+      <li><a href="#overview">Organization overview</a></li>
+      <li><a href="#people">Who you'd manage</a></li>
+      <li><a href="#programs">The three programs</a></li>
+      <li><a href="#policy">Government affairs</a></li>
+      <li><a href="#financials">Financials, 2025</a></li>
+      <li><a href="#priorities">Priorities for 2026</a></li>
+      <li><a href="#notes">Your own read + outside perspective</a></li>
+      <li><a href="#lesley">Meeting Lesley Marling</a></li>
+      <li><a href="#prep">Your own prep</a></li>
+      <li><a href="#manager-framing">Framing yourself as a manager</a></li>
+    </ol>
+    <div class="meta">
+      Built from Blueprint's own site and 2025 Annual Report, plus third-party sources (Founders Pledge, LongtermWiki). Links to originals are given throughout — this is a condensed briefing, not a replacement for the primary documents.
+    </div>
+  </nav>
+
+  <main>
+
+    <section id="overview">
+      <div class="eyebrow">01 — Snapshot</div>
+      <h2>What Blueprint Biosecurity is</h2>
+      <p class="lede">A nonprofit trying to make sure the next outbreak doesn't become the next pandemic — by building physical, deployable defenses, not by working on surveillance or AI policy.</p>
+
+      <p>Founded in 2023 by Jake Swett, Blueprint is a 501(c)(3) working on practical, pathogen-agnostic countermeasures: things that work regardless of what the next pathogen turns out to be. Swett started the organization directly out of his work shaping the Apollo Program for Biodefense, a post-COVID report for the Bipartisan Commission on Biodefense that laid out a broad plan for overhauling America's pandemic defenses. Blueprint exists to carry pieces of that agenda forward.</p>
+
+      <p>The organization's method is distinctive and worth understanding before the call: they pick a small number of underdeveloped but promising technologies, build the evidence base through funded research, and package findings into a "Blueprint" — a public roadmap aimed at researchers, funders, and policymakers. It's a translation function as much as a research function.</p>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="n">2023</div><div class="l">Founded</div></div>
+        <div class="stat"><div class="n">16–17</div><div class="l">Full-time staff (2025)</div></div>
+        <div class="stat"><div class="n">$17.5M+</div><div class="l">Raised in 2025</div></div>
+        <div class="stat"><div class="n">$95M+</div><div class="l">Awarded to date (site total)</div></div>
+        <div class="stat"><div class="n">22</div><div class="l">Grants/projects launched, 2025</div></div>
+        <div class="stat"><div class="n">DC</div><div class="l">HQ: 1775 Eye St NW</div></div>
+      </div>
+
+      <p>Three program areas make up all of Blueprint's technical work: <strong>PPE</strong> (reusable respirators for critical workers), <strong>Far-UVC</strong> (a germicidal light technology for continuous indoor air disinfection), and a newer <strong>Built Environment Transmission Suppression (BETS)</strong> bucket that includes glycol vapors and other near-term deployable tools. A government affairs function, launched in 2025, sits alongside these to move findings into federal policy.</p>
+      <span class="source-tag">Sources: <a href="https://blueprintbiosecurity.org/about/">blueprintbiosecurity.org/about</a>, 2025 Annual Report</span>
+    </section>
+
+    <section id="people">
+      <div class="eyebrow">02 — The org chart that matters for this role</div>
+      <h2>Who you'd actually be managing</h2>
+      <div class="people-note">The JD describes managing "5–7 directors." Based on the current team page, that group is almost certainly some combination of the four program/function directors below, possibly plus the Senior Fellow. Worth confirming directly on the call rather than assuming.</div>
+
+      <div class="card">
+        <div class="role">Executive Director &amp; Founder — your manager</div>
+        <h4>Jake Swett</h4>
+        <p>PhD in nanotechnology (Oxford); physics and applied math background. Came out of the Apollo Program for Biodefense work, co-founded biosecurity research nonprofit altLabs before this, and was a research scientist at Lockheed Martin's Advanced Technology Center. Technical, research-oriented founder — worth calibrating how much of the "coherent portfolio" work he wants to own directly versus delegate to you.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Chief Operating Officer — your closest partner</div>
+        <h4>Siobhan Brenton</h4>
+        <p>Came from Rethink Charity, where she built out their fiscal sponsorship program. Background in nutritional biochemistry and international public health, not straight operations — an EA/nonprofit-ecosystem hire rather than a corporate-ops one. Owns HR, finance, comms infrastructure, and stakeholder development. The JD's "partner closely with the COO" is likely centered on this relationship.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">PPE Program Director</div>
+        <h4>Victoria Slaughter</h4>
+        <p>Cell/molecular biologist by training, six years as an R&amp;D scientist (most recently at Biomilq). Scientist-turned-program-lead, not a career program manager.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Far-UVC / Built Environment Program Director</div>
+        <h4>Brian Renda</h4>
+        <p>PhD in Cell &amp; Molecular Biology (UT Austin), nine years at Ginkgo Bioworks including a stint as Director of Corporate Development doing M&amp;A across industrial biotech, biopharma, AI, and ag-biologics. The most commercially/deal-experienced director on the team.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Government Affairs Director</div>
+        <h4>Sabah Ghulamali</h4>
+        <p>A decade in public health and biosecurity policy: HHS senior advisor, Senate HELP Committee staffer who worked on the PREVENT Pandemics Act and related legislation, prior stint at CDC. Runs the newest function at the organization (launched 2025) and the one with the most direct line to the JD's "represent Blueprint with policymakers" language.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Communications Director</div>
+        <h4>Sami Leonardo</h4>
+        <p>Healthcare/biotech communications background, including a HHS presidential appointment as Press Secretary for the COVID-19 Joint Information Center, and earlier healthcare policy work at the RNC.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Senior Fellow — subject-matter input across programs</div>
+        <h4>Richard Williamson</h4>
+        <p>Strategy consulting and supply-chain background (led sourcing teams at major UK supermarkets before biosecurity), most recently Head of Technical Operations at biotech startup Alvea. Lead author of the Far-UVC Blueprint. Not a line director, but functionally influential across programs.</p>
+      </div>
+
+      <span class="source-tag">Source: <a href="https://blueprintbiosecurity.org/about/">blueprintbiosecurity.org/about</a> (full bios, July 2026 update)</span>
+    </section>
+
+    <section id="programs">
+      <div class="eyebrow">03 — Portfolio</div>
+      <h2>The three programs, condensed</h2>
+
+      <h3>PPE — reusable respirators for critical workers</h3>
+      <p>The 2025 focus was validating assumptions about elastomeric half-mask respirator (EHMR) effectiveness through a hands-on engineering partnership with Amodo Design. Early findings were more behavioral than technical: without training, a meaningful share of users put the respirators on backwards; training affected pass/fail rates on fit tests more than the equipment itself; and a good fit test doesn't reliably predict a good fit later. Completed 100+ fit and user-experience tests. 2026 plans center on RFPs examining filtration efficiency loss and the needs of critical infrastructure workers.</p>
+
+      <h3>Far-UVC — continuous air disinfection</h3>
+      <p>This is Blueprint's flagship and best-known program. 2025's central event was publishing the Blueprint for Far-UVC after nearly two years of literature review and expert interviews — a shift from "synthesizing the research" to "actively building the field" through 13 funded grants and 11 conference presentations. The team's own framing of where things stand: efficacy in controlled settings is now well-supported, but the open question has moved from "does it work" to "can lab results translate into deployment decision-makers actually trust during a crisis." 2026 work centers on early results from named studies (EXHALE, DEMIST, and an AIR Facility tuberculosis-transmission study in South Africa) feeding into a clinical trial protocol.</p>
+
+      <h3>Built Environment Transmission Suppression (BETS) — the newer, broader bucket</h3>
+      <p>A 2025 addition covering portable air cleaners, upper-room germicidal UV, and — as the most novel piece — glycol vapors, an older and under-studied airborne disinfection approach. The team's honest self-assessment: adoption of even the established tools (air cleaners, upper-room GUV) is constrained more by cost, maintenance, and low public awareness than by whether the technology works, and regulatory uncertainty and public perception matter as much as technical performance across the board. 2026 will bring grantee announcements across five technical areas of glycol vapor research (triethylene, propylene, dipropylene glycol).</p>
+
+      <span class="source-tag">Source: Blueprint Biosecurity 2025 Annual Report, Program Highlights sections</span>
+
+      <h3>Where the energy has actually gone</h3>
+      <p>Far-UVC has been the center of gravity since founding — it's the flagship publication, the thing Blueprint is best known for externally, and it got by far the most 2025 output: 13 funded grants, the published Blueprint, 11 conference presentations. PPE is the operationally mature second program: only 1 of 3 scoped grants actually launched in 2025, but the Amodo Design partnership produced 100+ completed fit tests and became the direct evidence base behind the appropriations wins. BETS/glycol is the newest and smallest so far — 2025 was scoping and literature work, with grantee announcements not landing until 2026 across five technical areas.</p>
+      <table>
+        <tr><th>Program</th><th>2025 output</th><th>Stage</th></tr>
+        <tr><td>Far-UVC</td><td>13 grants, 1 flagship report, 11 conference talks</td><td>Most mature, highest external visibility</td></tr>
+        <tr><td>PPE</td><td>1 of 3 grants launched, 100+ fit tests</td><td>Operationally mature, policy traction</td></tr>
+        <tr><td>BETS / Glycol</td><td>Scoping only; grantees announced 2026</td><td>Earliest stage, 2026 growth bet</td></tr>
+      </table>
+      <p>If this role carries real discretion over resourcing, that's a live tension worth naming out loud rather than assuming: does the org keep concentrating energy in far-UVC because it's furthest along and best-known, or does BETS need a deliberate push precisely <em>because</em> it's earliest-stage and most likely to stall without attention.</p>
+    </section>
+
+    <section id="policy">
+      <div class="eyebrow">04 — Newest function, fastest growth</div>
+      <h2>Government affairs</h2>
+      <p>Launched in 2025 as a deliberate move to convert Blueprint's technical evidence into durable federal funding and policy pathways. It started narrow — PPE only, because that work was furthest along and had the clearest policy ask — with the stated intent to expand into far-UVC and BETS policy in 2026.</p>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="n">57</div><div class="l">Congressional office meetings since March 2025</div></div>
+        <div class="stat"><div class="n">19</div><div class="l">Executive branch briefings/meetings</div></div>
+        <div class="stat"><div class="n">25+</div><div class="l">Cross-sector partnerships established</div></div>
+        <div class="stat"><div class="n">6</div><div class="l">Mentions of reusable respirators across House/Senate appropriations bills</div></div>
+      </div>
+
+      <p>The concrete win to know: language on the importance of reusable respirators made it into the Agriculture appropriations bill, which has passed and is now law, with health-related appropriations bills expected to follow. Blueprint also organized a multi-signatory letter to the Administration on reusable respirators. This is a fast-scaling function with real, recent legislative traction — likely one of the areas where "connect work across teams" in the JD shows up concretely, since policy asks depend on evidence the program teams generate.</p>
+      <span class="source-tag">Source: 2025 Annual Report, Government Affairs Highlights</span>
+    </section>
+
+    <section id="financials">
+      <div class="eyebrow">05 — Money</div>
+      <h2>2025 financial snapshot</h2>
+      <table>
+        <tr><th>Figure</th><th>Value</th></tr>
+        <tr><td>Total raised (operations + grantmaking)</td><td>$17.5M+</td></tr>
+        <tr><td>Targeted for priority research initiatives</td><td>$10M+</td></tr>
+        <tr><td>Funded projects/collaborations launched</td><td>22</td></tr>
+        <tr><td>Individual award size range</td><td>$25,000 – $1.5M</td></tr>
+        <tr><td>Primary funder (per third-party sources)</td><td>Open Philanthropy (~$1.85M cited in one 2023-era snapshot; total raised has grown substantially since)</td></tr>
+      </table>
+      <p>Blueprint's own materials describe spending as programmatically weighted, with operational costs kept deliberately lean. A Form 990 is available on request — worth having if you get to a stage where you're being asked to speak to fiscal stewardship specifically.</p>
+      <span class="source-tag">Source: 2025 Annual Report, Financial Highlights</span>
+    </section>
+
+    <section id="priorities">
+      <div class="eyebrow">06 — Where they say they're headed</div>
+      <h2>Stated priorities for the year ahead</h2>
+      <p>Five objectives, in the organization's own framing, roughly in order of how the report presents them:</p>
+      <ul class="rec">
+        <li><strong>Build the evidence base</strong> — real-world performance and feasibility data across far-UVC, PPE under supply constraints, and glycol vapors.</li>
+        <li><strong>Explore emerging technologies</strong> — identify other high-impact, currently underexplored countermeasures.</li>
+        <li><strong>Deepen strategic partnerships</strong> — researchers, industry, labs, universities, policymakers.</li>
+        <li><strong>Advance regulatory and policy initiatives</strong> — work with regulators and standards bodies on formal adoption pathways.</li>
+        <li><strong>Build awareness and credibility across the biosecurity ecosystem</strong> — translate evidence into guidance decision-makers can act on.</li>
+      </ul>
+      <p>Notice what's <em>not</em> on this list: nothing about internal org-building, leadership development, or portfolio coherence. That's arguably the gap the Managing Director role exists to fill — the org's stated priorities are all external/programmatic, and the JD's language about connecting work across teams and creating operating rhythms reads like the missing internal half of this list.</p>
+      <span class="source-tag">Source: 2025 Annual Report, Priorities for the Year Ahead</span>
+    </section>
+
+    <section id="notes">
+      <div class="eyebrow">07 — Your own read, and how others see them</div>
+      <h2>Notes for the call, plus outside perspective</h2>
+      <p class="lede">Working through the actual executive summary raised sharper questions than the summary alone did. Condensed here so they're usable on the call, not just in your head — followed by how two outside sources place the organization. The full Far-UVC Blueprint summary — the risk case, the cost-effectiveness figures, and all 12 recommendations — now lives in a separate reference document rather than in this dossier; open it alongside these notes if you want the source detail behind what's discussed below.</p>
+
+      <h3>The trust/consent trade-off — fluoridation is the closer analogy, not vaccines</h3>
+      <p>Vaccines still require individual consent and administration. Water fluoridation is the tighter parallel: continuous, passive, population-wide exposure delivered through a trusted public utility, where opting out means moving or plumbing a separate source. It's also a live cautionary tale right now, not just a historical one — several U.S. cities and states have voted to remove fluoridation in 2024–2025 in the same climate of science skepticism the report itself is worried about, and that happened after 70+ years of safety data. That's a sharper warning than seatbelt laws or smoking bans, which regulate behavior rather than exposure.</p>
+
+      <h3>On whether the report downplays risk — the opposite problem is more accurate</h3>
+      <p>The language isn't spin. It's dense academic hedging — "not yet fully understood," "effects not traditionally associated with." That's honest, but it's not risk communication, it's a kind of risk avoidance: careful enough that no claim can be pinned down as reassuring or alarming. Fine for an expert or funder audience. Not a model of the lay-audience communication the report itself says still needs to be built — this document is the input to that process (see Recommendation 5), not an example of it. Worth noting the org seems to already know this: building that communication capability is what Government Affairs and Communications exist to do.</p>
+
+      <h3>Precedent on UV biology — strong in general, thin for this specific band</h3>
+      <p>Solar UV and conventional 254nm GUV have decades of occupational and epidemiological data — that's exactly why ICNIRP and ACGIH exposure limits exist, and why the report can say "no evidence of significant harm" with confidence. Recommendation 2's gap is narrower and legitimate: far-UVC's mechanism (near-total absorption in the outermost dead cell layer) differs enough from those better-studied wavelengths that the existing action spectra may not transfer cleanly to the 200–230nm band specifically.</p>
+
+      <h3>Ozone mitigation as an actual product — a real white space</h3>
+      <p>The report calls for industry to develop mitigation technology but never proposes a paired consumer or commercial product. Activated-carbon-plus-UV combinations already exist in aircraft cabin air systems and some commercial scrubbers — the underlying tech isn't novel. What's missing is someone packaging it specifically as the standard companion product to a far-UVC install.</p>
+
+      <h3>Product designers are missing from the stakeholder list — and it's telling</h3>
+      <p>Recommendation 5.1's list (modelers, experimentalists, public health authorities, comms experts, practitioners) is a science-and-policy list. No one on it is thinking about industrial design, UX, or how a facilities manager wants the thing to look and mount. Real blind spot for a science-heavy team — and arguably the kind of gap an operations-minded Managing Director is positioned to name that the current team wouldn't think to.</p>
+
+      <h3>Cintas, not Apple, is the realistic near-term commercial play</h3>
+      <p>Emitters are still expensive, procurement is still mostly institutional, and regulatory status is unsettled — a hard environment for consumer electronics. Cintas-style B2B is the better near-term fit: they already sell recurring safety compliance as a service (mats, first aid kits, uniforms) to exactly the facilities managers who'd buy this. An Apple-style consumer device is a more plausible 5–10 year vision than a near-term opportunity, per the report's own emitter-cost timeline.</p>
+
+      <h3>Marketing should follow the science, and the report's caution is a deliberate reaction, not institutional timidity</h3>
+      <p>FTC/FDA rules generally require evidence before health claims. COVID produced plenty of counter-examples where narrative outran evidence — ionizers, unproven "UV wands," hydroxychloroquine hype — and did real damage to public trust in the category. That history is almost certainly why this report over-hedges rather than under-hedges. Better marketing of good science is a genuinely useful idea in the abstract; it's a dangerous one to get backwards in this specific field.</p>
+
+      <h3>6.1 vs. 6.2 standards overlap — mostly not covered, despite how it reads</h3>
+      <p>6.1's list (ASHRAE 241, UL 8802/8803, IEC 62471, ISO 15858, RP 27.1) contains no ozone-testing methodology built for far-UVC's specific spectral profile — that gap in 6.2 is genuine new work, not a restatement. The device-labeling standard in 6.2 overlaps more, since IEC 62471 and RP 27.1 already govern photobiological safety disclosure, but neither mandates the consumer-facing lifetime/power/spectrum labeling 6.2 asks for.</p>
+
+      <h3>"Don't these markets exist already after COVID?" — partially, but not for far-UVC specifically</h3>
+      <p>Conventional GUV markets in water treatment, surface disinfection, and food processing are genuinely mature. COVID did produce a UV-branded consumer boom, but a lot of it was unregulated, non-far-UVC "UV-C wand" marketing that regulators and researchers have since had to walk back. Far-UVC's specific niche — safe-by-design, continuous, occupied-space use — doesn't yet have that market penetration, which is why the report labels these uses "proposed" rather than evaluated.</p>
+
+      <h3>Cost-benefit studies as a marketing opportunity — already their playbook, just not narrated that way</h3>
+      <p>The PPE program's engineering studies with Amodo Design directly became the evidence base behind the appropriations wins. Framing future far-UVC cost-benefit work the same way — evidence generation that doubles as the policy and funding pitch — isn't a new idea for them, it's a continuation of what's already working.</p>
+
+      <h3>Short-term vs. long-term deployment — the logic exists, just isn't named as a doctrine</h3>
+      <p>Recommendation 10 already makes close to this point: requiring long-term safety data before deploying an efficacious, life-saving intervention would be "an excessive application of the precautionary principle." That's the crisis-deployment override, stated but not formalized into a framework. Proposing an explicit two-tier structure — looser evidence standards for emergency deployment, a higher bar for routine or steady-state use — is a genuinely useful structuring idea to bring to the conversation, not something you'd be repeating back to them.</p>
+
+      <div class="card" style="border-left-color:var(--amber);">
+        <div class="role" style="color:var(--amber);">Your strongest fit argument — stronger than the AI bridge</div>
+        <h4>Built environment is where your actual experience sits</h4>
+        <p>Hatch built small enclosed physical environments for public occupancy. Yahoo/RYOT ran occupied studio production environments specifically during the pandemic, under exactly the kind of built-environment safety constraints this program studies. Cassette operates under active CA HCD regulatory compliance for occupied structures. None of that needs reframing or stretching to fit — it's direct, documented, operational experience with the built-environment side of what Blueprint studies. It doesn't require the AI-risk bridge to justify the conversation, and it's worth leading with on the call, not holding in reserve behind the AI framing.</p>
+      </div>
+
+      <h3>How others place this organization</h3>
+      <p>Blueprint's own materials describe the mission; two outside sources are useful for calibrating how it's seen from outside:</p>
+
+      <blockquote>Blueprint occupies a distinctive niche by focusing on physical and engineering-based defenses rather than surveillance, screening, or policy interventions.</blockquote>
+      <p style="margin-top:-0.6rem; font-size:.85rem; color:var(--ink-soft);">— paraphrased from LongtermWiki's organization summary</p>
+
+      <p>That same source frames Blueprint's work as addressing the "Defend" pillar of a broader Delay/Detect/Defend model for biosecurity — physical, built-environment defenses that work regardless of whether a pathogen emerges naturally, by accident, or through deliberate engineering. <strong>Update from the actual Far-UVC executive summary:</strong> this is a stronger connection than initially assessed. Blueprint's own flagship report names rapid AI and synthetic biology advances as one of two explicit drivers of rising pandemic risk, stated plainly in the executive summary's second paragraph — not a footnote. The organization's day-to-day work is still photobiology and air chemistry, not AI, but the stated rationale for urgency draws directly on the same capability trendlines you've been tracking in AI safety.</p>
+
+      <p>Founders Pledge, an independent funder-research organization, lists Blueprint among the strongest groups they've found working on global catastrophic biological risk, specifically praising the "mapping the landscape, then building a roadmap" methodology as a model for translating research into action for researchers, policymakers, and philanthropists.</p>
+
+      <div class="flag">
+        <div class="label">Worth knowing before the call</div>
+        Blueprint is embedded in the effective-altruism biosecurity funding ecosystem (Open Philanthropy as an early and major funder, Founders Pledge as an endorser). That's a specific institutional culture with its own vocabulary and norms — cause-neutral prioritization, cost-effectiveness framing, GCR terminology. It's a different register than either studio operations or AI-safety-specific circles, even though there's real overlap in the people and institutions involved.
+      </div>
+    </section>
+
+    <section id="lesley">
+      <div class="eyebrow">08 — The next conversation</div>
+      <h2>Meeting Lesley Marling</h2>
+      <p class="lede">Confirmed: Chief of Staff, Office of the COO — she partners directly with Siobhan, not a separate track from her.</p>
+
+      <div class="card">
+        <div class="role">Chief of Staff, Office of the COO</div>
+        <h4>Lesley Marling</h4>
+        <p>Based in the Raleigh-Durham/Chapel Hill, NC area, according to her current listed location — worth confirming directly, but if accurate it's a concrete, present-tense data point that senior staff work remotely from outside DC, not just a hypothetical to ask about. Background is operations and people leadership outside biosecurity entirely: prior titles include VP, COO, and Director of Client Services in insurance, financial services, and international education, not policy or science. She joined the effective-altruism/nonprofit world via a Centre for Effective Altruism program in 2024–2025, then Blueprint — so she herself came in as an operations generalist from outside the field, on a track that has some real parallel to yours. She's visibly involved in hiring across the org (has posted about roles from Executive Assistant to PPE Program Officer), which suggests her remit touches team-building broadly, not just Siobhan's calendar.</p>
+      </div>
+
+      <h3>Why this conversation is different from the ones before it</h3>
+      <p>Jake and the recruiter were evaluating strategic fit and the "outside the field, strong people manager" thesis. Siobhan, when you get to her, will likely probe operational partnership — how you'd actually work with her day to day. Lesley sits one level below both: she's the person who knows how the org actually runs, day to day, mechanically. That makes this the right conversation for concrete, unglamorous organizational questions you wouldn't lead with in front of Jake.</p>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">How the org actually runs</h4>
+      <ul class="q-list">
+        <li>What does the internal meeting rhythm look like across programs — is there a regular all-hands, director sync, or planning cadence, and how well is it working right now?</li>
+        <li>What systems or tools does the team rely on for cross-program coordination and visibility into what everyone's working on?</li>
+        <li>How does onboarding actually work for a role like this — what would my first 30, 60, 90 days look like in practice?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">People and hiring</h4>
+      <ul class="q-list">
+        <li>You came into this world from outside biosecurity too — what was that transition actually like, and what took longest to learn?</li>
+        <li>Jake and Siobhan were explicit about wanting someone from outside the field with strong people-management skills for this role. From where you sit, what's the specific gap that made them widen the search that way?</li>
+        <li>What does performance and development look like for the directors today — regular reviews, informal coaching, something else?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Practical logistics</h4>
+      <ul class="q-list">
+        <li>Given your own location, what's the real expectation on this role for DC office time versus remote — not the official policy, the actual pattern people follow?</li>
+        <li>What tends to eat the most time day-to-day for Siobhan right now that this role could take off her plate?</li>
+      </ul>
+    </section>
+
+    <section id="prep">
+      <div class="eyebrow">09 — Before you get on the call, part two</div>
+      <h2>Your own prep, not just theirs</h2>
+
+      <div class="flag">
+        <div class="label">The positioning question you should resolve first</div>
+        Everything you've built so far — the website, the coursework, the application materials — is framed around AI safety and governance specifically. This is a biosecurity organization, and their day-to-day work (photobiology, air chemistry, respirator fit testing) has nothing to do with AI. Two arguments are available to you, and they're not equally strong. The AI-risk bridge is real — their own executive summary names AI advances as an explicit driver of pandemic risk — but it's a rationale you'd be constructing about their mission, not evidence about you. The built-environment argument (see section 08) is the stronger one: direct, documented operational experience with occupied physical spaces under safety constraints, across Hatch, RYOT, and Cassette, that doesn't need reframing to be relevant. Lead with that. Keep the AI bridge in reserve as a second, supporting thread — not the headline.
+      </div>
+
+      <h3>Questions worth asking them — grouped and sequenced</h3>
+      <p style="font-size:.9rem; color:var(--ink-soft); margin-top:-.6rem;">Roughly in the order a real conversation would surface them: start with why you, then the shape of the role, then the operational reality underneath it.</p>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Why me, and what the job actually is</h4>
+      <ul class="q-list">
+        <li>I don't have a background in biotech, policy, or governance research. Why am I a fit for this? My guess is the job is really about managing people and objectives, setting organizational tone, and facilitating communication across the org — more than doing the domain-specific work myself. Is that accurate?</li>
+        <li>Your stated 2026 priorities don't mention organizational building, internal development, or portfolio coherence. Is that gap the actual job of the Managing Director?</li>
+        <li>Is this a new role, or is it formalizing something Jake or Siobhan have already been doing directly?</li>
+        <li>When the JD says "coach senior leaders through complex organizational challenges," what does that actually look like in practice today — is it mostly conflict mediation, career development, or something else entirely?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">The shape of the role — structure and reporting</h4>
+      <ul class="q-list">
+        <li>Which individuals actually make up the "5–7 directors" this role manages — program directors and government affairs, or also comms and ops?</li>
+        <li>How is this role different in practice from what the COO already owns, once both of us are working alongside Jake?</li>
+        <li>Government affairs is the newest, fastest-scaling function. How much of this role's early mandate is about integrating that function with the older program teams?</li>
+        <li>Where does the handoff between policy and program teams actually happen — who owns turning research findings into policy asks?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">The operational reality underneath it</h4>
+      <ul class="q-list">
+        <li>The org's gone from a handful of people to 16–21 in under two years. What's breaking operationally right now that this role exists to fix?</li>
+        <li>Does this role carry real discretion over resourcing decisions? How does that get resolved when priorities compete?</li>
+        <li>Far-UVC has clearly had the most energy and visibility since founding — is that intentional, or does BETS/glycol need deliberate resourcing precisely because it's earliest-stage?</li>
+        <li>What does the current 1:1 and goal-tracking rhythm look like across the directors, if any exists formally yet? I'd want to understand what's already working before I introduced anything of my own.</li>
+        <li>You've gone from 4 to 16–21 people in under two years. What's the current hiring process and pipeline looked like, and is speed or quality the bigger current pain point?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">How they'll judge success</h4>
+      <ul class="q-list">
+        <li>What does success look like in this role at 6 months? At 18 months?</li>
+        <li>What would make you regret this hire a year in?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Timeline and process</h4>
+      <ul class="q-list">
+        <li>Where are you in the search — how many candidates, what's the timeline to a decision?</li>
+        <li>Is there urgency behind filling this now, or has the org simply outgrown its current structure and this has been on the roadmap for a while?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Governance and working with Jake</h4>
+      <ul class="q-list">
+        <li>What's the board's involvement in this hire, and in ongoing org decisions this role would touch?</li>
+        <li>How does Jake like to be kept in the loop versus left alone — where's the line between "your call" and "run it by me first"?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Growth and sustainability</h4>
+      <ul class="q-list">
+        <li>The org's grown quickly on strong fundraising. Is that pace expected to continue, and does this role own any part of the fundraising or funder-relationship function, or is that fully Jake's?</li>
+        <li>What happens to this structure if a major funder pulls back — is there a contingency the Managing Director would be expected to manage?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Culture and how decisions actually get made</h4>
+      <ul class="q-list">
+        <li>When directors disagree on priorities, how does that get resolved today, and is that mechanism something you want changed?</li>
+        <li>What's the biggest internal disagreement the org has had in the last year?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Location, sharper this time</h4>
+      <ul class="q-list">
+        <li>Is this role expected in the DC office full-time, hybrid, or is there real flexibility — and if hybrid, what's the actual cadence people default to?</li>
+      </ul>
+
+      <h4 style="font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--uv-bright); margin:1.6rem 0 .4rem 0;">Risk</h4>
+      <ul class="q-list">
+        <li>What's the thing most likely to derail Blueprint in the next two years, in your own view — funding, talent, regulatory, something else?</li>
+      </ul>
+
+      <div class="card">
+        <div class="role">An idea worth floating, not just a question</div>
+        <h4>A two-tier deployment standard</h4>
+        <p>Recommendation 10 already gestures at this: requiring long-term safety data before deploying an efficacious, life-saving intervention would be an excessive application of the precautionary principle. Worth naming as an explicit framework rather than an implicit judgment call — loosen evidence standards for crisis/emergency deployment, hold a higher bar for routine, steady-state use. Boiled down: don't let perfect be the enemy of good enough.</p>
+      </div>
+
+      <hr class="divider">
+      <p style="font-size:.85rem; color:var(--ink-soft);">This dossier deliberately excludes the full 100+ page Far-UVC report and the full annual report text — read those directly if a section here raises something you want in more depth. Primary source links are included throughout for that purpose.</p>
+    </section>
+
+    <section id="manager-framing">
+      <div class="eyebrow">10 — Your own positioning</div>
+      <h2>Framing yourself as a people manager</h2>
+      <p class="lede">This is the center of the case for you, per the recruiter's confirmation that Jake and Siobhan are explicitly sourcing outside the field for people-management strength. Organized in two layers: the abstract philosophy first, then the real, specific evidence and stories underneath it. The philosophy is only worth stating because the examples back it up — lead with the examples in conversation, and let the philosophy surface as the throughline, not the headline.</p>
+
+      <h3>Leadership philosophy — the abstract version</h3>
+      <p style="font-size:.9rem; color:var(--ink-soft); margin-top:-.6rem;">Stated plainly here so you have the language ready. In the room, these should come out as the explanation for why you did something, not as a list you recite.</p>
+
+      <ul class="q-list">
+        <li><strong>Structure will set you free.</strong> Clear roles, lanes, and process aren't bureaucracy for its own sake — they're what lets people move fast and stay confident without constantly checking whether they're allowed to act.</li>
+        <li><strong>A leader's job is not to know everything or do everyone's job.</strong> It's to enable the experts to do theirs, and to orchestrate and unblock the collaboration between them. You're not the smartest person on any of your teams about the domain — you never have been, going back to managing sound engineers and producers who out-craft you technically.</li>
+        <li><strong>When everything is a priority, nothing is a priority.</strong> A leader's specific job is to tease that out for people — to make the trade-off explicit instead of letting a team quietly absorb an impossible load.</li>
+        <li><strong>Treat the human and the employee — no dispassion.</strong> Relationships are personal even though work is not; that means real openness balanced with real boundaries, not a purely transactional read on people.</li>
+        <li><strong>Be direct and transparent, and be proactive about contact.</strong> Have answers. If you don't have them, say so, and go get them — don't perform certainty you don't have.</li>
+        <li><strong>When conflict arises, take the high road.</strong> Acknowledge it, don't suppress it, but don't get pulled into the drama — it costs more time and trust than almost any other failure mode.</li>
+        <li><strong>Protect the maker's schedule.</strong> Technical and creative specialists need long, uninterrupted blocks to do real work; a manager's job includes shielding that time, not filling it with meetings because your own calendar has the room.</li>
+        <li><strong>Watch-team backup.</strong> Build a norm where anyone on the team can flag something that looks off — including junior people flagging something to someone more senior — without it reading as an accusation. The norm only works if being corrected is treated as helpful, every time, out loud.</li>
+        <li><strong>The cost of a bad hire almost always exceeds the cost of delay — but not indefinitely.</strong> Speed pressure during rapid scaling is real, but a wrong hire costs more in cleanup, team trust, and re-hiring than the weeks it would have taken to find the right one. The balance point isn't fixed: it shifts with the urgency and the scope/seniority of the role. A short-term contractor gap tolerates more speed than a director-level hire who'll shape the org for years.</li>
+      </ul>
+
+      <h3>Leadership style — the examples</h3>
+      <p style="font-size:.9rem; color:var(--ink-soft); margin-top:-.6rem;">The real, sourced evidence behind the philosophy above. Every story here is drawn from documented career facts or your own recent recollection — nothing invented or generalized.</p>
+
+      <div class="card">
+        <div class="role">Pillar 1 — Leading through structural change at scale</div>
+        <h4>Yahoo Studios / RYOT</h4>
+        <p>You led a ~$30M-budget, 300+ person hybrid team through the post-acquisition integration of three distinct organizational cultures — AOL, Yahoo Studios, and RYOT — into one functioning operation, and it produced roughly $10M in cost savings without the work suffering: the output during that period still earned two Academy Award nominations, a Sundance Directing Award, and an Emmy nomination. This is the most direct parallel available to Blueprint's own situation. They've gone from 4 people to 16–21 in under two years and are now trying to build the connective tissue — exactly the "coherent whole rather than a collection of independent efforts" language in the job description. You've done the version of this that's harder: merging cultures that didn't start as one team, not just scaling a single one.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Pillar 2 — Founder-stakes people management, no safety net</div>
+        <h4>Hatch Escapes &amp; Cassette Systems</h4>
+        <p>At Hatch, you co-built and ran a team for an internationally top-ranked business with no HR department, no inherited playbook, and full personal accountability for every hire and every management call. At Cassette, you operate as COO and active HCD dealer-of-record — meaning you carry personal regulatory liability for how the team executes under California building compliance. That combination — building people processes from zero, under real regulatory constraint — is a closer analog to a fast-scaling nonprofit's culture than large-company experience alone would be. Blueprint is a compliance-conscious, standards-heavy organization (ASHRAE, UL, IEC, ICNIRP); Cassette's HCD experience is genuine, non-analogous fluency in what it means to manage people inside a regulated environment where getting it wrong has real consequences.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Pillar 3 — Managing experts who are technical first, managers second</div>
+        <h4>The direct parallel to Blueprint's own directors</h4>
+        <p>Your Yahoo/RYOT team included creative and technical specialists — directors, producers, engineers — who needed people-management support layered on top of deep subject-matter expertise, not the reverse. That's structurally identical to Blueprint's current director bench: Victoria Slaughter came up through cell biology and R&amp;D, Brian Renda through cell biology and corporate development, Sabah Ghulamali through policy and Hill staff work. None of them were trained as people managers first. The JD's "coach senior leaders through increasingly complex strategic and organizational challenges" is a skill you can point to specific, real instances of — not a generic transferable-skills claim.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Coaching someone into becoming a better manager, not just managing them</div>
+        <h4>The resourcing matrix</h4>
+        <p>A team lead reporting to you had a habit of saying yes to every project her team was pitched, without regard for whether they had the bandwidth — it was burning her people out. You had standing with her whole team and raised it directly: you like that she wants the best projects for her people, but she needs to be realistic about what they can actually take on if she wants to keep delivering the work she's known for. Rather than just telling her to say no more, you built a calendar and resource-assignment matrix with her, so she had data to make the call herself instead of it being a gut decision or a favor she couldn't refuse. Her team got happier and the decisions became data-driven. She later told you she was relieved — she realized she didn't have to say yes to everything, and that "no" was often the right answer when a team was resource-strapped or an outlier project was getting attention it didn't deserve. That's the throughline for "when everything is a priority, nothing is a priority": you didn't just say the line, you built the tool that let someone else internalize it.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">A hard personnel call, not a clean peer dispute</div>
+        <h4>Colleen and Alistair</h4>
+        <p>This wasn't a single triggering event — you noticed a pattern before it became a crisis. A manager on your team, Colleen, was committing her team to projects without their input, which showed up as chronic overwork and confusion about priorities. Two of her people, Guen and Alistair, both raised it. Alistair was the loudest, framing it publicly as being excluded from decision-making — but the real cause was one level up: Colleen's process, not an access problem. You went to Colleen directly, named the pattern, and had her institute a weekly meeting to get her team's buy-in before committing to new work. That mechanism didn't stay a one-off fix — it became the technical feasibility study step in the RYOT greenlight process, so it turned structural rather than a favor you did her once. Alistair kept escalating past the point where the fix was already working — sending emails to the whole team that undermined his manager's authority, repeatedly, even after the underlying problem was being actively addressed. At that point it became a conduct issue separate from the original complaint, and you let him go. Colleen's team told you directly they had more visibility into what was coming. Colleen said she was relieved — she didn't have to say yes to everything, and no was often the right call.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Operating rhythm — the actual mechanics</div>
+        <h4>PPPA and a two-tier goal cadence</h4>
+        <p>1:1s run biweekly with individual directs, 45 minutes with a 15-minute buffer if needed, scaling to weekly for a smaller or more senior group and stretching out for larger, less direct spans. Each 1:1 follows a PPPA structure: Progress (open action items from last time, reprioritized against whatever's shifted in the two weeks since), Problems (new issues, and what teams or resources are needed to move them), Priorities (what matters in the current two-week window versus what's slower-churn and can align to longer projects), and Actions (assigned by problem, to a specific individual, even when the work touches a whole team). Goal-setting runs on a parallel cadence at the org level: 3-year, 1-year, and sub-1-year horizons, with annual OKRs cascading into quarterly OKRs. This used to run through a tracker you built yourself; whatever PM tool Blueprint already uses can carry the same structure without you needing to import your old system wholesale.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Holding a high bar without cutting off autonomy</div>
+        <h4>Roles, lanes, and inter-team friction at Yahoo Studios</h4>
+        <p>Across the broader Studios org, people were anxious about being left out of meetings and decisions that touched their work — this wasn't one incident, it was a trend you noticed and got ahead of rather than waiting for it to boil over. The real cause wasn't access, it was unclear roles: without defined lanes, people defaulted to wanting to be in everything just to feel safe. You fixed the root cause by establishing clear roles and lanes of collaboration, and supplemented that with your own communication to actively bridge gaps between teams rather than leaving people to infer context. Result, in plain terms: people stopped complaining about being left out and were able to focus on their own work. The tension worth naming honestly if asked directly: giving people a defined lane necessarily means telling some people they don't own every decision that touches them — that's a real trade-off, not a free lunch, and the payoff was people trusting the structure enough to stop needing to be everywhere.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Speed versus quality in hiring — a live tension at Blueprint right now</div>
+        <h4>How you actually think about sourcing under scaling pressure</h4>
+        <p>Blueprint's own growth — 4 people to 16–21 in under two years — is exactly the condition where hiring pressure and hiring quality pull against each other, and it's a tension you've built real judgment on, not just an opinion about. Your working view: a bad hire almost always costs more than the delay it would have taken to avoid it — in cleanup time, team trust, and the cost of re-running the search — but that's not an absolute rule, it's a balance that shifts with the urgency and the seniority/scope of the role. You think about candidate sourcing across five channels, each with real trade-offs: personal and professional networks (fast, high-trust, direct firsthand read on fit — but requires staying strictly professional to avoid any read of nepotism); extended networks (can target a specific domain or demographic pool, but unproven and unvetted relative to a direct reference); competitors (built-in role, comp, and skill parity — but not every competitor's bar is the same, and a strong resume doesn't guarantee a stable hire); external specialty recruiters (fast and effective for a well-scoped role, but expensive and requires real partner management to avoid mismatched incentives); and blind solicitation (wide reach, lowest signal — sometimes it works, but you're not relying on it for anything senior or urgent). For a role like Managing Director itself — high scope, high seniority, hard to reverse if wrong — the right posture is patience and a narrower, higher-trust channel mix, even under real pressure to fill the seat. This isn't abstract for you: you've written hundreds of job descriptions, run hiring pipelines through LinkedIn and Indeed, and built your own Airtable-based hiring process system for internal use rather than relying entirely on off-the-shelf ATS tools — the kind of operational infrastructure most people managers never bother building for themselves.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">What's genuinely hard about managing people who out-expert you</div>
+        <h4>No invented answer here — the honest version</h4>
+        <p>You can't independently check a technical call the way a director-level specialist can. Managing directors in photobiology, respirator engineering, or federal policy means building judgment about when to push back and when to defer, without ever being able to verify the underlying work yourself the way you could when you were still a practicing sound engineer. That's a real, ongoing discomfort, not a solved problem — the honest answer names it rather than papers over it with the "enable the experts" philosophy alone.</p>
+      </div>
+
+      <div class="flag">
+        <div class="label">Worth naming directly, not smoothing over</div>
+        What you haven't done: managed a team of managers inside a nonprofit or research organization specifically, where the currency is grant cycles, board relationships, and philanthropic funding rather than P&amp;L and commercial output. That's a genuine gap, not just a framing problem — Blueprint's institutional culture and incentive structure differ from every environment you've operated in. The honest version of your pitch acknowledges this directly: the people-management mechanics transfer, the specific institutional context is new to you, and you'd expect a real ramp-up period learning how decisions actually get made in a philanthropically-funded research nonprofit.
+      </div>
+    </section>
+
+    <footer class="doc-end">
+      Compiled for call prep, week of August 4, 2026 · Sources: blueprintbiosecurity.org (About, Programs, Policy &amp; Engagement, 2025 Annual Report PDF), Founders Pledge, LongtermWiki
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('nav.toc a');
+  const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href')));
+  const setActive = () => {
+    let idx = 0;
+    const y = window.scrollY + 120;
+    sections.forEach((s, i) => { if (s && s.offsetTop <= y) idx = i; });
+    links.forEach((l, i) => l.classList.toggle('active', i === idx));
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+</script>
+
+</body>
+</html>
