@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>James Kelly — Management Style &amp; Operating Philosophy</title>
+<style>
+  :root{
+    --paper:#EDE9DF;
+    --paper-deep:#E2DCCB;
+    --ink:#1C1A17;
+    --ink-soft:#5B564C;
+    --line:#D3CCB9;
+    --copper:#9C6B3E;
+    --copper-bright:#C08A52;
+    --slate:#3A4550;
+    --slate-soft:#6B7885;
+    --tab-w:270px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, sans-serif;
+    line-height:1.65;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  /* ---------- signature: signal -> structure ---------- */
+  .signal-wrap{ margin:1.6rem 0 2.6rem 0; }
+  .signal-wrap svg{ width:100%; height:auto; display:block; }
+  .signal-caption{
+    font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-soft); margin-top:.6rem; text-align:center;
+  }
+
+  .shell{display:flex; max-width:1240px; margin:0 auto;}
+  nav.toc{
+    width:var(--tab-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:2.4rem 1.4rem 2rem 2rem;
+    border-right:1px solid var(--line);
+  }
+  nav.toc .kicker{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--copper); margin-bottom:.4rem;
+  }
+  nav.toc h1{
+    font-family:"Fraunces", serif; font-size:1.5rem; font-weight:600;
+    margin:0 0 .3rem 0; line-height:1.2; font-optical-sizing:auto;
+  }
+  nav.toc .subtitle{color:var(--ink-soft); font-size:.85rem; margin-bottom:1.8rem;}
+  nav.toc ol{list-style:none; margin:0; padding:0; counter-reset:sec;}
+  nav.toc li{counter-increment:sec; margin-bottom:.1rem;}
+  nav.toc a{
+    display:flex; gap:.55rem; align-items:baseline; text-decoration:none; color:var(--ink);
+    padding:.45rem .5rem; border-radius:3px; font-size:.9rem;
+  }
+  nav.toc a::before{
+    content:counter(sec,decimal-leading-zero); font-family:"IBM Plex Mono",monospace;
+    font-size:.72rem; color:var(--copper); flex-shrink:0;
+  }
+  nav.toc a:hover{background:rgba(156,107,62,.1);}
+  nav.toc .meta{
+    margin-top:2rem; padding-top:1.2rem; border-top:1px solid var(--line);
+    font-size:.76rem; color:var(--ink-soft);
+  }
+
+  main{flex:1; min-width:0; padding:3rem 4rem 6rem 4rem;}
+  section{max-width:740px; margin:0 auto 4.6rem auto; scroll-margin-top:2rem;}
+  section:first-of-type{margin-top:0;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--copper); margin-bottom:.6rem;
+  }
+  h2{
+    font-family:"Fraunces", serif; font-size:2rem; font-weight:600;
+    margin:0 0 1.1rem 0; line-height:1.15; font-optical-sizing:auto;
+  }
+  h3{
+    font-family:"Fraunces", serif; font-size:1.2rem; font-weight:600;
+    margin:1.8rem 0 .6rem 0; font-optical-sizing:auto;
+  }
+  p{margin:0 0 1rem 0;}
+  .lede{font-size:1.08rem; color:var(--ink-soft); font-style:italic; font-family:"Fraunces",serif;}
+
+  .principle-list{margin:1rem 0; padding-left:0; list-style:none; counter-reset:pr;}
+  .principle-list li{
+    counter-increment:pr; padding:.85rem 0 .85rem 2.6rem; position:relative;
+    border-bottom:1px solid var(--line); font-size:.96rem;
+  }
+  .principle-list li:last-child{border-bottom:none;}
+  .principle-list li::before{
+    content:counter(pr,decimal-leading-zero); position:absolute; left:0; top:.85rem;
+    font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--copper);
+    width:2rem; text-align:right;
+  }
+  .principle-list strong{font-family:"Fraunces",serif; font-weight:600; font-size:1.02rem;}
+
+  .card{
+    border:1px solid var(--line); border-left:3px solid var(--slate);
+    padding:1.2rem 1.4rem; margin:1.2rem 0; background:rgba(255,255,255,.4);
+  }
+  .card h4{margin:0 0 .3rem 0; font-family:"Fraunces",serif; font-size:1.05rem; font-weight:600;}
+  .card .role{
+    font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--slate);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:.5rem;
+  }
+  .card p{font-size:.93rem; color:var(--ink-soft); margin:0;}
+
+  .flag{
+    background:#F4EBDD; border:1px solid #D9BE94; border-left:3px solid var(--copper);
+    padding:1rem 1.2rem; margin:1.6rem 0; font-size:.92rem;
+  }
+  .flag .label{font-family:"IBM Plex Mono",monospace; font-size:.72rem; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--copper); margin-bottom:.4rem; font-weight:600;}
+
+  blockquote{
+    margin:1.1rem 0; padding:.1rem 0 .1rem 1.2rem; border-left:2px solid var(--slate-soft);
+    font-family:"Fraunces",serif; font-style:italic; color:var(--ink-soft); font-size:1rem;
+  }
+  blockquote .attrib{
+    display:block; margin-top:.35rem; font-family:"IBM Plex Mono",monospace;
+    font-size:.75rem; font-style:normal; color:var(--slate-soft);
+  }
+
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line); margin:1.6rem 0 2rem 0;
+  }
+  .stat{background:var(--paper); padding:1.1rem 1rem;}
+  .stat .n{font-family:"IBM Plex Mono",monospace; font-size:1.3rem; font-weight:500; color:var(--copper);}
+  .stat .l{font-size:.76rem; color:var(--ink-soft); margin-top:.2rem;}
+
+  .divider{border:none; border-top:1px solid var(--line); margin:2.2rem 0;}
+
+  footer.doc-end{
+    max-width:740px; margin:0 auto; padding-top:2rem; border-top:1px solid var(--line);
+    font-size:.8rem; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;
+  }
+
+  @media (max-width:900px){
+    .shell{flex-direction:column;}
+    nav.toc{width:100%; height:auto; position:relative; border-right:none; border-bottom:1px solid var(--line);}
+    main{padding:2rem 1.3rem 4rem 1.3rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  @media print{
+    @page{ margin: 0.5in; }
+    *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body{ background:#fff; }
+    nav.toc{ display:none !important; }
+    .shell{ display:block; max-width:none; }
+    main{ padding:0; }
+    section{ max-width:none; margin:0 0 1.6rem 0; page-break-inside:avoid; break-inside:avoid; }
+    h2{ font-size:1.5rem; page-break-after:avoid; }
+    h3{ page-break-after:avoid; }
+    .card, .flag, .stat-grid{ page-break-inside:avoid; break-inside:avoid; }
+    .signal-wrap{ page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <div class="kicker">Reference document</div>
+    <h1>Management Style &amp; Operating Philosophy</h1>
+    <p class="subtitle">James Kelly — 20+ years managing people, teams, and organizations across media, technology, and founder-led ventures.</p>
+    <ol>
+      <li><a href="#thesis">The short version</a></li>
+      <li><a href="#philosophy">Operating philosophy</a></li>
+      <li><a href="#mechanics">The actual mechanics</a></li>
+      <li><a href="#pillars">Where this has played out at scale</a></li>
+      <li><a href="#coaching">Growing other managers</a></li>
+      <li><a href="#conflict">Conflict, and a hard call</a></li>
+      <li><a href="#autonomy">Structure without cutting off autonomy</a></li>
+      <li><a href="#hiring">Hiring under scaling pressure</a></li>
+      <li><a href="#hardest">What's genuinely hard</a></li>
+      <li><a href="#others-say">What others have said</a></li>
+      <li><a href="#gaps">What this doesn't cover yet</a></li>
+    </ol>
+    <div class="meta">Built from documented career history, direct working notes, and real recollection — not generalized or invented. Sources noted where useful.</div>
+  </nav>
+
+  <main>
+    <section id="thesis">
+      <div class="eyebrow">01 — The short version</div>
+      <h2>An operator's approach to managing people</h2>
+      <p class="lede">Twenty-plus years managing people and organizations across enterprise media, two founder-led companies, and a practitioner career that started in audio production — not management theory learned in a classroom, but a set of working habits built under real operational pressure, tested against real outcomes.</p>
+
+      <div class="signal-wrap">
+        <svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A noisy signal on the left resolves into a clean, ordered grid on the right">
+          <path d="M10,75 C 25,30 40,120 55,60 C 70,10 85,130 100,75 C 115,25 130,115 145,55 C 160,15 175,125 190,75 C 205,35 220,105 235,70 C 248,45 258,95 268,75"
+                fill="none" stroke="#9C6B3E" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="330" y1="20" x2="330" y2="130" stroke="#D3CCB9" stroke-width="1" stroke-dasharray="3,4"/>
+          <g stroke="#3A4550" stroke-width="1.3">
+            <line x1="370" y1="30" x2="690" y2="30"/>
+            <line x1="370" y1="55" x2="690" y2="55"/>
+            <line x1="370" y1="75" x2="690" y2="75"/>
+            <line x1="370" y1="95" x2="690" y2="95"/>
+            <line x1="370" y1="120" x2="690" y2="120"/>
+            <line x1="370" y1="20" x2="370" y2="130"/>
+            <line x1="450" y1="20" x2="450" y2="130"/>
+            <line x1="530" y1="20" x2="530" y2="130"/>
+            <line x1="610" y1="20" x2="610" y2="130"/>
+            <line x1="690" y1="20" x2="690" y2="130"/>
+          </g>
+          <circle cx="450" cy="75" r="3.5" fill="#9C6B3E"/>
+          <circle cx="530" cy="55" r="3.5" fill="#9C6B3E"/>
+          <circle cx="610" cy="95" r="3.5" fill="#9C6B3E"/>
+        </svg>
+      </div>
+      <p class="signal-caption" style="margin-top:-2.2rem;">Structure sets you free</p>
+
+      <p>The throughline, from mixing consoles to 300-person orgs: a leader's job is not to know everything or do everyone's job. It's to build the structure that lets people who know more than you do their best work, and to step in and orchestrate when things aren't naturally connecting on their own. That applies whether the person is a sound engineer, a creative director, or a specialist with a decade of domain expertise a manager will never have firsthand.</p>
+    </section>
+
+    <section id="philosophy">
+      <div class="eyebrow">02 — Operating philosophy</div>
+      <h2>The principles, stated plainly</h2>
+      <p>These aren't slogans recited in the abstract — each one below is backed by a specific instance elsewhere in this document. Stated here first because they're the throughline; the evidence is what makes them worth believing.</p>
+
+      <ul class="principle-list">
+        <li><strong>Structure sets you free.</strong> Clear roles, lanes, and process aren't bureaucracy for its own sake — they're what lets people move fast and stay confident without constantly checking whether they're allowed to act.</li>
+        <li><strong>A leader's job is not to know everything or do everyone's job.</strong> It's to enable the experts to do theirs, and to orchestrate and unblock the collaboration between them.</li>
+        <li><strong>When everything is a priority, nothing is a priority.</strong> A leader's specific job is to tease that out for people — to make the trade-off explicit instead of letting a team quietly absorb an impossible load.</li>
+        <li><strong>Treat the human and the employee — no dispassion.</strong> Relationships are personal even though the work is not; that means real openness balanced with real boundaries, not a purely transactional read on people.</li>
+        <li><strong>Be direct and transparent, and be proactive about contact.</strong> Have answers. If you don't have them, say so, and go get them — don't perform certainty you don't have.</li>
+        <li><strong>When conflict arises, take the high road.</strong> Acknowledge it, don't suppress it, but don't get pulled into the drama — it costs more time and trust than almost any other failure mode.</li>
+        <li><strong>Protect the maker's schedule.</strong> Technical and creative specialists need long, uninterrupted blocks to do real work; a manager's job includes shielding that time, not filling it with meetings because your own calendar has the room.</li>
+        <li><strong>Watch-team backup.</strong> Build a norm where anyone on the team can flag something that looks off — including junior people flagging something to someone more senior — without it reading as an accusation. It only works if being corrected is treated as helpful, every time, out loud.</li>
+        <li><strong>The cost of a bad hire almost always exceeds the cost of delay — but not indefinitely.</strong> Speed pressure during rapid growth is real, but a wrong hire costs more in cleanup, team trust, and re-hiring than the weeks it would have taken to find the right one. The balance point shifts with the urgency and the scope/seniority of the role.</li>
+      </ul>
+    </section>
+
+    <section id="mechanics">
+      <div class="eyebrow">03 — The actual mechanics</div>
+      <h2>Operating rhythm, not just philosophy</h2>
+      <p>Cadence scales with team size and seniority. Typical rhythm: <strong>biweekly, 45-minute 1:1s</strong> with individual directs — extendable to an hour with a 15-minute buffer when something needs the room — tightening to weekly for a smaller or more senior group, and loosening for a larger or less direct span of control.</p>
+
+      <h3>PPPA — the 1:1 structure</h3>
+      <div class="card">
+        <div class="role">Meeting format</div>
+        <h4>Progress → Problems → Priorities → Actions</h4>
+        <p><strong>Progress</strong> — open action items from last time, reprioritized against whatever's shifted in the two weeks since; priorities move, so this isn't a static checklist. <strong>Problems</strong> — new issues, and specifically what teams or resources are needed to move them forward. <strong>Priorities</strong> — what matters in the current two-week window versus what's slower-churn and can align to longer-form projects. <strong>Actions</strong> — assigned by problem, to a specific individual, even when the work touches a whole team, so responsibility doesn't diffuse.</p>
+      </div>
+
+      <h3>Goal-setting cadence</h3>
+      <p>Runs on a parallel, longer horizon: 3-year, 1-year, and sub-1-year increments, with annual OKRs cascading into quarterly OKRs. This used to run through a tracker built from scratch; the same structure ports cleanly onto whatever PM tool an organization already has, without needing to import an old system wholesale.</p>
+
+      <h3>Feedback — real language, not just intent</h3>
+      <p>Three examples of how hard feedback has actually been delivered, not a description of a philosophy about it:</p>
+      <ul class="principle-list" style="counter-reset:none;">
+        <li style="padding-left:0;"><strong>On tone:</strong> direct, named feedback that someone's communication style read as too blunt — paired with an offer to review their messages before they went out, not just a note to "be nicer."</li>
+        <li style="padding-left:0;"><strong>On overload:</strong> "everything is a priority, then nothing is a priority — if you need guidance, ask, don't wait until it's too painful."</li>
+        <li style="padding-left:0;"><strong>On impact over intent:</strong> "May I make a suggestion — here's how this shows up, like you don't care." Asking permission before the hard part, then naming the effect of a behavior rather than accusing the person of the behavior itself.</li>
+      </ul>
+    </section>
+
+    <section id="pillars">
+      <div class="eyebrow">04 — Where this has played out at scale</div>
+      <h2>Three environments, three different tests</h2>
+
+      <div class="card">
+        <div class="role">Structural change at scale</div>
+        <h4>Yahoo Studios / RYOT</h4>
+        <p>Led a ~$30M-budget, 300+ person hybrid team through the post-acquisition integration of three distinct organizational cultures — AOL, Yahoo Studios, and RYOT — into one functioning operation. Delivered roughly $10M in cost savings without the work suffering: output during that period still earned two Academy Award nominations, a Sundance Directing Award, and an Emmy nomination.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Founder-stakes, no safety net</div>
+        <h4>Hatch Escapes &amp; Cassette Systems</h4>
+        <p>At Hatch, co-built and ran a team for an internationally top-ranked business with no HR department and full personal accountability for every hire and management call. At Cassette, operates as COO and active HCD dealer-of-record — carrying personal regulatory liability for how the team executes under California building compliance. Building people processes from zero, under real regulatory constraint, is a different discipline than managing inside an existing large-company framework.</p>
+      </div>
+
+      <div class="card">
+        <div class="role">Managing experts who are technical first, managers second</div>
+        <h4>Sound engineers, directors, producers</h4>
+        <p>The Yahoo/RYOT team included creative and technical specialists who needed people-management support layered on top of deep subject-matter expertise, not the reverse. This is the same dynamic that's run through the entire career, going back to managing sound engineers and producers who out-craft any manager technically — the job was never to be the best engineer in the room.</p>
+      </div>
+    </section>
+
+    <section id="coaching">
+      <div class="eyebrow">05 — Growing other managers</div>
+      <h2>Coaching someone into becoming a better manager, not just managing them</h2>
+      <div class="card">
+        <div class="role">The resourcing matrix</div>
+        <h4>Teaching a "no" instead of giving one</h4>
+        <p>A team lead had a habit of saying yes to every project her team was pitched, without regard for whether they had the bandwidth — it was burning her people out. Standing with her whole team made it possible to raise it directly: she wants the best projects for her people, but she needs to be realistic about what they can actually take on if she wants to keep delivering the work she's known for. Rather than just telling her to say no more, built a calendar and resource-assignment matrix with her, so she had data to make the call herself instead of it being a gut decision or a favor she couldn't refuse. Her team got happier, and the decisions became data-driven. She later said she was relieved — she realized she didn't have to say yes to everything, and that "no" was often the right answer when a team was resource-strapped or an outlier project was getting attention it didn't deserve.</p>
+      </div>
+    </section>
+
+    <section id="conflict">
+      <div class="eyebrow">06 — Conflict, and a hard call</div>
+      <h2>When a management problem becomes a personnel decision</h2>
+      <div class="card">
+        <div class="role">Colleen and Alistair</div>
+        <h4>Seeing the pattern before it became a crisis</h4>
+        <p>This wasn't a single triggering event — the pattern was visible before it became a crisis. A manager on the team was committing her people to projects without their input, which showed up as chronic overwork and confusion about priorities. Two of her reports raised it, one of them loudly, framing it publicly as being excluded from decision-making — but the real cause was one level up: her process, not an access problem. Went to her directly, named the pattern, and had her institute a weekly meeting to get her team's buy-in before committing to new work. That mechanism didn't stay a one-off fix — it became a standing feasibility-review step in a broader project greenlight process, so it turned structural rather than a favor done once. The louder employee kept escalating past the point where the fix was already working — sending messages to the whole team that undermined his manager's authority, repeatedly, even after the underlying problem was being actively addressed. At that point it became a conduct issue separate from the original complaint, and the decision was to let him go. The manager's team reported having far more visibility into what was coming; she said she was relieved — she didn't have to say yes to everything, and no was often the right call.</p>
+      </div>
+      <p style="font-size:.9rem; color:var(--ink-soft);">Not every conflict has been one where someone else was in the wrong. A separate, earlier instance involved feeling territorial about a new hire encroaching on established scope — venting to a manager rather than addressing it directly, being called out for it, and resolving the actual issue with the new hire directly in a fifteen-minute conversation. Worth naming, because the instinct to notice and correct one's own behavior under pressure is as much a part of this as correcting anyone else's.</p>
+    </section>
+
+    <section id="autonomy">
+      <div class="eyebrow">07 — Structure without cutting off autonomy</div>
+      <h2>Roles, lanes, and inter-team friction</h2>
+      <div class="card">
+        <div class="role">A trend caught early, not a crisis fixed late</div>
+        <h4>Yahoo Studios — meeting inclusion</h4>
+        <p>Across the broader Studios org, people were anxious about being left out of meetings and decisions that touched their work — this wasn't one incident, it was a trend noticed and acted on before it boiled over. The real cause wasn't access, it was unclear roles: without defined lanes, people defaulted to wanting to be in everything just to feel safe. Fixed the root cause by establishing clear roles and lanes of collaboration, supplemented with direct communication to bridge gaps between teams rather than leaving people to infer context. Result: people stopped complaining about being left out and were able to focus on their own work. The honest trade-off: giving people a defined lane necessarily means telling some people they don't own every decision that touches them — that's a real cost, not a free lunch. The payoff was people trusting the structure enough to stop needing to be everywhere.</p>
+      </div>
+    </section>
+
+    <section id="hiring">
+      <div class="eyebrow">08 — Hiring under scaling pressure</div>
+      <h2>Speed versus quality</h2>
+      <p>Rapid growth creates a constant tension between the pressure to fill a seat and the time it takes to find the right person. Working view: a bad hire almost always costs more than the delay it would have taken to avoid it — in cleanup time, team trust, and the cost of re-running the search — but that's not an absolute rule. The balance shifts with the urgency and the seniority/scope of the role.</p>
+
+      <p>Candidate sourcing runs across five channels, each with real trade-offs:</p>
+      <ul class="principle-list" style="counter-reset:none;">
+        <li style="padding-left:0;"><strong>Personal and professional networks</strong> — fast, high-trust, a direct firsthand read on fit, but requires staying strictly professional to avoid any appearance of favoritism.</li>
+        <li style="padding-left:0;"><strong>Extended networks</strong> — can target a specific domain or demographic pool, but unproven relative to a direct reference.</li>
+        <li style="padding-left:0;"><strong>Competitors</strong> — built-in role, comp, and skill parity, but not every competitor's bar is the same, and a strong resume doesn't guarantee a stable hire.</li>
+        <li style="padding-left:0;"><strong>External specialty recruiters</strong> — fast and effective for a well-scoped role, but expensive and requires real partner management to avoid mismatched incentives.</li>
+        <li style="padding-left:0;"><strong>Blind solicitation</strong> — wide reach, lowest signal; not something to rely on for anything senior or urgent.</li>
+      </ul>
+      <p>This isn't abstract: hundreds of job descriptions written, hiring pipelines run through LinkedIn and Indeed, and a self-built Airtable-based hiring process system for internal use rather than relying entirely on off-the-shelf ATS tools.</p>
+    </section>
+
+    <section id="hardest">
+      <div class="eyebrow">09 — What's genuinely hard</div>
+      <h2>Managing people who know more than you do</h2>
+      <p>The honest version, not the polished one: it's not possible to independently check a technical specialist's call the way they can. Managing directors or specialists in a domain — engineering, policy, science, craft — means building judgment about when to push back and when to defer, without ever being able to verify the underlying work directly. That's a real, ongoing discomfort, not a solved problem. The operating answer is the philosophy stated earlier — enable the experts, orchestrate and unblock — but the discomfort itself doesn't go away just because there's a framework for it.</p>
+    </section>
+
+    <section id="others-say">
+      <div class="eyebrow">10 — What others have said</div>
+      <h2>Third-party account, not self-assessment</h2>
+      <p>From former peers, direct reports, and managers:</p>
+
+      <blockquote>Any organization bringing James into a business operations, content operations, or people leadership role is getting someone who doesn't just manage, he elevates. He makes the work better, the processes smarter, and the people around him more confident in what they're capable of.
+        <span class="attrib">— Former Peer</span>
+      </blockquote>
+
+      <blockquote>I worked for James during one of the most turbulent times in my career. His leadership and steady hand glued our organization together through a period of transition that would have consumed lesser human beings.
+        <span class="attrib">— Former Direct</span>
+      </blockquote>
+
+      <blockquote>What set James apart was his rare ability to hold the big picture and the fine details at the same time. He understood how content, operations, and people all connect, and he built workflows and team cultures that reflected that understanding. Nothing fell through the cracks on his watch, not a process, not a deadline, and certainly not a person on his team.
+        <span class="attrib">— Former Manager</span>
+      </blockquote>
+
+      <blockquote>James was the operator who could own both the spreadsheet and the script. I trust very few senior leaders to hold both halves of the job at once. He is one of them.
+        <span class="attrib">— Former Manager</span>
+      </blockquote>
+    </section>
+
+    <section id="gaps">
+      <div class="eyebrow">11 — What this doesn't cover yet</div>
+      <h2>The honest gap</h2>
+      <div class="flag">
+        <div class="label">Named directly, not smoothed over</div>
+        Everything above is built inside enterprise media, founder-led ventures, and commercial operating environments. None of it is inside a nonprofit or research organization specifically, where the operating currency is grant cycles, board relationships, and philanthropic funding rather than P&amp;L and commercial output. The people-management mechanics transfer; the specific institutional context does not, and any move into that kind of environment should come with a real, named ramp-up period rather than an assumption the transition is seamless.
+      </div>
+    </section>
+
+    <footer class="doc-end">
+      Built from documented career history, working notes, and direct recollection across multiple sessions. No claim above is generalized or invented beyond what's actually on record.
+    </footer>
+  </main>
+</div>
+</body>
+</html>
