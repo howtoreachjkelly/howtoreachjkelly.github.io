@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an Enterprise Hiring Workflow in Airtable — a build manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFF1EA;
+    --card:#FBFBF8;
+    --ink:#1C231F;
+    --ink-soft:#4B564E;
+    --line:#C7C9BC;
+    --teal:#2F6F62;
+    --teal-deep:#1E4A41;
+    --rust:#B5482C;
+    --rust-soft:#F3DED6;
+    --teal-soft:#DCEAE6;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-attachment:fixed;
+    background-position:-1px -1px;
+  }
+  a{color:var(--teal-deep);}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ===== layout shell ===== */
+  .shell{display:flex; max-width:1240px; margin:0 auto;}
+  .toc{
+    width:270px; flex-shrink:0; position:sticky; top:0; height:100vh;
+    padding:32px 20px 32px 32px; overflow-y:auto;
+  }
+  .main{flex:1; min-width:0; padding:32px 40px 120px;}
+
+  /* ===== header / stamp ===== */
+  .titleblock{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:36px 40px;
+    margin-bottom:48px;
+    position:relative;
+  }
+  .titleblock::before, .titleblock::after,
+  .corner-frame::before, .corner-frame::after{
+    content:''; position:absolute; width:14px; height:14px;
+    border-color:var(--teal); border-style:solid; border-width:0;
+  }
+  .titleblock::before{ top:8px; left:8px; border-top-width:2px; border-left-width:2px; }
+  .titleblock::after{ bottom:8px; right:8px; border-bottom-width:2px; border-right-width:2px; }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--rust); margin:0 0 14px;
+  }
+  h1{
+    font-family:'JetBrains Mono',monospace; font-weight:700;
+    font-size:clamp(26px,3.4vw,38px); line-height:1.15; margin:0 0 16px; letter-spacing:-0.01em;
+  }
+  .subhead{color:var(--ink-soft); font-size:17px; max-width:640px; margin:0 0 20px;}
+  .metarow{display:flex; gap:24px; flex-wrap:wrap; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:16px;}
+  .metarow strong{color:var(--ink); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px;}
+
+  /* ===== TOC ===== */
+  .toc-label{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-soft); margin:0 0 14px;}
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:step;}
+  .toc li{counter-increment:step; margin-bottom:2px;}
+  .toc a{
+    display:flex; gap:10px; text-decoration:none; color:var(--ink-soft);
+    font-size:13.5px; padding:7px 8px; border-radius:2px; transition:background .12s, color .12s;
+  }
+  .toc a:hover, .toc a.active{background:var(--teal-soft); color:var(--teal-deep);}
+  .toc a::before{
+    content:counter(step,decimal-leading-zero); font-family:'JetBrains Mono',monospace;
+    color:var(--teal); font-size:12px; flex-shrink:0;
+  }
+  .toc-divider{border:none; border-top:1px dashed var(--line); margin:18px 0;}
+
+  /* ===== sections ===== */
+  section{margin-bottom:64px; scroll-margin-top:24px;}
+  .step-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+  .step-num{
+    font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--teal);
+    border:1px solid var(--teal); padding:2px 8px; border-radius:2px; flex-shrink:0;
+  }
+  h2{font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; margin:0;}
+  .step-sub{color:var(--ink-soft); margin:6px 0 22px; max-width:680px;}
+
+  .card{
+    background:var(--card); border:1px solid var(--line);
+    padding:24px 28px; margin-bottom:20px; position:relative;
+  }
+  .corner-frame::before{ top:6px; left:6px; border-top-width:1.5px; border-left-width:1.5px; }
+  .corner-frame::after{ bottom:6px; right:6px; border-bottom-width:1.5px; border-right-width:1.5px; }
+
+  .card h3{font-family:'JetBrains Mono',monospace; font-size:15px; margin:0 0 12px; letter-spacing:-.005em;}
+
+  table.fieldtable{width:100%; border-collapse:collapse; font-size:14.5px;}
+  table.fieldtable th{
+    text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft);
+    border-bottom:1px solid var(--line); padding:0 10px 8px 0;
+  }
+  table.fieldtable td{padding:9px 10px 9px 0; border-bottom:1px dashed var(--line); vertical-align:top;}
+  table.fieldtable tr:last-child td{border-bottom:none;}
+
+  .chip{
+    display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11.5px;
+    background:var(--teal-soft); color:var(--teal-deep); padding:2px 8px; border-radius:2px;
+    white-space:nowrap;
+  }
+
+  .formula{
+    font-family:'JetBrains Mono',monospace; font-size:13.5px; background:#1C231F; color:#DCE8E2;
+    padding:14px 16px; overflow-x:auto; margin:14px 0; border-radius:2px;
+  }
+
+  .callout{
+    border-left:3px solid var(--teal); background:var(--teal-soft);
+    padding:14px 18px; margin:18px 0; font-size:14.5px;
+  }
+  .callout.warn{border-left-color:var(--rust); background:var(--rust-soft);}
+  .callout .label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--teal-deep); display:block; margin-bottom:6px;
+  }
+  .callout.warn .label{color:var(--rust);}
+
+  .stamp{
+    display:inline-flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace;
+    font-size:11px; text-transform:uppercase; letter-spacing:.08em; border:1.5px solid var(--rust);
+    color:var(--rust); padding:3px 10px; border-radius:2px; transform:rotate(-1.5deg); margin-bottom:14px;
+  }
+
+  ol.clickpath{margin:0; padding-left:0; list-style:none; counter-reset:cp;}
+  ol.clickpath li{
+    counter-increment:cp; padding:8px 0 8px 34px; position:relative; border-bottom:1px dashed var(--line);
+  }
+  ol.clickpath li:last-child{border-bottom:none;}
+  ol.clickpath li::before{
+    content:counter(cp); position:absolute; left:0; top:8px; width:22px; height:22px;
+    background:var(--ink); color:var(--paper); font-family:'JetBrains Mono',monospace; font-size:12px;
+    display:flex; align-items:center; justify-content:center; border-radius:50%;
+  }
+
+  .glossary dt{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14.5px; margin-top:16px;}
+  .glossary dd{margin:4px 0 0; color:var(--ink-soft);}
+
+  .footer-block{
+    border-top:1px dashed var(--line); margin-top:60px; padding-top:24px;
+    font-size:13.5px; color:var(--ink-soft);
+  }
+
+  .mobile-toc-toggle{display:none;}
+
+  @media (max-width: 920px){
+    .shell{flex-direction:column;}
+    .toc{position:relative; width:auto; height:auto; padding:20px 20px 0;}
+    .main{padding:0 20px 80px;}
+    .toc ol{display:none;}
+    .toc.open ol{display:block;}
+    .mobile-toc-toggle{
+      display:block; font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase;
+      letter-spacing:.08em; background:var(--card); border:1px solid var(--line); padding:10px 14px;
+      cursor:pointer; width:100%; text-align:left; color:var(--ink);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <nav class="toc" id="toc">
+    <button class="mobile-toc-toggle" id="tocToggle">Contents ▾</button>
+    <p class="toc-label">Contents</p>
+    <ol>
+      <li><a href="#before-you-start">Before you start</a></li>
+      <li><a href="#step-1">Departments &amp; People</a></li>
+      <li><a href="#step-2">Requisitions</a></li>
+      <li><a href="#step-3">Candidates &amp; Applications</a></li>
+      <li><a href="#step-4">Interviews &amp; Offers</a></li>
+      <li><a href="#step-5">The approval chain</a></li>
+      <li><a href="#step-6">Automations</a></li>
+      <li><a href="#step-7">Views per role</a></li>
+      <li><a href="#step-8">Interfaces &amp; permissions</a></li>
+      <li><a href="#step-9">Candidate application form</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+    </ol>
+  </nav>
+
+  <main class="main">
+
+    <div class="titleblock">
+      <p class="eyebrow">Build manual — no-code system design</p>
+      <h1>Building an enterprise hiring workflow in Airtable</h1>
+      <p class="subhead">A table-by-table, click-by-click guide to building a real requisition → candidate → interview → offer → approval pipeline — the kind large companies run recruiting on, built without a single line of code.</p>
+      <div class="metarow">
+        <div><strong>Format</strong>8 build steps</div>
+        <div><strong>Time</strong>~2–4 hours end to end</div>
+        <div><strong>Requires</strong>Airtable free or Team plan (Enterprise plan noted where relevant)</div>
+        <div><strong>Hardest part</strong>Step 5 — flagged below</div>
+      </div>
+    </div>
+
+    <section id="before-you-start">
+      <div class="step-head"><span class="step-num">00</span><h2>Before you start</h2></div>
+      <p class="step-sub">One mental model to hold onto for the entire build.</p>
+      <div class="card corner-frame">
+        <p>Coming from spreadsheets, the instinct is one giant tab with a column for everything. Airtable's actual advantage only shows up once you split that into separate tables for separate <em>things</em> — a candidate, a job requisition, an interview — and connect them with <span class="chip">Link to another record</span> fields instead of retyping text.</p>
+        <p style="margin-bottom:0;">Everything in this guide — lookups, rollups, automations — is built on top of that one idea. Get the linked-record structure right first; everything else is decoration on top of it.</p>
+      </div>
+      <div class="callout">
+        <span class="label">Setup</span>
+        Create a new base from scratch (not a template) at <span class="mono">airtable.com</span> → <strong>Add a base</strong> → <strong>Start from scratch</strong>. Name it <span class="mono">Hiring Workflow</span>. You'll add 8 tables to it over the next 8 steps.
+      </div>
+      <div class="callout warn">
+        <span class="label">Pasting into Link fields can silently fail</span>
+        When you get to populating tables with data, pasting plain text into a <span class="chip">Link to another record</span> column sometimes does nothing at all — no error, no dialog, just no change — with no consistent trigger identified. If it happens: test whether your clipboard actually has anything in it first (paste into a plain text field to check), try right-click → Paste instead of Ctrl/Cmd+V, and confirm the field you're pasting into is actually a Link field and not a read-only Lookup that looks similar. If it still won't take the paste, the reliable fallback is linking records one at a time by hand (click the cell → expand/search icon → pick the record), or using the CSV Import extension (Tools → Extensions → add "CSV import"), which is built to write into Link fields directly during column mapping.
+      </div>
+    </section>
+
+    <section id="step-1">
+      <div class="step-head"><span class="step-num">01</span><h2>Departments &amp; People</h2></div>
+      <p class="step-sub">The foundation tables — everything else in the base links back to these, so get them right first.</p>
+
+      <div class="card corner-frame">
+        <h3>Table: Departments</h3>
+        <ol class="clickpath">
+          <li>Click <strong>+ Add or import</strong> at the bottom of the table bar → <strong>Create blank table</strong>. Rename it <span class="mono">Departments</span>.</li>
+          <li>Rename the default <span class="mono">Name</span> field (it's your Primary field — every table needs exactly one, it's what shows up when this table is referenced elsewhere).</li>
+          <li>Add field <span class="mono">VP Owner</span> — type <span class="chip">Link to another record</span> → target table <span class="mono">People</span> (create People first if it doesn't exist yet, or leave this field for later and come back to it).</li>
+          <li>Add field <span class="mono">Budget Headcount</span> — type <span class="chip">Number</span>, integer format.</li>
+        </ol>
+        <p style="margin:14px 0 0; color:var(--ink-soft); font-size:14px;">You'll add an <span class="chip">Open Reqs</span> rollup field here later, once the Requisitions table exists — rollups can only reference tables that already exist.</p>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Table: People</h3>
+        <p style="margin-top:0;">Every recruiter, hiring manager, interviewer, and approver in the org goes here — this is the table that makes the approval chain in Step 5 possible.</p>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Name</td><td><span class="chip">Single line text</span></td><td>Primary field</td></tr>
+          <tr><td>Email</td><td><span class="chip">Email</span></td><td>Used later for automation notifications</td></tr>
+          <tr><td>Department</td><td><span class="chip">Link to record</span></td><td>Links to Departments</td></tr>
+          <tr><td>Role</td><td><span class="chip">Single select</span></td><td>Recruiter / Hiring Manager / Interviewer / VP / Exec</td></tr>
+          <tr><td>Approval Level</td><td><span class="chip">Single select</span></td><td>None / Dept Approver / Exec Approver</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="step-2">
+      <div class="step-head"><span class="step-num">02</span><h2>Requisitions — the hub table</h2></div>
+      <p class="step-sub">Every open role. This is the table everything else in the base orbits around.</p>
+      <div class="card corner-frame">
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Req ID</td><td><span class="chip">Autonumber</span></td><td>Primary field</td></tr>
+          <tr><td>Job Title</td><td><span class="chip">Single line text</span></td><td></td></tr>
+          <tr><td>Department</td><td><span class="chip">Link to record</span></td><td>Links to Departments</td></tr>
+          <tr><td>Hiring Manager</td><td><span class="chip">Link to record</span></td><td>Links to People</td></tr>
+          <tr><td>Status</td><td><span class="chip">Single select</span></td><td>Draft / Pending Approval / Approved / Open / On Hold / Filled / Cancelled</td></tr>
+          <tr><td>Priority</td><td><span class="chip">Single select</span></td><td>Critical / High / Standard</td></tr>
+          <tr><td>Salary Band Min / Max</td><td><span class="chip">Currency</span></td><td>Two separate number fields</td></tr>
+          <tr><td>Target Start Date</td><td><span class="chip">Date</span></td><td></td></tr>
+          <tr><td>Date Opened</td><td><span class="chip">Date</span></td><td>Set when Status first hits "Open"</td></tr>
+          <tr><td>Days Open</td><td><span class="chip">Formula</span></td><td>see below</td></tr>
+          <tr><td>Recruiter</td><td><span class="chip">Link to record</span></td><td>Links to People — recruiter owns the req, not the candidate (see callout)</td></tr>
+        </table>
+        <div class="formula">DATETIME_DIFF(TODAY(), {Date Opened}, 'days')</div>
+        <p style="margin:0; color:var(--ink-soft); font-size:14px;">Leave <span class="chip">Applications</span>, <span class="chip">Approvals</span>, and <span class="chip">Candidate Count</span> for later — Airtable auto-creates the reverse link once you build the Applications and Approvals tables and link back to Requisitions from there.</p>
+      </div>
+      <div class="callout">
+        <span class="label">Why status is a single select, not text</span>
+        A Single Select field is what an automation can watch for changes on ("when Status becomes Pending Approval, do X"). A plain text field can't trigger anything — this distinction matters everywhere in this build.
+      </div>
+      <div class="callout">
+        <span class="label">Why Recruiter lives here, not on Applications</span>
+        One recruiter owns a requisition end to end, across every candidate in it — not one recruiter per candidate. Put <span class="mono">Recruiter</span> here, on Requisitions, and pull it into Applications and Interviews later as a <span class="chip">Lookup</span> rather than re-entering it per record. It gets assigned by whoever manages recruiter capacity, typically right when a req moves from <span class="mono">Approved</span> to <span class="mono">Open</span>.
+      </div>
+      <div class="callout warn">
+        <span class="label">Autonumber not filling in</span>
+        Renaming the default first field to <span class="mono">Req ID</span> doesn't make it an Autonumber — check <strong>Edit field</strong> and confirm the type actually says Autonumber, not Single line text. Even when it's correctly set, a batch of records added all at once (bulk paste, or several created in the same automation run) can leave some rows unnumbered. Fix: Edit field → switch the type away from Autonumber to Number or Text → save → switch it back to Autonumber. This recomputes every record's number from scratch based on creation order — fine here, but worth knowing it renumbers everything, not just the blank ones.
+      </div>
+    </section>
+
+    <section id="step-3">
+      <div class="step-head"><span class="step-num">03</span><h2>Candidates &amp; Applications</h2></div>
+      <p class="step-sub">This is where the junction table pattern shows up — the one concept in this whole build that has no spreadsheet equivalent.</p>
+
+      <div class="card corner-frame">
+        <h3>Table: Candidates</h3>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Name</td><td><span class="chip">Single line text</span></td><td>Primary field</td></tr>
+          <tr><td>Email / Phone</td><td><span class="chip">Email</span> / <span class="chip">Phone</span></td><td></td></tr>
+          <tr><td>Resume</td><td><span class="chip">Attachment</span></td><td>Drag-and-drop PDF upload</td></tr>
+          <tr><td>Source</td><td><span class="chip">Single select</span></td><td>Referral / LinkedIn / Job Board / Agency / Inbound</td></tr>
+        </table>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Table: Applications <span style="font-weight:400; color:var(--ink-soft); font-size:13px;">— the junction table</span></h3>
+        <p style="margin-top:0;">A candidate can apply to multiple reqs. A req gets multiple candidates. That's a many-to-many relationship, and Airtable has no direct way to link two tables many-to-many — you always need a third table sitting in between, with a single link to each side. That's what Applications is.</p>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Application ID</td><td><span class="chip">Formula</span></td><td>Primary field — see below</td></tr>
+          <tr><td>Candidate</td><td><span class="chip">Link to record</span></td><td>Links to Candidates, single record only</td></tr>
+          <tr><td>Requisition</td><td><span class="chip">Link to record</span></td><td>Links to Requisitions, single record only</td></tr>
+          <tr><td>Stage</td><td><span class="chip">Single select</span></td><td>Applied / Phone Screen / Onsite / Offer / Hired / Rejected</td></tr>
+          <tr><td>Recruiter</td><td><span class="chip">Lookup</span></td><td>Through the Requisition link, sourcing Requisitions → Recruiter</td></tr>
+        </table>
+        <div class="formula">{Candidate} & " → " & {Requisition}</div>
+        <p style="margin:0; color:var(--ink-soft); font-size:14px;">Recruiter is a Lookup here, not its own Link field — it's set once on Requisitions and flows down automatically. Add it after you've built Requisitions' Recruiter field in Step 2.</p>
+      </div>
+
+      <div class="callout">
+        <span class="label">The pattern to remember</span>
+        Any time you hit "this could link to more than one of that, and that could link to more than one of this" — stop, and build a junction table instead of trying to force a direct link. You'll see it again with Interviews and Approvals.
+      </div>
+    </section>
+
+    <section id="step-4">
+      <div class="step-head"><span class="step-num">04</span><h2>Interviews &amp; Offers</h2></div>
+      <p class="step-sub">Both link back to a single Application record, not directly to the Candidate.</p>
+
+      <div class="card corner-frame">
+        <h3>Table: Interviews</h3>
+        <div class="callout warn">
+          <span class="label">Before you touch the first field</span>
+          A new table's first field (the primary field) can never be a <span class="chip">Link to another record</span> — Airtable disables that option specifically for whatever sits in that slot, because the primary field represents the record's own identity, not a pointer elsewhere. Leave it as-is, rename it something like <span class="mono">Interview ID</span>, then click the <strong>+</strong> at the far right of the field headers to add <span class="mono">Application</span> as a brand-new field. "Link to another record" will only appear in that new-field list, never on the primary field.
+        </div>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Application</td><td><span class="chip">Link to record</span></td><td>Links to Applications</td></tr>
+          <tr><td>Interviewer</td><td><span class="chip">Link to record</span></td><td>Links to People</td></tr>
+          <tr><td>Interview Type</td><td><span class="chip">Single select</span></td><td>Phone Screen / Technical / Panel / Culture / Final</td></tr>
+          <tr><td>Scheduled Date</td><td><span class="chip">Date</span></td><td>Enable "include a time field"</td></tr>
+          <tr><td>Score</td><td><span class="chip">Number</span></td><td>1–5 scale</td></tr>
+          <tr><td>Feedback</td><td><span class="chip">Long text</span></td><td></td></tr>
+          <tr><td>Status</td><td><span class="chip">Single select</span></td><td>Scheduled / Completed / Cancelled / No-Show</td></tr>
+          <tr><td>Recruiter</td><td><span class="chip">Lookup</span></td><td>Through Application → Requisition → Recruiter (not a new Link field)</td></tr>
+        </table>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Table: Offers</h3>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Application</td><td><span class="chip">Link to record</span></td><td>Links to Applications, single record</td></tr>
+          <tr><td>Base Salary</td><td><span class="chip">Currency</span></td><td></td></tr>
+          <tr><td>Bonus / Equity</td><td><span class="chip">Currency</span> / <span class="chip">Number</span></td><td></td></tr>
+          <tr><td>Start Date</td><td><span class="chip">Date</span></td><td></td></tr>
+          <tr><td>Status</td><td><span class="chip">Single select</span></td><td>Draft / Pending Approval / Approved / Sent / Accepted / Declined</td></tr>
+        </table>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Back on the Applications table — add two rollups now</h3>
+        <p style="margin-top:0;">With Interviews built, go back to Applications and add:</p>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Config</th></tr>
+          <tr><td>Avg Interview Score</td><td><span class="chip">Rollup</span></td><td>Through the Interviews link — see formula below, not bare AVERAGE</td></tr>
+        </table>
+        <div class="formula">IF(COUNT(values) = 0, "", AVERAGE(values))</div>
+        <p style="margin:0 0 10px; color:var(--ink-soft); font-size:14px;">Bare <span class="mono">AVERAGE(values)</span> shows <span class="mono">NaN</span> for any candidate with zero linked Interviews yet — averaging nothing is undefined. The <span class="mono">COUNT</span> check shows a clean blank cell instead until there's actually something to average.</p>
+        <p style="margin:0; color:var(--ink-soft); font-size:14px;">A <span class="chip">Lookup</span> pulls one linked record's field over as-is. A <span class="chip">Rollup</span> aggregates across <em>multiple</em> linked records with a function like SUM, AVERAGE, or COUNT. Use Lookup for "what's this candidate's name," Rollup for "what's the average score across all their interviews."</p>
+      </div>
+    </section>
+
+    <section id="step-5">
+      <div class="step-head"><span class="step-num">05</span><h2>The approval chain</h2></div>
+      <span class="stamp">⬤ hardest step in this build</span>
+      <p class="step-sub">A checkbox that says "manager approved" is a single gate, not a chain. A real chain means multiple approvers acting in sequence, where step 2 can't act until step 1 clears. Do everything else in this guide first — come back here once the rest of the base is stable.</p>
+
+      <div class="card corner-frame">
+        <h3>Table: Approvals — a generic, reusable approval engine</h3>
+        <p style="margin-top:0;">One table handles req sign-off <em>and</em> offer sign-off — you don't need two separate systems.</p>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Approval ID</td><td><span class="chip">Formula</span></td><td>Primary field</td></tr>
+          <tr><td>Type</td><td><span class="chip">Single select</span></td><td>Req Approval / Offer Approval</td></tr>
+          <tr><td>Related Req</td><td><span class="chip">Link to record</span></td><td>Blank for offer approvals</td></tr>
+          <tr><td>Related Offer</td><td><span class="chip">Link to record</span></td><td>Blank for req approvals</td></tr>
+          <tr><td>Approver</td><td><span class="chip">Link to record</span></td><td>Links to People</td></tr>
+          <tr><td>Approval Order</td><td><span class="chip">Number</span></td><td>1, 2, 3 — this is what makes it a sequence</td></tr>
+          <tr><td>Status</td><td><span class="chip">Single select</span></td><td>Pending / Approved / Rejected</td></tr>
+          <tr><td>Comments</td><td><span class="chip">Long text</span></td><td></td></tr>
+        </table>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Wiring the chain — five steps</h3>
+        <ol class="clickpath">
+          <li>Requisition's Status changes to <span class="mono">Pending Approval</span>. An automation (built in Step 6) creates several linked Approval records at once — e.g. Order 1 = Dept VP, Order 2 = Finance, Order 3 = CHRO — branching on the req's Priority or Salary Band.</li>
+          <li>Every Approval record starts as <span class="mono">Pending</span>.</li>
+          <li>Build a view filtered to <span class="mono">Approver = me AND Status = Pending</span> — but add one more condition: a formula field that checks whether every <em>lower</em> Approval Order on the same req is already Approved. That formula is the actual gate — it's what keeps approver #2 from seeing the request before approver #1 has acted.</li>
+          <li>When the last approver in the chain sets Status to Approved, an automation flips the parent Requisition to <span class="mono">Approved</span>.</li>
+          <li>If any approver Rejects, an automation flips the Requisition back to <span class="mono">Draft</span> and notifies the Hiring Manager.</li>
+        </ol>
+      </div>
+      <div class="callout warn">
+        <span class="label">Where people get stuck</span>
+        The gate in step 3 is a formula field, not a filter you can build with dropdowns alone. If you're new to Airtable formulas, this is worth a dedicated session rather than trying to knock it out alongside everything else.
+      </div>
+    </section>
+
+    <section id="step-6">
+      <div class="step-head"><span class="step-num">06</span><h2>Automations</h2></div>
+      <p class="step-sub">Automations tab, top of the base. Build these in order — later ones reuse patterns from earlier ones. Test every step individually before toggling an automation on; the on/off toggle sits in the upper-left of the automation panel and often won't do anything until each step has passed a test.</p>
+
+      <div class="callout">
+        <span class="label">Two trigger types, don't mix them up</span>
+        <span class="chip">When a record is created</span> — only for #1, a brand-new record showing up. <span class="chip">When a record matches conditions</span> — for everything else, since it fires the moment a field reaches a specific value and lets you set that condition inline. <span class="chip">When a record is updated</span> looks similar but has no inline condition support, only a list of fields to watch — easy to reach for by mistake and then wonder where the condition builder went.
+      </div>
+
+      <div class="card corner-frame">
+        <h3>1. New Application created → set Stage, notify Recruiter</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record is created — table Applications.</li>
+          <li><strong>Action — Update record:</strong> table Applications. Record ID → dynamic value → trigger step's <span class="mono">Airtable record ID</span> (not any other ID-looking field). Set <span class="mono">Stage</span> → <span class="mono">Applied</span>.</li>
+          <li><strong>Action — Send an email/Slack message:</strong> recipient → trigger record's <span class="mono">Recruiter</span> (now a Lookup pulled from Requisitions). Subject referencing <span class="mono">{Candidate}</span> and <span class="mono">{Requisition}</span> as dynamic tokens.</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>2. Req Status → Open with no Recruiter → notify for assignment</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Requisitions. Conditions: <span class="mono">Status is Open</span> <strong>and</strong> <span class="mono">Recruiter is empty</span>.</li>
+          <li><strong>Action — Send an email/Slack message:</strong> recipient → trigger record's <span class="mono">Hiring Manager</span> (or a fixed recruiting-ops address). Subject: <span class="mono">Recruiter needed: {Job Title}</span>.</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>3. Application Stage → Onsite → create Interview shells</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Applications. Condition: <span class="mono">Stage is Onsite</span>.</li>
+          <li><strong>Action — Create record</strong> (Technical): table Interviews. <span class="mono">Application</span> → dynamic value → trigger record. <span class="mono">Interview Type</span> → Technical. <span class="mono">Status</span> → Scheduled.</li>
+          <li><strong>Action — Create record</strong> (Panel): same table, same trigger-record link — <strong>set the Application field again on this action separately</strong>, it does not carry over from the first Create Record action. <span class="mono">Interview Type</span> → Panel.</li>
+        </ol>
+        <div class="callout warn">
+          <span class="label">Two gotchas that hit here specifically</span>
+          When multiple records get created in the same automation run, the Interviews table's Autonumber primary field sometimes only assigns a number to the first one — fix with the same "switch away from Autonumber and back" trick from Step 2. And each Create Record action needs <em>its own</em> Application field mapped — it's easy to fill it in on the first action and forget the second needs the same dynamic value added separately.
+        </div>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>4. Req Status → Approved → set to Open, notify Recruiter</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Requisitions. Condition: <span class="mono">Status is Approved</span>.</li>
+          <li><strong>Action — Update record:</strong> Record ID → trigger's Airtable record ID. Set <span class="mono">Status</span> → Open. Set <span class="mono">Date Opened</span> → dynamic value's "Now"/"Today" option.</li>
+          <li><strong>Action — Send an email/Slack message:</strong> recipient → trigger record's <span class="mono">Recruiter</span> (blank at this point on most reqs — that's fine, automation #2 is what catches the empty case).</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>5. Offer Status → Pending Approval → create Offer Approval chain</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Offers. Condition: <span class="mono">Status is Pending Approval</span>.</li>
+          <li><strong>Action — Find records</strong> (rename "Find Finance VP"): table People. Conditions: <span class="mono">Department is Finance</span> <strong>and</strong> <span class="mono">Role is VP</span> — both fixed values, since every offer needs the same Finance sign-off regardless of department.</li>
+          <li><strong>Action — Create record</strong> (Order 1): table Approvals. <span class="mono">Type</span> → Offer Approval. <span class="mono">Related Offer</span> → trigger record. <span class="mono">Approver</span> → left blank, filled in by hand once the record exists. <span class="mono">Approval Order</span> → 1. <span class="mono">Status</span> → Pending.</li>
+          <li><strong>Action — Create record</strong> (Order 2): same table. <span class="mono">Approver</span> → dynamic value → "Find Finance VP" result → <strong>Airtable Record ID</strong> (not Name/ID/JSON — those are for scalar comparisons, this one needs the actual record reference to populate a Link field). <span class="mono">Approval Order</span> → 2.</li>
+        </ol>
+        <div class="callout">
+          <span class="label">Why Find Records instead of a fixed name</span>
+          Hardcoding a specific person (e.g. "Ben Turner") breaks the day that person changes roles. Finding by <span class="mono">Department is Finance, Role is VP</span> means the automation keeps working if the actual person in that seat changes — you're looking up a role, not a name.
+        </div>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>6. Req Status → Pending Approval → create Req Approval chain</h3>
+        <p style="margin-top:0; color:var(--ink-soft); font-size:14px;">Simplified from the original design — one approver (the department VP) rather than a two-step Dept VP + Finance chain. Cut Finance out entirely for requisitions since it's a headcount decision, not money leaving the building yet; that distinction is why Offers (automation #5) still keeps its two-step chain while this one doesn't.</p>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Requisitions. Condition: <span class="mono">Status is Pending Approval</span>.</li>
+          <li><strong>Action — Find records</strong> (rename "Find Dept VP"): table People. Conditions: <span class="mono">Department is exactly</span> → dynamic value → trigger record's <span class="mono">Department</span> → <strong>Name</strong> (drilling into a link field for a condition comparison exposes Name / ID / JSON String / Length — Name is the one that matches text-to-text here) <strong>and</strong> <span class="mono">Approval Level is Exec Approver</span> (fixed).</li>
+          <li><strong>Action — Create record:</strong> table Approvals. <span class="mono">Type</span> → Req Approval. <span class="mono">Related Req</span> → trigger record → <strong>Airtable Record ID</strong> (not Name — see error callout below). <span class="mono">Approver</span> → "Find Dept VP" result → <strong>Airtable Record ID</strong>. <span class="mono">Approval Order</span> → 1. <span class="mono">Status</span> → Pending.</li>
+          <li><strong>Action — Send an email/Slack message:</strong> recipient → "Find Dept VP" result. Subject: <span class="mono">Req approval needed: {Job Title}</span>.</li>
+        </ol>
+        <div class="callout">
+          <span class="label">Approval Level vs. Role</span>
+          <span class="mono">People.Approval Level</span> (None / Dept Approver / Exec Approver) was built specifically to mean "this person can approve things" — a better fit for this Find Records condition than <span class="mono">Role</span>, which really describes job function. Keep the <span class="mono">Department</span> condition alongside it, not instead of it — filtering on Approval Level alone returns every Exec Approver company-wide, not the one for this req's specific department.
+        </div>
+        <div class="callout warn">
+          <span class="label">Error: "could not find matching rows for string"</span>
+          Shows up on a Create Record action when a Link field (like <span class="mono">Related Req</span> or <span class="mono">Approver</span>) gets fed a plain-text value instead of an actual record reference — Airtable tries to text-match it against the target table and fails. Check every Link field on the action: each one should be set to a dynamic value drilled down to <strong>Airtable Record ID</strong>, never <strong>Name</strong> or any other sub-field.
+        </div>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>7. Req Approval cleared → flip Requisition to Approved</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Approvals. Conditions: <span class="mono">Type is Req Approval</span> <strong>and</strong> <span class="mono">Status is Approved</span>.</li>
+          <li><strong>Action — Find records</strong> (rename "Find Unapproved Steps"): table Approvals. Conditions: <span class="mono">Related Req is</span> → dynamic value → trigger record's <span class="mono">Related Req</span> → <strong>Name</strong>, <strong>and</strong> <span class="mono">Status is not Approved</span> (fixed). This surfaces any other step tied to the same req that hasn't cleared yet.</li>
+          <li><strong>Action — Condition</strong> ("Only continue if..."): <span class="mono">Find Unapproved Steps → Length is 0</span>. Everything after only runs if nothing's left pending.</li>
+          <li><strong>Action — Update record:</strong> table Requisitions. Record ID → trigger record's <span class="mono">Related Req</span> → <strong>Airtable Record ID</strong>. Set <span class="mono">Status</span> → Approved.</li>
+          <li><strong>Action — Find records</strong> (rename "Find Req Details", optional — only needed for the notification): table Requisitions. Condition: <span class="mono">Job Title is exactly</span> → trigger record's <span class="mono">Related Req</span> → Name. Reason this exists: drilling into a plain Link field only exposes Name/ID/JSON/Length — reaching an arbitrary field like an email requires a real Find Records step, which exposes a "Field Values" option instead.</li>
+          <li><strong>Action — Send an email:</strong> recipient → "Find Req Details" → Field Values → <span class="mono">Hiring Manager Email</span> (a Lookup field on Requisitions, add it if it doesn't exist yet — Lookup through Hiring Manager, sourcing Email). Subject: <span class="mono">Requisition fully approved: {Job Title}</span>.</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>8. Offer Approval cleared → flip Offer to Approved</h3>
+        <p style="margin-top:0;">Same shape as #7, mirrored onto Offers.</p>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Approvals. Conditions: <span class="mono">Type is Offer Approval</span> <strong>and</strong> <span class="mono">Status is Approved</span>.</li>
+          <li><strong>Action — Find records</strong> ("Find Unapproved Offer Steps"): table Approvals. Conditions: <span class="mono">Related Offer is</span> → trigger record's <span class="mono">Related Offer</span> → Name, <strong>and</strong> <span class="mono">Status is not Approved</span>.</li>
+          <li><strong>Action — Condition:</strong> <span class="mono">Find Unapproved Offer Steps → Length is 0</span>.</li>
+          <li><strong>Action — Update record:</strong> table Offers. Record ID → trigger record's <span class="mono">Related Offer</span> → Airtable Record ID. Set <span class="mono">Status</span> → Approved.</li>
+        </ol>
+      </div>
+
+      <div class="callout">
+        <span class="label">Test end to end once all 8 are on</span>
+        Push one candidate through the whole pipeline by hand: Application created → Stage to Onsite → confirm both Interview shells appear correctly linked → create an Offer → set it to Pending Approval → approve both Approval records in order → confirm the Offer flips to Approved. Do the same for a Requisition through its own approval chain. That's the full gate mechanism from Step 5 actually running.
+      </div>
+    </section>
+
+    <section id="step-7">
+      <div class="step-head"><span class="step-num">07</span><h2>Views per role</h2></div>
+      <p class="step-sub">This is what lets execs, recruiters, and hiring managers use the same base without stepping on each other.</p>
+      <div class="card corner-frame">
+        <table class="fieldtable">
+          <tr><th>Role</th><th>View</th></tr>
+          <tr><td>Recruiter</td><td>Kanban of Applications grouped by Stage, filtered to their reqs</td></tr>
+          <tr><td>Hiring Manager</td><td>Grid of Requisitions filtered to Hiring Manager = me</td></tr>
+          <tr><td>Approver</td><td>Grid of Approvals filtered to Approver = me AND Status = Pending</td></tr>
+          <tr><td>Exec</td><td>Grid/Gantt of all Requisitions grouped by Department, with Days Open and Candidate Count visible</td></tr>
+          <tr><td>Interviewer</td><td>Calendar view of Interviews filtered to Interviewer = me</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="step-8">
+      <div class="step-head"><span class="step-num">08</span><h2>Interfaces &amp; permissions</h2></div>
+      <p class="step-sub">The last mile — handing this to people who should never see the raw base.</p>
+      <div class="card corner-frame">
+        <p style="margin-top:0;">Airtable's <strong>Interfaces</strong> layer builds a dashboard on top of your views — this is how you hand the base to an exec without teaching them what a grid view is. Build views first (Step 7), then build Interfaces from them; if you rebuild the underlying view later, the Interface needs rework, so don't build Interfaces until the views are stable.</p>
+        <p style="margin:0;">Field-level and record-level permissions (an interviewer edits their own score but can't see salary bands) require Airtable's Enterprise plan admin panel — Team and free plans only permit locking at the table level. On lower plans, the workaround is to split sensitive fields into a separate table that only certain collaborators are invited into.</p>
+      </div>
+      <div class="callout warn">
+        <span class="label">"Filter by current user" needs a real Collaborator field</span>
+        Airtable's Interface feature that auto-filters a page to whoever's logged in only works against a native <span class="chip">Collaborator</span> field — a field tied to an actual invited Airtable account — never against a <span class="chip">Link to another record</span> field pointing at a custom table like People, and not through a Lookup of a Collaborator field either. Since Hiring Manager, Approver, and Interviewer are all Links to People in this schema, true per-viewer personalization isn't available out of the box. To get it for real: add a genuine Collaborator field alongside the People link (e.g. <span class="mono">Hiring Manager Account</span>), invite the actual person as a base or Interface-only collaborator, and filter using "current user" against that field instead. For a demo/learning build, skip this and just use the static per-person views from Step 7.
+      </div>
+    </section>
+
+    <section id="step-9">
+      <div class="step-head"><span class="step-num">09</span><h2>Candidate application form</h2></div>
+      <p class="step-sub">Airtable forms cannot create new linked records — a filler can only search and select something that already exists. That's a real problem here: some applicants are brand new, but some are candidates you already sourced through Outreach, and the same public form has to handle both without creating duplicate people.</p>
+
+      <div class="callout warn">
+        <span class="label">Don't build the form directly on Candidates or Applications</span>
+        Both of those tables have Link fields a form can't safely handle — Candidates would create a duplicate person record every time someone you'd already sourced applied through it, and Applications' Candidate field has nothing to link to for a brand-new applicant. Use a dedicated intake table instead, decoupled from your real data, and let an automation decide what happens to each submission.
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Table: Application Submissions — the intake table</h3>
+        <table class="fieldtable">
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Submission ID</td><td><span class="chip">Autonumber</span></td><td>Primary field</td></tr>
+          <tr><td>Full Name</td><td><span class="chip">Single line text</span></td><td></td></tr>
+          <tr><td>Email</td><td><span class="chip">Email</span></td><td>The dedupe key — see automations below</td></tr>
+          <tr><td>Phone</td><td><span class="chip">Phone</span></td><td></td></tr>
+          <tr><td>Resume</td><td><span class="chip">Attachment</span></td><td></td></tr>
+          <tr><td>How did you hear about us</td><td><span class="chip">Single select</span></td><td>Referral / LinkedIn / Job Board / Agency / Inbound</td></tr>
+          <tr><td>LinkedIn / Portfolio URL</td><td><span class="chip">URL</span></td><td>Optional</td></tr>
+          <tr><td>Cover Letter</td><td><span class="chip">Long text</span></td><td>Optional — typed directly rather than a second file upload</td></tr>
+          <tr><td>Work Authorization</td><td><span class="chip">Single select</span></td><td>Yes / No — standard compliance question</td></tr>
+          <tr><td>Requires Visa Sponsorship</td><td><span class="chip">Single select</span></td><td>Yes / No</td></tr>
+          <tr><td>Earliest Start Date</td><td><span class="chip">Date</span></td><td></td></tr>
+          <tr><td>Years of Relevant Experience</td><td><span class="chip">Number</span></td><td></td></tr>
+          <tr><td>Data Privacy Consent</td><td><span class="chip">Checkbox</span></td><td>Mark Required on the form — an optional consent checkbox isn't really consent</td></tr>
+          <tr><td>Requisition</td><td><span class="chip">Link to record</span></td><td>Links to Requisitions — fine on a form, since candidates are selecting an <em>existing</em> req, not creating one</td></tr>
+          <tr><td>Processed</td><td><span class="chip">Checkbox</span></td><td>An automation checks this once the submission's been turned into a real Candidate/Application</td></tr>
+        </table>
+        <p style="margin:0 0 10px; color:var(--ink-soft); font-size:14px;">Optional: on the <span class="mono">Requisition</span> field, set <strong>Limit record selection to a view</strong> pointed at a view filtered to <span class="mono">Status is Open</span>, so applicants can only pick reqs that are actually open.</p>
+        <div class="callout warn">
+          <span class="label">Deliberately left out: EEO self-identification</span>
+          Voluntary self-ID questions (gender, race/ethnicity, veteran status, disability status) are excluded from this build on purpose. In real hiring practice, that data has to be kept separate from what a hiring manager sees — a genuinely different design than "add more fields here," requiring its own table with its own restricted permissions (see Step 8's permissions note). Add it only if you're prepared to build that separation properly, not as a shortcut on this table.
+        </div>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Build the form</h3>
+        <ol class="clickpath">
+          <li>Open <strong>Application Submissions</strong> → <strong>+ Add view</strong> → <strong>Form</strong>.</li>
+          <li>Include: Full Name, Email, Phone, LinkedIn/Portfolio URL, Resume, Cover Letter, Requisition, Work Authorization, Requires Visa Sponsorship, Earliest Start Date, Years of Relevant Experience, How did you hear about us, Data Privacy Consent (mark Required). Leave Processed off the form entirely — it's for the automation, not the applicant.</li>
+          <li>Customize the title/description, then <strong>Publish</strong> to get the shareable link (or an embed snippet, under Share form).</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Automation A — brand-new applicant</h3>
+        <ol class="clickpath">
+          <li><strong>Trigger:</strong> When a record matches conditions — table Application Submissions. Condition: <span class="mono">Processed</span> is unchecked.</li>
+          <li><strong>Find records</strong> (rename "Find Existing Candidate"): table Candidates. Condition: <span class="mono">Email is</span> → dynamic value → trigger's <span class="mono">Email</span>.</li>
+          <li><strong>Condition:</strong> Find Existing Candidate → <strong>Length is 0</strong>.</li>
+          <li><strong>Create record</strong> on Candidates: Name → trigger's Full Name. Email → trigger's Email. Phone → trigger's Phone. Resume → trigger's Resume. Source → trigger's How did you hear about us.</li>
+        </ol>
+        <p style="margin:0; color:var(--ink-soft); font-size:14px;">The newer fields (LinkedIn/Portfolio, Cover Letter, Work Authorization, Visa Sponsorship, Earliest Start Date, Years of Experience) deliberately stay on Application Submissions only, not copied to Candidates — they're specific to <em>this application</em>, not the person in general, and Candidates should stay a record of who someone is, not what they said on one particular form. If you want any of them visible from Candidates later, add them there as Lookups through Applications rather than duplicating the data at creation time.</p>
+        <ol class="clickpath" style="margin-top:14px;">
+          <li><strong>Create record</strong> on Applications: Candidate → the record just created above → <strong>Airtable Record ID</strong>. Requisition → trigger's Requisition. Stage → Applied.</li>
+          <li><strong>Update record</strong> on Application Submissions: trigger's own record → Processed → checked.</li>
+        </ol>
+      </div>
+
+      <div class="card corner-frame">
+        <h3>Automation B — matches someone already sourced</h3>
+        <p style="margin-top:0;">Same trigger and same Find Existing Candidate step as Automation A — just the opposite branch.</p>
+        <ol class="clickpath">
+          <li><strong>Condition:</strong> Find Existing Candidate → <strong>Length is greater than 0</strong>.</li>
+          <li><strong>Create record</strong> on Applications: Candidate → Find Existing Candidate result → <strong>Airtable Record ID</strong> (the person who already existed, not a new one). Requisition → trigger's Requisition. Stage → Applied.</li>
+          <li><strong>Update record</strong> on Application Submissions: Processed → checked.</li>
+        </ol>
+        <p style="margin:0; color:var(--ink-soft); font-size:14px;">No duplicate Candidates record ever gets created for this path — the submission is matched to the existing person by email instead.</p>
+      </div>
+
+      <div class="callout">
+        <span class="label">Why an intake table instead of flagging duplicates afterward</span>
+        An earlier version of this pattern let the form write straight into Candidates and flagged duplicates for manual cleanup after the fact — workable, but avoidable. Airtable automations have no native "delete record" action, so a caught duplicate still needs a human to tidy it up. Routing every submission through Application Submissions first means the duplicate is never created at all — the Find Records/Email check happens before anything touches your real Candidates table, and Application Submissions doubles as a clean audit trail of every raw form entry.
+      </div>
+    </section>
+
+    <section id="glossary">
+      <div class="step-head"><span class="step-num">▢</span><h2>Glossary</h2></div>
+      <div class="card corner-frame glossary">
+        <dt>Linked record</dt><dd>A field connecting one row to a row in another table — the core mechanic that makes Airtable a database rather than a spreadsheet.</dd>
+        <dt>Lookup</dt><dd>Pulls one field's value from a linked record into the current table. Read-only, one record at a time.</dd>
+        <dt>Rollup</dt><dd>Like a lookup, but aggregates across multiple linked records (SUM, COUNT, AVERAGE).</dd>
+        <dt>Junction table</dt><dd>A table that exists only to connect two other tables many-to-many. Applications is this table in the build above.</dd>
+        <dt>Interface</dt><dd>A dashboard layer built from your views, for people who shouldn't touch the raw base directly.</dd>
+        <dt>Collaborator field</dt><dd>Airtable's native field type tied to an actual invited account — different from a Link field to a custom People table. Required for true "filter by current user" personalization in Interfaces.</dd>
+        <dt>Find records (automation)</dt><dd>An automation action that searches a table by conditions and returns a list of matches. Unlike drilling into a plain Link field, its results expose every field on the matched record — the way to reach a field on the "other side" of a link from within an automation.</dd>
+        <dt>Intake table</dt><dd>A table a public form writes to, kept separate from your real working tables (like Candidates), so an automation can decide — by matching on something like email — whether a submission is genuinely new or belongs to someone already in the system, before any real record gets created.</dd>
+      </div>
+    </section>
+
+    <div class="footer-block">
+      Built as a companion to a hands-on Airtable build. No affiliation with Airtable, Inc. — field names, types, and menu labels reflect the product at time of writing and may shift as Airtable updates its UI.
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // mobile TOC toggle
+  const tocToggle = document.getElementById('tocToggle');
+  const toc = document.getElementById('toc');
+  if (tocToggle) {
+    tocToggle.addEventListener('click', () => toc.classList.toggle('open'));
+  }
+
+  // active section highlight
+  const links = document.querySelectorAll('.toc a[href^="#"]');
+  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const setActive = () => {
+    let current = sections[0];
+    for (const sec of sections) {
+      if (sec.getBoundingClientRect().top - 80 <= 0) current = sec;
+    }
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+  };
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+</script>
+
+</body>
+</html>
