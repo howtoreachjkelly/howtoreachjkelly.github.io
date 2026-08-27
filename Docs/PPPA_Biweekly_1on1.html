@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPPA — Biweekly 1:1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root{
+    --paper:#F6F3EC; --ink:#1C2230; --ink-soft:#4B5266; --line:#D8D2C2;
+    --uv:#3E2F7A; --uv-bright:#6B54D6; --amber:#B8863B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans", sans-serif; line-height:1.5;
+    padding:2.5rem 1.5rem 4rem 1.5rem;
+  }
+  .sheet{ max-width:760px; margin:0 auto; }
+  h1{
+    font-family:"Source Serif 4", serif; font-size:1.9rem; font-weight:700;
+    margin:0 0 .2rem 0;
+  }
+  .sub{
+    font-family:"IBM Plex Mono", monospace; font-size:.8rem; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--uv-bright); margin-bottom:1.4rem;
+  }
+  .meta{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px;
+    background:var(--line); border:1px solid var(--line); margin-bottom:1rem;
+  }
+  .meta div{ background:var(--paper); padding:.6rem .8rem; }
+  .meta label{
+    display:block; font-family:"IBM Plex Mono", monospace; font-size:.68rem;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin-bottom:.2rem;
+  }
+  .meta [contenteditable]{ min-height:1.2em; outline:none; }
+  .meta [contenteditable]:empty:before{ content:attr(data-placeholder); color:#B5AF9E; }
+
+  .note{
+    font-size:.85rem; font-style:italic; color:var(--ink-soft); margin-bottom:1.8rem;
+  }
+
+  section{ margin-bottom:1.8rem; }
+  h2{
+    font-family:"Source Serif 4", serif; font-size:1.3rem; font-weight:700;
+    border-bottom:2px solid var(--uv); padding-bottom:.3rem; margin:0 0 .3rem 0;
+  }
+  .prompt{ font-size:.85rem; font-style:italic; color:var(--ink-soft); margin:0 0 .7rem 0; }
+
+  ul.entries{ list-style:none; margin:0; padding:0; }
+  ul.entries li{
+    position:relative; padding:.35rem 0 .35rem 1.1rem; border-bottom:1px dashed var(--line);
+  }
+  ul.entries li::before{ content:"—"; position:absolute; left:0; color:var(--uv-bright); }
+  ul.entries li[contenteditable]:empty:before{
+    content:"—"; /* keep dash */ }
+  ul.entries li span[contenteditable]{ outline:none; }
+  ul.entries li span[contenteditable]:empty:before{ content:attr(data-placeholder); color:#B5AF9E; }
+
+  table{ width:100%; border-collapse:collapse; margin-top:.4rem; font-size:.88rem; }
+  th{
+    text-align:left; background:var(--ink); color:#fff; font-family:"IBM Plex Mono",monospace;
+    font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; padding:.5rem .6rem;
+  }
+  td{ padding:.5rem .6rem; border-bottom:1px solid var(--line); }
+  tr:nth-child(even) td{ background:rgba(107,84,214,.05); }
+  td[contenteditable]{ outline:none; min-height:1.2em; }
+  td[contenteditable]:empty:before{ content:attr(data-placeholder); color:#B5AF9E; }
+
+  .footer-note{
+    border-top:1px solid var(--line); padding-top:1rem; margin-top:2rem;
+    font-size:.82rem; font-style:italic; color:var(--ink-soft);
+  }
+
+  .toolbar{ display:flex; gap:.6rem; margin-bottom:1.6rem; }
+  button{
+    font-family:"IBM Plex Mono",monospace; font-size:.75rem; text-transform:uppercase;
+    letter-spacing:.05em; background:var(--uv); color:#fff; border:none; border-radius:4px;
+    padding:.5rem .9rem; cursor:pointer;
+  }
+  button.secondary{ background:transparent; color:var(--uv); border:1px solid var(--uv); }
+  button:hover{ opacity:.85; }
+
+  @media print{
+    .toolbar{ display:none; }
+    body{ padding:0; background:#fff; }
+    [contenteditable]:empty:before{ content:"" !important; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="toolbar">
+    <button onclick="window.print()">Print / Save PDF</button>
+    <button class="secondary" onclick="resetAll()">Clear fields</button>
+  </div>
+
+  <h1>PPPA — Biweekly 1:1</h1>
+  <div class="sub">Progress · Problems · Priorities · Actions</div>
+
+  <div class="meta">
+    <div><label>Manager</label><div contenteditable="true" data-placeholder="Name"></div></div>
+    <div><label>Direct report</label><div contenteditable="true" data-placeholder="Name"></div></div>
+    <div><label>Date</label><div contenteditable="true" data-placeholder="MM/DD/YYYY"></div></div>
+  </div>
+
+  <p class="note">Keep this lightweight. The value is in the cadence and the follow-through, not the format — a few concrete lines per section beat an exhaustive log every time. Click into any field to edit directly.</p>
+
+  <section>
+    <h2>Progress</h2>
+    <p class="prompt">What moved forward since last time? Focus on outcomes, not activity — what's actually done or closer to done.</p>
+    <ul class="entries">
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Problems</h2>
+    <p class="prompt">What's stuck, at risk, or harder than expected? Naming a problem here is not a performance mark against anyone — it's the point of the meeting.</p>
+    <ul class="entries">
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Priorities</h2>
+    <p class="prompt">What matters most for the next two weeks? Rank if more than two or three things — priorities that aren't ranked aren't really priorities.</p>
+    <ul class="entries">
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+      <li><span contenteditable="true" data-placeholder="Add a line..."></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Actions</h2>
+    <p class="prompt">Who owns what, by when? Every action needs a name and a date — an action with no owner is just a hope.</p>
+    <table>
+      <tr><th>Action</th><th>Owner</th><th>Due</th></tr>
+      <tr>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+      </tr>
+      <tr>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+      </tr>
+      <tr>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+      </tr>
+      <tr>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+        <td contenteditable="true" data-placeholder="..."></td>
+      </tr>
+    </table>
+  </section>
+
+  <p class="footer-note">Carry unresolved Problems and open Actions forward into the next meeting automatically — don't let them quietly drop. Actions should get simpler over time, not more elaborate; if this template starts feeling heavy, cut it back rather than adding more structure to it.</p>
+</div>
+
+<script>
+  function resetAll(){
+    if(!confirm("Clear all entered text on this page?")) return;
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => el.textContent = "");
+  }
+</script>
+</body>
+</html>
