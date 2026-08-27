@@ -179,7 +179,6 @@
     }
   }
 </style>
-<script data-goatcounter="https://howtoreachjkelly.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -497,6 +496,8 @@
         <div class="callout warn">
           <span class="label">Error: "could not find matching rows for string"</span>
           Shows up on a Create Record action when a Link field (like <span class="mono">Related Req</span> or <span class="mono">Approver</span>) gets fed a plain-text value instead of an actual record reference — Airtable tries to text-match it against the target table and fails. Check every Link field on the action: each one should be set to a dynamic value drilled down to <strong>Airtable Record ID</strong>, never <strong>Name</strong> or any other sub-field.
+          <br><br>
+          One specific variant of this: the error names <span class="mono">Related Offer</span> even though this is a Req Approval action — that means <span class="mono">Related Offer</span> picked up a stray mapping (easy to happen if this action started as a copy of the Offer automation's Create Record step) while <span class="mono">Related Req</span> was never actually added to the field list at all. Fix: add <span class="mono">Related Req</span> as a field on this action (dynamic value → trigger step → Airtable Record ID), and remove the <span class="mono">Related Offer</span> mapping entirely — it shouldn't be set on this automation at all.
         </div>
       </div>
 
@@ -586,7 +587,7 @@
           <tr><td>Requisition</td><td><span class="chip">Link to record</span></td><td>Links to Requisitions — fine on a form, since candidates are selecting an <em>existing</em> req, not creating one</td></tr>
           <tr><td>Processed</td><td><span class="chip">Checkbox</span></td><td>An automation checks this once the submission's been turned into a real Candidate/Application</td></tr>
         </table>
-        <p style="margin:0 0 10px; color:var(--ink-soft); font-size:14px;">Optional: on the <span class="mono">Requisition</span> field, set <strong>Limit record selection to a view</strong> pointed at a view filtered to <span class="mono">Status is Open</span>, so applicants can only pick reqs that are actually open.</p>
+        <p style="margin:0 0 10px; color:var(--ink-soft); font-size:14px;">Optional: on the <span class="mono">Requisition</span> field, set <strong>Limit record selection to a view</strong> pointed at a view filtered to <span class="mono">Status is Open</span> (a plain Grid view on Requisitions, filter <span class="mono">Status is Open</span> — same mechanism as every other view in this build), so applicants can only pick reqs that are actually open. This is purely a UI restriction on the picker a human sees — it has no effect on automations, since they write to the field by record reference directly, bypassing the picker entirely.</p>
         <div class="callout warn">
           <span class="label">Deliberately left out: EEO self-identification</span>
           Voluntary self-ID questions (gender, race/ethnicity, veteran status, disability status) are excluded from this build on purpose. In real hiring practice, that data has to be kept separate from what a hiring manager sees — a genuinely different design than "add more fields here," requiring its own table with its own restricted permissions (see Step 8's permissions note). Add it only if you're prepared to build that separation properly, not as a shortcut on this table.
