@@ -9,6 +9,12 @@
 <style>
   /* Projects-page-specific: grid needs extra bottom padding here that other pages using .grid don't need */
   #grid { padding-bottom: 3rem; grid-template-columns: 1fr; }
+  #gridPivot { padding-bottom: 2.5rem; grid-template-columns: 1fr; }
+  .toc-block { margin-top: 22px; padding-top: 18px; border-top: 0.5px solid var(--border-strong); }
+  .toc-block h3 { font-family: var(--font-voice); font-weight: 400; font-size: 17px; margin: 0 0 4px; color: var(--text-primary); }
+  .toc-block ol, .toc-block ul { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; padding-left: 1.25rem; }
+  .toc-block li { margin-bottom: 4px; }
+  .toc-status { font-size: 12.5px; color: var(--text-muted); margin: 16px 0 0; }
 </style>
 <script data-goatcounter="https://howtoreachjkelly.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -29,8 +35,8 @@
   </nav>
 
   <header class="page-head">
-    <h1>Projects &amp; passions</h1>
-    <p>Self-directed builds and explorations, outside the day job.</p>
+    <h1>Projects</h1>
+    <p>The first three projects each aim at a place where the field's ideas outrun its execution. Each comes with its theory of change: the outcomes it has to cause, the assumptions it rests on, and what would make me stop. All three are early. The first tests are conversations, not builds, and I'll update these pages as the evidence comes in.</p>
   </header>
 
   <div class="chips" id="chips">
@@ -41,6 +47,10 @@
     <button class="chip" data-filter="media">Media</button>
   </div>
 
+  <p class="section-label">Biosecurity and AI safety</p>
+  <div class="grid" id="gridPivot"></div>
+
+  <p class="section-label">Builds and explorations</p>
   <div class="grid" id="grid"></div>
 </div>
 
@@ -63,6 +73,7 @@
     <p class="scs-text" id="modalChallenge"></p>
     <p class="scs-label">Solution</p>
     <p class="scs-text" id="modalSolution"></p>
+    <div id="modalToc"></div>
     <p id="modalLink" style="margin: 14px 0 0;"></p>
   </div>
 </div>
@@ -76,6 +87,84 @@ const TAG_LABELS = {
 };
 
 const CASE_STUDIES = [
+  {
+    slug: "la28-clean-air",
+    group: "pivot",
+    title: "Clean air for LA28",
+    tags: ["operational"],
+    summary: "Using the 2028 Games to prove that pandemic-ready indoor air works at scale, and leaving it behind in LA's community spaces.",
+    situation: "The tools that cut airborne disease spread indoors already exist: portable HEPA filtration, CO2 monitoring, better HVAC filters, and far-UVC. ASHRAE 241 now gives buildings a clean-air standard to meet. What the field lacks is large, visible deployments in occupied spaces, with data showing how well they work in practice.",
+    challenge: "The LA 2028 Olympic and Paralympic Games will pack athletes, workers, volunteers and media into indoor spaces for weeks. Deliberate threats already have a federal security lane. Nobody appears to own clean indoor air in the non-competition spaces where people work, eat and sleep. Without an outside driver, the likely result is no systematic clean-air layer at all.",
+    solution: "A two-layer program. The operational core deploys and verifies clean-air measures in priority Games spaces, starting with portable filtration and monitoring, which need no construction. The equipment then transfers to permanent community spaces after the Games. An optional evaluation layer measures real-world effectiveness and publishes the results, so other events and cities can copy the model.",
+    toc: {
+      goal: "Priority indoor spaces at the LA28 Games, and a set of permanent LA community spaces, meet verified clean-air targets aligned with ASHRAE 241. The results are published, so the model can be repeated.",
+      chain: [
+        "A public health partner co-owns the initiative, and a research partner and funder commit to the evaluation.",
+        "Funding is committed, venue operators write clean-air measures into their operations plans, and post-Games owners agree to take on the equipment.",
+        "Priority Games spaces run at verified targets during the Games, the equipment stays in use afterward, and the evaluation is published."
+      ],
+      role: "Convening the partners, writing the proposal and budget, running the baseline survey and the venue spec, and managing delivery through vendor partners. This is the same work I did when deploying regulated, occupied buildings at Cassette.",
+      assumptions: [
+        "A public health authority will co-own a program that adds no cost to its budget, and has the standing to bring venue operators along.",
+        "Philanthropy will fund equipment and evaluation on a timeline of about 20 months.",
+        "Venue operations will accept equipment and access this late in planning."
+      ],
+      change: "If someone already owns clean indoor air in Games spaces, my counterfactual impact drops and I'd support their effort rather than run a parallel one. If no public health partner will co-own it, the project stops.",
+      status: "Early conversations, winter 2026-27. Targets are provisional until then."
+    }
+  },
+  {
+    slug: "biosecurity-reality-check",
+    group: "pivot",
+    title: "Biosecurity Reality Check",
+    tags: ["media"],
+    summary: "A nationwide talk-and-pilot campaign that makes pandemic readiness practical and nonpartisan: one evening, one room, one clean-air pilot.",
+    situation: "Most people's picture of pandemic defense is masks, mandates and vaccines, which are now some of the most polarized topics in American life. Meanwhile defenses that work against any airborne pathogen, such as clean indoor air, get little public attention. AI is also making biological risk harder to ignore. In November 2026, AI Reality Check showed that one recorded talk can reach 30+ states in a single weekend through local hosts.",
+    challenge: "Biosecurity mostly comes up in specialist and policy circles. The people who decide what happens in schools, libraries and community rooms rarely hear it framed as something they can act on. Any framing that sounds partisan loses half the audience at the start.",
+    solution: "A fact-checked talk in 45- and 20-minute versions, hosted by parent groups, libraries and congregations, with a simple local follow-through: a monitor-only clean-air pilot in a room the audience controls. Pilots collect before-and-after data that feeds a national dataset. The framing is keeping kids in school and keeping rooms safe, not masks or mandates.",
+    toc: {
+      goal: "A national event round reaches parent groups, libraries and faith communities in at least 30 states and turns into at least 100 measured clean-air pilots in community spaces. Along the way, it builds understanding of biosecurity as a practical, nonpartisan readiness issue.",
+      chain: [
+        "The talk is fact-checked, endorsed by credible reviewers, and tested with audiences across the political spectrum. Presenters are recruited and trained.",
+        "The event round runs at national scale through trusted local hosts, and funding covers production, host kits and pilot data.",
+        "Attendees understand biosecurity as practical readiness, and room owners approve pilots that produce measured data."
+      ],
+      role: "Writing and producing the talk, building the host and pilot kits, and running the event operation. Twenty years in media taught me how to make complex topics accessible to non-experts.",
+      assumptions: [
+        "A clean-air, kids-in-school framing lands similarly across political lean.",
+        "Attendees follow through: a talk turns into pilot requests, and requests turn into approved pilots.",
+        "The AI Reality Check model works for a second topic and a second host network."
+      ],
+      change: "Test events go ahead only if at least 25% of attendees sign up for a pilot and credibility ratings hold across political lean. If either fails, I revise the talk or stop before scaling.",
+      status: "Outline and partner conversations, winter 2026-27. Test events planned for spring 2027. Targets are provisional."
+    }
+  },
+  {
+    slug: "governance-hub",
+    group: "pivot",
+    title: "Governance Hub",
+    tags: ["org"],
+    summary: "A public clearinghouse where AI governance proposals are filed, compared side by side, and scored against a published rubric.",
+    situation: "Frontier AI governance proposals now come from think tanks, academics, labs, governments and informal posts, with no common format or standard of evaluation. Many proposed structures rest on analogy (a \"FINRA for AI\") rather than evidence. Existing trackers, such as CSET's AGORA, cover laws and official documents, not the proposals competing to become them.",
+    challenge: "A staffer weighing governance options can't easily compare proposals on the same terms. Authors get little structured feedback on whether their ideas are specific, enforceable or verifiable. The result is a field that produces more proposals than it can evaluate.",
+    solution: "A maintained public hub. Proposals are coded on a common schema: what mechanism, which institution, which risks. They are then scored on dimensions such as specificity, enforceability, verifiability and feasibility. The rubric is published and reviewed by people from across policy camps, and authors can submit proposals and respond to their scores.",
+    toc: {
+      goal: "Frontier AI governance proposals are filed in one public, maintained hub and scored against a credible rubric. Decision-makers use the comparisons, and authors write sharper proposals as a result.",
+      chain: [
+        "Conversations with existing trackers and target users confirm the gap, and the schema and rubric are piloted with measured agreement between independent coders.",
+        "The rubric is seen as fair across policy camps, coverage is complete enough to be the default reference, and authors submit and respond.",
+        "A host institution maintains the hub with recurring funding, and decision-makers cite its comparisons."
+      ],
+      role: "Program builder and operator: running the scoping conversations, standing up the coding operation and review board, and finding a long-term host. The rubric's authority comes from its cross-camp reviewers, not from me.",
+      assumptions: [
+        "Decision-makers and their staff will use an outside comparison hub rather than relying on trusted advisors.",
+        "A scoring rubric can be built that people across policy camps accept as fair.",
+        "No existing group is about to build this."
+      ],
+      change: "If an existing tracker plans to add proposals, I'd partner with it rather than build a competitor. If user interviews show staff won't use outside comparisons, the hub doesn't get built.",
+      status: "Concept and scoping. First conversations planned for winter 2026-27."
+    }
+  },
   {
     slug: "ai-video-production-upskilling",
     title: "AI video production upskilling",
@@ -119,6 +208,7 @@ const CASE_STUDIES = [
 
 // ---- Render cards ----
 const grid = document.getElementById("grid");
+const gridPivot = document.getElementById("gridPivot");
 CASE_STUDIES.forEach(cs => {
   const card = document.createElement("button");
   card.className = "card";
@@ -130,7 +220,7 @@ CASE_STUDIES.forEach(cs => {
     <p>${cs.summary}</p>
   `;
   card.addEventListener("click", () => openCase(cs.slug, true));
-  grid.appendChild(card);
+  (cs.group === "pivot" ? gridPivot : grid).appendChild(card);
 });
 
 // ---- Filtering ----
@@ -155,6 +245,37 @@ const modalSituation = document.getElementById("modalSituation");
 const modalChallenge = document.getElementById("modalChallenge");
 const modalSolution = document.getElementById("modalSolution");
 const modalLink = document.getElementById("modalLink");
+const modalToc = document.getElementById("modalToc");
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text) e.textContent = text;
+  return e;
+}
+
+function renderToc(toc) {
+  modalToc.innerHTML = "";
+  if (!toc) return;
+  const box = el("div", "toc-block");
+  box.appendChild(el("h3", "", "Theory of change"));
+  box.appendChild(el("p", "scs-label", "Goal"));
+  box.appendChild(el("p", "scs-text", toc.goal));
+  box.appendChild(el("p", "scs-label", "Outcome chain"));
+  const ol = el("ol");
+  toc.chain.forEach(t => ol.appendChild(el("li", "", t)));
+  box.appendChild(ol);
+  box.appendChild(el("p", "scs-label", "My role"));
+  box.appendChild(el("p", "scs-text", toc.role));
+  box.appendChild(el("p", "scs-label", "Assumptions I'm testing first"));
+  const ul = el("ul");
+  toc.assumptions.forEach(t => ul.appendChild(el("li", "", t)));
+  box.appendChild(ul);
+  box.appendChild(el("p", "scs-label", "What would change my mind"));
+  box.appendChild(el("p", "scs-text", toc.change));
+  if (toc.status) box.appendChild(el("p", "toc-status", "Status: " + toc.status));
+  modalToc.appendChild(box);
+}
 const closeBtn = document.getElementById("closeBtn");
 
 function openCase(slug, pushHash) {
@@ -165,6 +286,7 @@ function openCase(slug, pushHash) {
   modalSituation.textContent = cs.situation;
   modalChallenge.textContent = cs.challenge;
   modalSolution.textContent = cs.solution;
+  renderToc(cs.toc);
 
   if (cs.links && cs.links.length) {
     modalLink.innerHTML = cs.links.map(l =>
@@ -176,8 +298,12 @@ function openCase(slug, pushHash) {
     modalLink.innerHTML = "";
   }
 
+  modalMedia.style.display = "";
   if (cs.media && cs.media.type === "image") {
     modalMedia.innerHTML = `<img src="${cs.media.src}" alt="${cs.media.alt || ""}">`;
+  } else if (cs.toc) {
+    modalMedia.innerHTML = "";
+    modalMedia.style.display = "none";
   } else {
     modalMedia.innerHTML = `<i class="ti ti-photo" style="font-size:26px;" aria-hidden="true"></i><span>Photo or diagram placeholder</span>`;
   }
