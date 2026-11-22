@@ -96,6 +96,12 @@ header.page-head p { font-size: 15px; color: var(--text-secondary); margin: 0; l
 }
 .hero-sub { font-size: 14px; color: var(--text-secondary); max-width: 520px; margin: 16px auto 0; line-height: 1.6; }
 .hero-vision { font-family: var(--font-voice); font-style: italic; font-size: 15px; color: var(--text-primary); }
+.hero-now, .hero-latest { font-size: 13px; color: var(--text-secondary); margin: 18px auto 0; line-height: 1.6; max-width: 620px; }
+.hero-latest { margin-top: 6px; }
+.hero-now-label { font-weight: 600; color: var(--text-primary); margin-right: 6px; }
+.hero-now a, .hero-latest a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
+.contact-ask { font-size: 15px; color: var(--text-primary); margin: -8px -80px 24px; line-height: 1.5; }
+@media (max-width: 640px) { .contact-ask { margin: -8px 0 24px; } }
 .home-cta { font-size: 14px; color: var(--text-secondary); text-align: center; max-width: 560px; margin: 0 auto; padding: 0 0 2rem; line-height: 1.6; }
 .home-cta a { color: var(--text-primary); font-weight: 600; }
 
