@@ -14,6 +14,9 @@
   .toc-block h3 { font-family: var(--font-voice); font-weight: 400; font-size: 17px; margin: 0 0 4px; color: var(--text-primary); }
   .toc-block ol, .toc-block ul { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; padding-left: 1.25rem; }
   .toc-block li { margin-bottom: 4px; }
+  .toc-figure { display: block; margin: 10px 0 4px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); overflow: hidden; background: #fff; }
+  .toc-figure img { display: block; width: 100%; height: auto; }
+  .toc-caption { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
   .toc-status { font-size: 12.5px; color: var(--text-muted); margin: 16px 0 0; }
 </style>
 <script data-goatcounter="https://howtoreachjkelly.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -96,6 +99,7 @@ const CASE_STUDIES = [
     situation: "The tools that cut airborne disease spread indoors already exist: portable HEPA filtration, CO2 monitoring, better HVAC filters, and far-UVC. ASHRAE 241 now gives buildings a clean-air standard to meet. What the field lacks is large, visible deployments in occupied spaces, with data showing how well they work in practice.",
     challenge: "The LA 2028 Olympic and Paralympic Games will pack athletes, workers, volunteers and media into indoor spaces for weeks. Deliberate threats already have a federal security lane. Nobody appears to own clean indoor air in the non-competition spaces where people work, eat and sleep. Without an outside driver, the likely result is no systematic clean-air layer at all.",
     solution: "A two-layer program. The operational core deploys and verifies clean-air measures in priority Games spaces, starting with portable filtration and monitoring, which need no construction. The equipment then transfers to permanent community spaces after the Games. An optional evaluation layer measures real-world effectiveness and publishes the results, so other events and cities can copy the model.",
+    tocImage: { src: "img/toc-la28.png", alt: "LA28 clean air theory of change flowchart: activities, short-, medium- and long-term outcomes, and impact" },
     toc: {
       goal: "Priority indoor spaces at the LA28 Games, and a set of permanent LA community spaces, meet verified clean-air targets aligned with ASHRAE 241. The results are published, so the model can be repeated.",
       chain: [
@@ -122,6 +126,7 @@ const CASE_STUDIES = [
     situation: "Most people's picture of pandemic defense is masks, mandates and vaccines, which are now some of the most polarized topics in American life. Meanwhile defenses that work against any airborne pathogen, such as clean indoor air, get little public attention. AI is also making biological risk harder to ignore. In November 2026, AI Reality Check showed that one recorded talk can reach 30+ states in a single weekend through local hosts.",
     challenge: "Biosecurity mostly comes up in specialist and policy circles. The people who decide what happens in schools, libraries and community rooms rarely hear it framed as something they can act on. Any framing that sounds partisan loses half the audience at the start.",
     solution: "A fact-checked talk in 45- and 20-minute versions, hosted by parent groups, libraries and congregations, with a simple local follow-through: a monitor-only clean-air pilot in a room the audience controls. Pilots collect before-and-after data that feeds a national dataset. The framing is keeping kids in school and keeping rooms safe, not masks or mandates.",
+    tocImage: { src: "img/toc-brc.png", alt: "Biosecurity Reality Check theory of change flowchart: activities, outputs, outcomes, impact and riskiest assumptions" },
     toc: {
       goal: "A national event round reaches parent groups, libraries and faith communities in at least 30 states and turns into at least 100 measured clean-air pilots in community spaces. Along the way, it builds understanding of biosecurity as a practical, nonpartisan readiness issue.",
       chain: [
@@ -254,11 +259,19 @@ function el(tag, cls, text) {
   return e;
 }
 
-function renderToc(toc) {
+function renderToc(toc, img) {
   modalToc.innerHTML = "";
   if (!toc) return;
   const box = el("div", "toc-block");
   box.appendChild(el("h3", "", "Theory of change"));
+  if (img) {
+    const a = el("a", "toc-figure");
+    a.href = img.src; a.target = "_blank"; a.rel = "noopener";
+    const i = el("img"); i.src = img.src; i.alt = img.alt; i.loading = "lazy";
+    a.appendChild(i);
+    box.appendChild(a);
+    box.appendChild(el("p", "toc-caption", "Click to open the full-size chart."));
+  }
   box.appendChild(el("p", "scs-label", "Goal"));
   box.appendChild(el("p", "scs-text", toc.goal));
   box.appendChild(el("p", "scs-label", "Outcome chain"));
@@ -286,7 +299,7 @@ function openCase(slug, pushHash) {
   modalSituation.textContent = cs.situation;
   modalChallenge.textContent = cs.challenge;
   modalSolution.textContent = cs.solution;
-  renderToc(cs.toc);
+  renderToc(cs.toc, cs.tocImage);
 
   if (cs.links && cs.links.length) {
     modalLink.innerHTML = cs.links.map(l =>
