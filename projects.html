@@ -10,6 +10,11 @@
   /* Projects-page-specific: grid needs extra bottom padding here that other pages using .grid don't need */
   #grid { padding-bottom: 3rem; grid-template-columns: 1fr; }
   #gridPivot { padding-bottom: 2.5rem; grid-template-columns: 1fr; }
+  /* Thumbnail to the right of the description when a project has an image */
+  .card.has-thumb { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .card.has-thumb .card-text { flex: 1; min-width: 0; }
+  .card-thumb { flex-shrink: 0; width: 150px; height: 100px; object-fit: cover; border-radius: 8px; border: 0.5px solid var(--border-strong); display: block; }
+  @media (max-width: 640px) { .card-thumb { width: 96px; height: 64px; } }
   .toc-block { margin-top: 22px; padding-top: 18px; border-top: 0.5px solid var(--border-strong); }
   .toc-block h3 { font-family: var(--font-voice); font-weight: 400; font-size: 17px; margin: 0 0 4px; color: var(--text-primary); }
   .toc-block ol, .toc-block ul { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0; padding-left: 1.25rem; }
@@ -222,11 +227,17 @@ CASE_STUDIES.forEach(cs => {
   card.className = "card";
   card.dataset.tags = cs.tags.join(" ");
   card.dataset.slug = cs.slug;
-  card.innerHTML = `
+  const textHtml = `
     <div class="tags">${cs.tags.map(t => `<span class="tag" style="background:var(--tag-${t}-bg);color:var(--tag-${t}-text)">${TAG_LABELS[t]}</span>`).join("")}</div>
     <h3>${cs.title}</h3>
     <p>${cs.summary}</p>
   `;
+  if (cs.media && cs.media.type === "image") {
+    card.classList.add("has-thumb");
+    card.innerHTML = `<div class="card-text">${textHtml}</div><img class="card-thumb" src="${cs.media.src}" alt="" loading="lazy">`;
+  } else {
+    card.innerHTML = textHtml;
+  }
   card.addEventListener("click", () => openCase(cs.slug, true));
   (cs.group === "pivot" ? gridPivot : grid).appendChild(card);
 });
