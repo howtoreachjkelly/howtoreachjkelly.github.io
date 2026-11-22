@@ -95,6 +95,9 @@ header.page-head p { font-size: 15px; color: var(--text-secondary); margin: 0; l
   padding: 1.25rem 1.5rem;
 }
 .hero-sub { font-size: 14px; color: var(--text-secondary); max-width: 520px; margin: 16px auto 0; line-height: 1.6; }
+.hero-vision { font-family: var(--font-voice); font-style: italic; font-size: 15px; color: var(--text-primary); }
+.home-cta { font-size: 14px; color: var(--text-secondary); text-align: center; max-width: 560px; margin: 0 auto; padding: 0 0 2rem; line-height: 1.6; }
+.home-cta a { color: var(--text-primary); font-weight: 600; }
 
 /* ---------- filter chips ---------- */
 .chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 0 1.5rem; }
@@ -111,7 +114,9 @@ header.page-head p { font-size: 15px; color: var(--text-secondary); margin: 0; l
 /* ---------- card grid (used by Work, and Home's quick-links) ---------- */
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
 .grid.grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid.grid-3.home-cards { grid-template-columns: repeat(2, minmax(0,1fr)); padding-bottom: 1.5rem; }
 @media (max-width: 640px) { .grid, .grid.grid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .grid.grid-3.home-cards { grid-template-columns: 1fr; } }
 
 .card {
   background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px;
