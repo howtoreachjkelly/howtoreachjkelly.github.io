@@ -14,6 +14,7 @@
   .card.has-thumb { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
   .card.has-thumb .card-text { flex: 1; min-width: 0; }
   .card-thumb { flex-shrink: 0; width: 150px; height: 100px; object-fit: cover; border-radius: 8px; border: 0.5px solid var(--border-strong); display: block; }
+  .card-thumb-diagram { object-fit: contain; background: #fff; }
   @media (max-width: 640px) { .card-thumb { width: 96px; height: 64px; } }
   .toc-block { margin-top: 22px; padding-top: 18px; border-top: 0.5px solid var(--border-strong); }
   .toc-block h3 { font-family: var(--font-voice); font-weight: 400; font-size: 17px; margin: 0 0 4px; color: var(--text-primary); }
@@ -232,9 +233,13 @@ CASE_STUDIES.forEach(cs => {
     <h3>${cs.title}</h3>
     <p>${cs.summary}</p>
   `;
-  if (cs.media && cs.media.type === "image") {
+  const hasMedia = cs.media && cs.media.type === "image";
+  const thumbSrc = hasMedia ? cs.media.src : (cs.tocImage ? cs.tocImage.src : null);
+  if (thumbSrc) {
     card.classList.add("has-thumb");
-    card.innerHTML = `<div class="card-text">${textHtml}</div><img class="card-thumb" src="${cs.media.src}" alt="" loading="lazy">`;
+    // Flowchart thumbnails are shown whole (contain) rather than cropped, so the diagram stays recognizable
+    const thumbClass = hasMedia ? "card-thumb" : "card-thumb card-thumb-diagram";
+    card.innerHTML = `<div class="card-text">${textHtml}</div><img class="${thumbClass}" src="${thumbSrc}" alt="" loading="lazy">`;
   } else {
     card.innerHTML = textHtml;
   }
